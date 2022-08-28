@@ -7,7 +7,7 @@ fi
 
 export ZSH_CACHE_DIR=~/.cache/zsh
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-DISABLE_MAGIC_FUNCTIONS=true
+export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
 #set up for emacs vterm directory tracking
 vterm_printf(){
@@ -47,10 +47,6 @@ function (){
   fi
 }
 
-export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-export ZSH_AUTOSUGGEST_HISTORY_IGNORE=1
 
 # auto compleition setup to selec menu with emacs move key binding
 # fixme - the load process here seems a bit bizarre

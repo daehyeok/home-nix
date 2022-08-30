@@ -10,6 +10,7 @@
     enableCompletion = true;
     autocd = true;
     enableAutosuggestions = true;
+    dotDir = ".config/zsh";
     history = {
       ignoreDups = true;
       ignoreSpace = true;
@@ -61,10 +62,18 @@
       }
     ];
     initExtraBeforeCompInit = builtins.readFile ./zshrc;
+    initExtraFirst = ''
+      P10K_INSTANT_PROMPT="$XDG_CACHE_HOME/p10k-instant-prompt-''${(%):-%n}.zsh"
+      [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
+      [[ ! -f "${config.xdg.configHome}/zsh/p10k.zsh" ]] || source ${config.xdg.configHome}/zsh/p10k.zsh
+    '';
     initExtra = ''
       [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-                    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+      path+=("$HOME/.config/emacs/bin")
+      path+=("$HOME/.bin")
+      export TERMINFO_DIRS="$HOME/.nix-profile/share/terminfo":/etc/terminfo:/lib/terminfo:/usr/share/terminfo
     '';
+    envExtra = ''ZSH_CACHE_DIR="${config.xdg.cacheHome}/zsh"'';
     shellAliases = {
       diff = "delta";
       cat = "bat --plain";
@@ -75,7 +84,7 @@
   home.file = {
     ".p10k.zsh" = {
       source = ./p10k.zsh;
-      target = ".p10k.zsh";
+      target = ".config/zsh/p10k.zsh";
     };
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./git ./kitty ./tmux ./zsh ./fzf.nix ./nvim.nix ];
+  imports = [ ./git ./kitty ./tmux ./zsh ./fzf.nix ./nvim.nix];
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
@@ -16,5 +16,6 @@
     shellcheck
     tldr
     nixfmt
+    gh
   ];
 }

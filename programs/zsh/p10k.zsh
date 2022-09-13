@@ -21,7 +21,6 @@
       dir                     # current directory
       vcs                     # git status
       prompt_char
-      prompt_gdir             # prompt symbol
     )
   fi
 
@@ -277,7 +276,9 @@
   # Don't show Git status in prompt for repositories whose workdir matches this pattern.
   # For example, if set to '~', the Git repository at $HOME/.git will be ignored.
   # Multiple patterns can be combined with '|': '~(|/foo)|/bar/baz/*'.
-  typeset -g POWERLEVEL9K_VCS_DISABLED_WORKDIR_PATTERN='~'
+  if [[ ! -v POWERLEVEL9K_VCS_DISABLED_WORKDIR_PATTERN ]]; then
+    typeset -g POWERLEVEL9K_VCS_DISABLED_WORKDIR_PATTERN='~'
+  fi
 
   # Disable the default Git status formatting.
   typeset -g POWERLEVEL9K_VCS_DISABLE_GITSTATUS_FORMATTING=true

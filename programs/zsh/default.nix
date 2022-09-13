@@ -8,7 +8,6 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    autocd = true;
     enableAutosuggestions = true;
     dotDir = ".config/zsh";
     history = {
@@ -61,20 +60,46 @@
         };
       }
     ];
-    initExtraBeforeCompInit = builtins.readFile ./zshrc;
     initExtraFirst = ''
-      P10K_INSTANT_PROMPT="$XDG_CACHE_HOME/p10k-instant-prompt-''${(%):-%n}.zsh"
+      P10K_INSTANT_PROMPT="${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh"
       [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
       [[ ! -f "${config.xdg.configHome}/zsh/p10k_work.zsh" ]] || source ${config.xdg.configHome}/zsh/p10k_work.zsh
       [[ ! -f "${config.xdg.configHome}/zsh/p10k.zsh" ]] || source ${config.xdg.configHome}/zsh/p10k.zsh
     '';
     initExtra = ''
+      # auto compleition setup to selec menu with emacs move key binding
+      zmodload -i zsh/complist
+      unsetopt menu_complete   # do not autoselect the first completion entry
+      unsetopt flowcontrol
+      setopt auto_menu         # show completion menu on successive tab press
+      setopt complete_in_word
+      setopt always_to_end
+      zstyle ':completion:*:*:*:*:*' menu select
+      zstyle ':completion:*' list-colors \'\'
+
+      # disable named-directories autocompletion
+      zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+      zstyle ':completion:*:ssh:*' hosts off
+
+      # Use caching so that commands like apt and dpkg complete are useable
+      zstyle ':completion:*' use-cache yes
+      zstyle ':completion:*' cache-path $ZSH_CACHE_DIR
+
+      # ... unless we really want to.
+      zstyle '*' single-ignored show
+
+      WORDCHARS=\'\'
       [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
       path+=("$HOME/.config/emacs/bin")
       path+=("$HOME/.bin")
-      export TERMINFO_DIRS="$HOME/.nix-profile/share/terminfo":/etc/terminfo:/lib/terminfo:/usr/share/terminfo
-    '';
-    envExtra = ''ZSH_CACHE_DIR="${config.xdg.cacheHome}/zsh"'';
+    '' + builtins.readFile ./vterm.zsh;
+    sessionVariables = {
+      "TERMINFO_DIRS" =
+        "$HOME/.nix-profile/share/terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo";
+      "ZSH_CACHE_DIR" = "${config.xdg.cacheHome}/zsh";
+      "ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE" = 20;
+      "ZSH_AUTOSUGGEST_MANUAL_REBIND" = 1;
+    };
     shellAliases = {
       diff = "delta";
       cat = "bat --plain";

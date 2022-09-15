@@ -6,7 +6,10 @@ in {
     zinit = {
       enable = true;
       plugins = [
-        { repo = "zpm-zsh/ls"; }
+        {
+          repo = "zpm-zsh/ls";
+          initExtra = "export ZSH_LS_DISABLE_GIT=true";
+        }
         { repo = "hlissner/zsh-autopair"; }
         { repo = "zdharma-continuum/fast-syntax-highlighting"; }
         { repo = "changyuheng/zsh-interactive-cd"; }

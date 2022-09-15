@@ -4,6 +4,7 @@ let dotDir = "${config.xdg.configHome}/zsh";
 in {
   programs = {
     zinit = {
+      enable = true;
       plugins = [
         { repo = "zpm-zsh/ls"; }
         { repo = "hlissner/zsh-autopair"; }

@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 with lib; {
-  imports = [ ./programs ];
+  imports = [ ./modules ./settings ];
 
   config = {
     # Home Manager needs a bit of information about you and the
@@ -9,6 +9,7 @@ with lib; {
     home.homeDirectory = "/Users/daehyeok";
 
     programs.git.userEmail = "daehyeok@gmail.com";
+    programs.zinit.enable = true;
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
     # when a new Home Manager release introduces backwards
@@ -21,5 +22,6 @@ with lib; {
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
+    xdg.enable = true;
   };
 }

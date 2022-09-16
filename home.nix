@@ -23,5 +23,14 @@ with lib; {
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
     xdg.enable = true;
+
+    modules.dev = {
+      dart = {
+        enable = true;
+      };
+      nix = {
+        enable = true;
+      };
+    };
   };
 }

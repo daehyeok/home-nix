@@ -1,12 +1,11 @@
 { config, options, lib, pkgs, ... }:
 
 with lib;
-let devCfg = config.modules.dev;
-    cfg = devCfg.rust;
+let
+  devCfg = config.modules.dev;
+  cfg = devCfg.rust;
 in {
-  options.modules.dev.rust = {
-    enable = mkOption { default = false; };
-  };
+  options.modules.dev.rust = { enable = mkOption { default = false; }; };
 
   config = mkMerge [
     (mkIf cfg.enable {

@@ -1,7 +1,7 @@
-{ config, pkgs, lib, ... }: with lib;
+{ config, pkgs, lib, ... }:
+with lib;
 let cfg = config.modules.dev;
-in
-{ imports = [ ./dart.nix ./nix.nix];
+in {
+  imports = [ ./dart.nix ./nix.nix ];
 
-  
 }

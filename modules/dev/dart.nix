@@ -2,16 +2,10 @@
 
 with lib;
 let
-   devCfg = config.modules.dev;
-   cfg = devCfg.dart;
+  devCfg = config.modules.dev;
+  cfg = devCfg.dart;
 in {
-  options.modules.dev.dart = {
-    enable = mkOption { default = false; };
-  };
+  options.modules.dev.dart = { enable = mkOption { default = false; }; };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
-      home.packages = [ pkgs.dart ];
-    })
-  ];
+  config = mkMerge [ (mkIf cfg.enable { home.packages = [ pkgs.dart ]; }) ];
 }

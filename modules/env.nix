@@ -2,8 +2,7 @@
 
 with lib;
 
-let
-  cfg = config.env;
+let cfg = config.env;
 in {
   options = {
     env = {
@@ -15,9 +14,7 @@ in {
         '';
         type = with types; attrsOf (nullOr (either str path));
       };
-      paths = mkOption {
-        default = [];
-      };
+      paths = mkOption { default = [ ]; };
     };
   };
 

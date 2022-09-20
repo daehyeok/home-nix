@@ -13,8 +13,17 @@ in {
         { repo = "hlissner/zsh-autopair"; }
         { repo = "zdharma-continuum/fast-syntax-highlighting"; }
         { repo = "changyuheng/zsh-interactive-cd"; }
-        { repo = "zsh-users/zsh-autosuggestions"; }
+        {
+          repo = "zsh-users/zsh-autosuggestions";
+          initExtraFirst = ''
+            ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+            ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+            ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+            ZSH_AUTOSUGGEST_USE_ASYNC=1'';
+        }
         { repo = "mfaerevaag/wd"; }
+        { repo = "Aloxaf/gencomp"; }
+        { repo = "Aloxaf/gencomp"; }
         {
           repo = "romkatv/powerlevel10k";
           initExtra = ''
@@ -47,9 +56,7 @@ in {
       sessionVariables = {
         "TERMINFO_DIRS" =
           "$HOME/.nix-profile/share/terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo";
-        "ZSH_CACHE_DIR" = "${config.xdg.cacheHome}/zsh";
-        "ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE" = 20;
-        "ZSH_AUTOSUGGEST_MANUAL_REBIND" = 1;
+        ZSH_CACHE_DIR = "${config.xdg.cacheHome}/zsh";
         "WORDCHARS" = "''";
       };
       shellAliases = {

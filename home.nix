@@ -25,12 +25,8 @@ with lib; {
     xdg.enable = true;
 
     modules.dev = {
-      dart = {
-        enable = true;
-      };
-      nix = {
-        enable = true;
-      };
+      dart = { enable = true; };
+      nix = { enable = true; };
     };
   };
 }

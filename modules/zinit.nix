@@ -18,9 +18,14 @@ let
         type = types.str;
         default = "";
       };
+      initExtraFirst = mkOption {
+        type = types.str;
+        default = "";
+      };
     };
   });
   zinitPluginStr = concatStrings (map (item: ''
+    ${item.initExtraFirst}
     zinit ice depth"1"
     zinit light ${item.repo}
     ${item.initExtra}

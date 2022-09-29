@@ -32,7 +32,8 @@ in {
           '';
         }
       ];
-      snippets = [{ url = "OMZL::completion.zsh"; }];
+      snippets =
+        [ { url = "OMZL::completion.zsh"; } { url = "${dotDir}/vterm.zsh"; } ];
     };
     zsh = {
       enable = true;

@@ -3,25 +3,38 @@ with lib; {
   imports = [ ./modules ./settings ];
 
   config = {
+
+    nixpkgs.overlays = [
+      (import (builtins.fetchTarball {
+        url =
+          "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      }))
+    ];
+
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
-    home.username = "daehyeok";
-    home.homeDirectory = "/Users/daehyeok";
+    home = {
+      username = "daehyeok";
+      homeDirectory = "/Users/daehyeok";
+      stateVersion = "22.05";
+      packages = with pkgs; [
+        kitty
+        (nerdfonts.override { fonts = [ "Hack" ]; })
+      ];
+    };
 
-    programs.git.userEmail = "daehyeok@gmail.com";
-    programs.zinit.enable = true;
-    # This value determines the Home Manager release that your
-    # configuration is compatible with. This helps avoid breakage
-    # when a new Home Manager release introduces backwards
-    # incompatible changes.
-    #
-    # You can update Home Manager without changing this value. See
-    # the Home Manager release notes for a list of state version
-    # changes in each release.
-    home.stateVersion = "22.05";
+    programs = {
+      # Let Home Manager install and manage itself.
+      home-manager.enable = true;
+      git.userEmail = "daehyeok@gmail.com";
+      zinit.enable = true;
+      emacs = {
+        enable = true;
+        package = pkgs.emacsNativeComp;
+        extraPackages = (epkgs: [ epkgs.vterm ]);
+      };
+    };
 
-    # Let Home Manager install and manage itself.
-    programs.home-manager.enable = true;
     xdg.enable = true;
 
     modules.dev = {

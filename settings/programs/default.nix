@@ -17,5 +17,6 @@
     tldr
     nixfmt
     gh
+    choose
   ];
 }

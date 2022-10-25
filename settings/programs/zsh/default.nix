@@ -47,7 +47,9 @@ in {
         ignoreDups = true;
         ignoreSpace = true;
         share = true;
-        size = 3000;
+        size = 1000;
+        save = 1000;
+        path = "${config.xdg.dataHome}/zsh/zsh_history";
       };
       initExtraFirst = ''
         P10K_INSTANT_PROMPT="${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh"

@@ -18,5 +18,6 @@
     nixfmt
     gh
     choose
+    wget
   ];
 }

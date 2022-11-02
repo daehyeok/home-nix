@@ -10,7 +10,6 @@ let
   zinitPackStr = concatStrings (map (item: ''
     zinit pack for ${item.name}
   '') cfg.packs);
-
   pluginModule = types.submodule ({ config, ... }: {
     options = {
       repo = mkOption { type = types.str; };
@@ -30,6 +29,10 @@ let
     zinit light ${item.repo}
     ${item.initExtra}
   '') cfg.plugins);
+  zinitCompletionStr = concatStrings (map (item: ''
+    zinit ice as'completion' depth"1"
+    zinit light ${item}
+  '') cfg.completions);
 
   snippetModule = types.submodule
     ({ config, ... }: { options = { url = mkOption { type = types.str; }; }; });
@@ -47,6 +50,10 @@ in {
       };
       plugins = mkOption {
         type = types.listOf pluginModule;
+        default = [ ];
+      };
+      completions = mkOption {
+        type = types.listOf types.str;
         default = [ ];
       };
       snippets = mkOption {
@@ -82,6 +89,7 @@ in {
         zdharma-continuum/zinit-annex-rust
         ${zinitPackStr}
         ${zinitPluginStr}
+        ${zinitCompletionStr}
         ${zinitSnippetStr}
       '';
     };

@@ -23,7 +23,6 @@ in {
         }
         { repo = "mfaerevaag/wd"; }
         { repo = "Aloxaf/gencomp"; }
-        { repo = "Aloxaf/gencomp"; }
         {
           repo = "romkatv/powerlevel10k";
           initExtra = ''

@@ -23,13 +23,6 @@ in {
         }
         { repo = "mfaerevaag/wd"; }
         { repo = "Aloxaf/gencomp"; }
-        {
-          repo = "romkatv/powerlevel10k";
-          initExtra = ''
-            [[ ! -f "${dotDir}/p10k_work.zsh" ]] || zinit snippet ${dotDir}/p10k_work.zsh
-            [[ ! -f "${dotDir}/p10k.zsh" ]] || zinit snippet  ${dotDir}/p10k.zsh
-          '';
-        }
       ];
       snippets = [
         { url = "OMZL::completion.zsh"; }
@@ -50,10 +43,6 @@ in {
         save = 1000;
         path = "${config.xdg.dataHome}/zsh/zsh_history";
       };
-      initExtraFirst = ''
-        P10K_INSTANT_PROMPT="${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
-      '';
       initExtra = ''
         [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
         path+=("$HOME/.config/emacs/bin")
@@ -74,10 +63,6 @@ in {
   };
 
   home.file = {
-    "p10k.zsh" = {
-      source = ./p10k.zsh;
-      target = "${dotDir}/p10k.zsh";
-    };
     "vterm.zsh" = {
       source = ./vterm.zsh;
       target = "${dotDir}/vterm.zsh";

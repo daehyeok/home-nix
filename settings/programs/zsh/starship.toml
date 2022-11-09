@@ -1,0 +1,33 @@
+format = """
+ $username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$cmd_duration\
+$character"""
+
+add_newline = false
+
+[directory]
+style = "bold fg:39"
+truncation_symbol = "//.../"
+repo_root_style="bold yellow"
+repo_root_format = "[\\($repo_root\\)]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+
+[character]
+success_symbol = "[❯](fg:76)"
+error_symbol = "[❯](fg:196)"
+vimcmd_symbol = "[V]"
+
+[git_branch]
+format = "[$symbol$branch(:$remote_branch)](fg:76)"
+symbol = ""
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"

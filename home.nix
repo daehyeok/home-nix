@@ -26,12 +26,14 @@ with lib; {
     programs = {
       # Let Home Manager install and manage itself.
       home-manager.enable = true;
+      starship.enable = true;
       git.userEmail = "daehyeok@gmail.com";
       direnv = {
         enable = true;
         nix-direnv.enable = true;
       };
       zinit.enable = true;
+      zsh.sessionVariables = { LC_ALL = "en_US.UTF-8"; };
       emacs = {
         enable = true;
         package = pkgs.emacsNativeComp;

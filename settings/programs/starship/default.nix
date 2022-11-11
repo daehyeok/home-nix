@@ -16,7 +16,6 @@ in {
         character = {
           success_symbol = "[❯](fg:76)";
           error_symbol = "[❯](fg:196)";
-          vimcmd_symbol = "[V]";
         };
 
         directory = {

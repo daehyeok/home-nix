@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 with lib; {
-  home.packages = with pkgs; [ ];
+  home.packages = with pkgs; [ d2coding ];
 
   home.file = {
     "kitty.conf" = {

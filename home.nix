@@ -33,7 +33,7 @@ with lib; {
         nix-direnv.enable = true;
       };
       zinit.enable = true;
-      zsh.sessionVariables = { LC_ALL = "en_US.UTF-8"; };
+      zsh.initExtra = "typeset -g LC_ALL=en_US.UTF-8";
       emacs = {
         enable = true;
         package = pkgs.emacsNativeComp;

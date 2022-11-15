@@ -4,7 +4,6 @@ let dotDir = "${config.xdg.configHome}/zsh";
 in {
   programs = {
     zinit = {
-      enable = true;
       plugins = [
         {
           repo = "zpm-zsh/ls";
@@ -32,7 +31,6 @@ in {
       ];
     };
     zsh = {
-      enable = true;
       enableCompletion = true;
       dotDir = ".config/zsh";
       history = {
@@ -45,12 +43,8 @@ in {
       };
       initExtra = ''
         [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-        path+=("$HOME/.config/emacs/bin")
-        path+=("$HOME/.bin")
       '';
       sessionVariables = {
-        "TERMINFO_DIRS" =
-          "$HOME/.nix-profile/share/terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo";
         ZSH_CACHE_DIR = "${config.xdg.cacheHome}/zsh";
         "WORDCHARS" = "''";
       };

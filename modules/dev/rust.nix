@@ -12,7 +12,7 @@ in {
       home.packages = [ pkgs.rust pkgs.cargo pkgs.rust-analyzer ];
       # env.RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
       # env.CARGO_HOME = "$XDG_DATA_HOME/cargo";
-      env.paths = [ "$CARGO_HOME/bin" ];
+      home.sessionPath = [ "$CARGO_HOME/bin" ];
     })
   ];
 }

@@ -4,14 +4,10 @@ in {
 
   programs = {
     starship = {
-      #use patchec zsh init script for transience untill PR is merged
-      #https://github.com/starship/starship/pull/4205
-      enableZshIntegration = false;
       settings = {
         add_newline = false;
 
-        format =
-          " $username$hostname$directory$git_branch$git_state$character";
+        format = " $directory$character";
 
         character = {
           success_symbol = "[❯](fg:76)";
@@ -21,7 +17,8 @@ in {
         directory = {
           style = "bold fg:39";
           truncation_symbol = "//.../";
-          repo_root_style = "bold yellow";
+          truncate_to_repo = false;
+          # repo_root_style = "bold yellow";
         };
 
         git_branch = {

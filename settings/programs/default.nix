@@ -8,7 +8,6 @@
     jq.enable = true;
     bat.enable = true;
     zoxide.enable = true;
-    gh.enable = true;
     neovim = {
       enable = true;
       viAlias = true;

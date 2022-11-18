@@ -4,7 +4,7 @@ with lib; {
     packages = with pkgs; [ d2coding ];
     sessionVariables = {
       TERMINFO_DIRS =
-        "$HOME/.nix-profile/share/terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo";
+        "$HOME/.nix-profile/share/terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo:/Applications/kitty.app/Contents/Resources/kitty/terminfo";
     };
     file = {
       "kitty.conf" = {

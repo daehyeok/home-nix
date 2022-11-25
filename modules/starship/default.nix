@@ -13,7 +13,18 @@ in {
 
   config = mkIf cfg.enable {
     programs = {
-      starship.enableFishIntegration = false;
+      starship = {
+        enableFishIntegration = false;
+        settings = {
+          custom = {
+            vterm = {
+              command = "vterm_prompt_end";
+              when = " test ! -z $INSIDE_EMACS ";
+            };
+          };
+        };
+      };
+
       fish.interactiveShellInit = mkIf config.programs.fish.enable ''
         if test "$TERM" != "dumb"  -a \( -z "$INSIDE_EMACS"  -o "$INSIDE_EMACS" = "vterm" \)
           eval (${starshipCmd} init fish)

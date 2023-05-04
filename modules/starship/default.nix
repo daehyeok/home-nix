@@ -16,6 +16,8 @@ in {
       starship = {
         enableFishIntegration = false;
         settings = {
+          scan_timeout = 10;
+          command_timeout = 80;
           custom = {
             vterm = {
               command = "vterm_prompt_end";

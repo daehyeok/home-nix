@@ -7,5 +7,5 @@ let
 in {
   options.modules.dev.kotlin = { enable = mkOption { default = false; }; };
 
-  config = mkMerge [ (mkIf cfg.enable { home.packages = [ pkgs.ktlint ]; }) ];
+  config = mkMerge [ (mkIf cfg.enable { home.packages = [  ]; }) ];
 }

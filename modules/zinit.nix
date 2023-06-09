@@ -92,6 +92,7 @@ in {
 
   config = mkIf cfg.enable {
     programs.zsh = {
+      enable = true;
       initExtraFirst = mkIf (!cfg.useCustomZshrc) "${zinitSetupStr}";
       completionInit = ''
         autoload -Uz _zinit

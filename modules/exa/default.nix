@@ -12,13 +12,8 @@ let
     "--color=auto"
   ];
 in {
-  config = mkIf (cfg.enable) {
-    programs.fish.functions = {
-      ls = "exa ${exa_params} {$argv}";
-      l = "exa --git-ignore ${exa_params} {$argv}";
-      la = "exa -a ${exa_params} {$argv}";
-      ll = "exa --header --long ${exa_params} {$argv}";
-      tree = "exa ${exa_params} --tree  {$argv}";
-    };
+  config = {
+    extraOptions = exa_params;
+    enableAliases = true;
   };
 }

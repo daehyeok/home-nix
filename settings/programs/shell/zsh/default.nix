@@ -4,6 +4,7 @@ let dotDir = "${config.xdg.configHome}/zsh";
 in {
   programs = {
     zinit = {
+      enable = true;
       plugins = [
         {
           repo = "zpm-zsh/ls";
@@ -20,13 +21,11 @@ in {
             ZSH_AUTOSUGGEST_MANUAL_REBIND=1
             ZSH_AUTOSUGGEST_USE_ASYNC=1'';
         }
-        { repo = "mfaerevaag/wd"; }
         { repo = "Aloxaf/gencomp"; }
       ];
       snippets = [
         { url = "OMZL::completion.zsh"; }
         { url = "OMZP::safe-paste"; }
-
         { url = "${dotDir}/vterm.zsh"; }
       ];
     };

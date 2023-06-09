@@ -4,7 +4,6 @@
   imports = [ ./git ./kitty ./tmux ./shell ./fzf.nix ];
 
   programs = {
-    exa.enable = true;
     jq.enable = true;
     bat.enable = true;
     zoxide.enable = true;
@@ -12,6 +11,18 @@
       enable = true;
       viAlias = true;
       vimAlias = true;
+    };
+    exa = {
+      enable = true;
+      enableAliases = true;
+      extraOptions = [
+        "--classify"
+        "--group-directories-first"
+        "--time-style=long-iso"
+        "--group"
+        "--color=auto"
+      ];
+      icons = true;
     };
   };
 

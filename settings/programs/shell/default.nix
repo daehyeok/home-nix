@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./zsh ./fish ./starship ];
+  imports = [ ./zsh ./starship ];
 }

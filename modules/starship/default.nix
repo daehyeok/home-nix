@@ -14,7 +14,7 @@ in {
   config = mkIf cfg.enable {
     programs = {
       starship = {
-        enableFishIntegration = false;
+        enableZshIntegration = false;
         settings = {
           scan_timeout = 10;
           command_timeout = 80;

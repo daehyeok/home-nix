@@ -35,6 +35,8 @@ in {
       history = {
         ignoreDups = true;
         ignoreSpace = true;
+        extended = true;
+        expireDuplicatesFirst = true;
         share = true;
         size = 1000;
         save = 1000;

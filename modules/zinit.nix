@@ -144,6 +144,9 @@ in {
 
           HISTSIZE="${toString zshcfg.history.size}"
           SAVEHIST="${toString zshcfg.history.save}"
+
+          setopt INC_APPEND_HISTORY
+
           ${optionalString (zshcfg.history.ignorePatterns != [ ])
           "HISTORY_IGNORE=${
             lib.escapeShellArg

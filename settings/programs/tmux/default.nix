@@ -3,7 +3,7 @@
 
   programs.tmux = {
     enable = true;
-    terminal = "xterm-kitty";
+    terminal = "alacritty";
     extraConfig = ''
       bind  c new-window  -c "#{pane_current_path}"
       set-option -g update-environment "DISPLAY WAYLAND_DISPLAY SWAYSOCK SSH_AUTH_SOCK"

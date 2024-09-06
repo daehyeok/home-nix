@@ -11,7 +11,7 @@ in {
   programs = {        
     zsh = {
       enableCompletion = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       dotDir = ".config/zsh";
 
       history = {
@@ -45,7 +45,7 @@ in {
       shellAliases = {
         diff = "delta";
         cat = "bat --plain";
-        tree = "exa --tree";
+        tree = "eza --tree";
       };
     };
   };

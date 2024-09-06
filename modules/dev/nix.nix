@@ -7,5 +7,5 @@ let
 in {
   options.modules.dev.nix = { enable = mkOption { default = false; }; };
 
-  config = mkMerge [ (mkIf cfg.enable { home.packages = [ pkgs.rnix-lsp ]; }) ];
+  config = mkMerge [ (mkIf cfg.enable { home.packages = [ pkgs.nil ]; }) ];
 }

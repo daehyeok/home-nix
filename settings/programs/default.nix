@@ -12,9 +12,8 @@
       viAlias = true;
       vimAlias = true;
     };
-    exa = {
+    eza = {
       enable = true;
-      enableAliases = true;
       extraOptions = [
         "--classify"
         "--group-directories-first"
@@ -36,7 +35,7 @@
       ruplacer
       shellcheck
       tldr
-      nixfmt
+      nixfmt-rfc-style
       gh
       choose
       wget

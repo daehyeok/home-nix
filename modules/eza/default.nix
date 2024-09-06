@@ -2,8 +2,8 @@
 with lib;
 
 let
-  cfg = config.programs.exa;
-  exa_params = concatStringsSep " " [
+  cfg = config.programs.eza;
+  eza_params = concatStringsSep " " [
     "--icons"
     "--classify"
     "--group-directories-first"
@@ -13,7 +13,7 @@ let
   ];
 in {
   config = {
-    extraOptions = exa_params;
-    enableAliases = true;
+    extraOptions = eza_params;
+    enableZshIntegration = true;
   };
 }

@@ -1,7 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports = [ ./git ./alacritty ./tmux ./shell ./fzf.nix ];
+  imports = [
+    ./git
+    ./alacritty
+    ./tmux
+    ./shell
+    ./fzf.nix
+  ];
 
   programs = {
     jq.enable = true;

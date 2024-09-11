@@ -1,14 +1,24 @@
-{ config, pkgs, lib, ... }:
-with lib; {
-  imports = [ ./modules ./settings ];
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib;
+{
+  imports = [
+    ./modules
+    ./settings
+  ];
 
   config = {
 
     nixpkgs.overlays = [
-      (import (builtins.fetchTarball {
-        url =
-          "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-      }))
+      (import (
+        builtins.fetchTarball {
+          url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+        }
+      ))
     ];
 
     # Home Manager needs a bit of information about you and the
@@ -44,8 +54,12 @@ with lib; {
     xdg.enable = true;
 
     modules.dev = {
-      dart = { enable = true; };
-      nix = { enable = true; };
+      dart = {
+        enable = true;
+      };
+      nix = {
+        enable = true;
+      };
     };
   };
 }

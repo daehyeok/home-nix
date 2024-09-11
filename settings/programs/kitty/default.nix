@@ -1,10 +1,15 @@
-{ config, pkgs, lib, ... }:
-with lib; {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib;
+{
   home = {
     packages = with pkgs; [ d2coding ];
     sessionVariables = {
-      TERMINFO_DIRS =
-        "$HOME/.nix-profile/share/terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo:/Applications/kitty.app/Contents/Resources/kitty/terminfo";
+      TERMINFO_DIRS = "$HOME/.nix-profile/share/terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo:/Applications/kitty.app/Contents/Resources/kitty/terminfo";
     };
     file = {
       "kitty.conf" = {

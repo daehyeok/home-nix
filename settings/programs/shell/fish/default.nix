@@ -1,7 +1,9 @@
 { config, pkgs, ... }:
 
-let dotDir = "${config.xdg.configHome}/zsh";
-in {
+let
+  dotDir = "${config.xdg.configHome}/zsh";
+in
+{
   # home.packages=with pkgs;[babelfish];
   programs.fish = {
     functions = {

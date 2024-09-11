@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 
 let
@@ -11,7 +16,8 @@ let
     "--group"
     "--color=auto"
   ];
-in {
+in
+{
   config = {
     extraOptions = eza_params;
     enableZshIntegration = true;

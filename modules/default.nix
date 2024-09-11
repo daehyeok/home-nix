@@ -1,4 +1,14 @@
-{ config, pkgs, lib, ... }:
-with lib; {
-  imports = [ ./starship ./dev  ];
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib;
+{
+  imports = [
+    ./starship
+    ./dev
+    ./programs
+  ];
 }

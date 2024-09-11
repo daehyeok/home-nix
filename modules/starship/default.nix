@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -6,9 +11,12 @@ let
   cfg = config.programs.starship;
   initZshPath = "${config.xdg.configHome}/starship/starship.zsh";
   starshipCmd = "${config.home.profileDirectory}/bin/starship";
-in {
+in
+{
   options = {
-    programs.starship = { transientPrompt = mkOption { default = true; }; };
+    programs.starship = {
+      transientPrompt = mkOption { default = true; };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -35,7 +43,7 @@ in {
       '';
 
       zsh.initExtra = mkIf config.programs.zsh.enable ''
-         if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
+        if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
           source ${initZshPath}
           enable_transience
         fi

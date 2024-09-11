@@ -1,8 +1,15 @@
-{ config, pkgs, osConfig, lib, ... }:
+{
+  config,
+  pkgs,
+  osConfig,
+  lib,
+  ...
+}:
 let
   vterm-build-deps = with pkgs; [ cmake ];
   home = builtins.getEnv "HOME";
-in {
+in
+{
   imports = [ <home-manager/nix-darwin> ];
 
   # List packages installed in system profile. To search by name, run:
@@ -26,11 +33,16 @@ in {
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 
-  users.users.daehyeok = { home = "/Users/daehyeok"; };
+  users.users.daehyeok = {
+    home = "/Users/daehyeok";
+  };
 
   homebrew = {
     enable = true;
-    brews = [ "libvterm" "libtool" ];
+    brews = [
+      "libvterm"
+      "libtool"
+    ];
   };
 
   home-manager.useGlobalPkgs = true;
@@ -42,7 +54,8 @@ in {
       username = "daehyeok";
       homeDirectory = "/Users/daehyeok";
       stateVersion = "23.05";
-      packages = with pkgs;
+      packages =
+        with pkgs;
         [
           fontconfig
           (nerdfonts.override { fonts = [ "Hack" ]; })
@@ -51,13 +64,17 @@ in {
           pkg-config
           openssl
           eask
-        ] ++ vterm-build-deps;
+        ]
+        ++ vterm-build-deps;
 
       sessionPath = [ "/Users/daehyeok/.local/share/cargo/bin" ];
-      sessionVariables = {        };
+      sessionVariables = { };
     };
 
-    imports = [ ./modules ./settings ];
+    imports = [
+      ./modules
+      ./settings
+    ];
 
     programs = {
       # # Let Home Manager install and manage itself.
@@ -80,13 +97,20 @@ in {
       emacs = {
         enable = true;
         package = pkgs.emacs;
-        extraPackages = (epkgs: [ epkgs.vterm epkgs.eask ]);
+        extraPackages = (
+          epkgs: [
+            epkgs.vterm
+            epkgs.eask
+          ]
+        );
       };
     };
 
     xdg.enable = true;
     modules.dev = {
-      nix = { enable = true; };
+      nix = {
+        enable = true;
+      };
     };
   };
 }

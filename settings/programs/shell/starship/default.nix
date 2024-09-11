@@ -1,6 +1,13 @@
-{ config, lib, pkgs, ... }:
-let initZshPath = "${config.xdg.configHome}/starship/starship.zsh";
-in {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  initZshPath = "${config.xdg.configHome}/starship/starship.zsh";
+in
+{
 
   programs = {
     starship = {

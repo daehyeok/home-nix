@@ -88,7 +88,6 @@ in
           export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels''${NIX_PATH:+:$NIX_PATH}
           eval "$(/opt/homebrew/bin/brew shellenv)"'';
       };
-      starship.enable = true;
       git.userEmail = "daehyeok@gmail.com";
       direnv = {
         enable = true;

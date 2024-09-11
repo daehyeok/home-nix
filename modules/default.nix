@@ -7,7 +7,6 @@
 with lib;
 {
   imports = [
-    ./starship
     ./dev
     ./programs
   ];

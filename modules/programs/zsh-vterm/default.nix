@@ -25,7 +25,7 @@ in
     };
 
     programs.zsh.initExtra = ''
-      source ${zshVetermSh}
+      source ${zshVtermFilePath}
     '';
 
   };

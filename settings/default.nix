@@ -59,7 +59,7 @@ with lib;
           "completion"
         ];
       };
-      fastSyntaxHighlighting.enable = true;
+      fastSyntaxHighlighting.enable = lib.mkDefault true;
       autoPair.enable = true;
       completionsPlugin.enable = true;
       vterm.enable = true;

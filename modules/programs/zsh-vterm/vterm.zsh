@@ -32,6 +32,6 @@ vterm_set_directory() {
 function (){
   if (( ${+INSIDE_EMACS} )); then
     autoload -U add-zsh-hook
-    add-zsh-hook chpwd (){ vterm_set_directory }
+    add-zsh-hook chpwd vterm_set_directory 
   fi
 }

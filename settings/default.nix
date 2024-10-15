@@ -7,6 +7,12 @@
 with lib;
 {
   programs = {
+    atuin = {
+        enable = true;
+        settings = {
+          theme.name = "marin";
+        };
+      };
     jq.enable = true;
     bat = {
       enable = true;

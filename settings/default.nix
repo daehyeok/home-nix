@@ -8,11 +8,23 @@ with lib;
 {
   programs = {
     atuin = {
-        enable = true;
-        settings = {
-          theme.name = "marin";
-        };
+      enable = true;
+      settings = {
+        theme.name = "marin";
       };
+    };
+    git = {
+      enable = true;
+      extraConfig = {
+        core.pager = "delta";
+        interactive.diffFilter = "diffFilter = delta --color-only";
+        delta = {
+          navigate = true;
+          side-by-side = true;
+        };
+        merge.conflictstyle = "zdiff3";
+      };
+    };
     jq.enable = true;
     bat = {
       enable = true;

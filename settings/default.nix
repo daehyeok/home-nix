@@ -48,7 +48,7 @@ with lib;
         "--group"
         "--color=auto"
       ];
-      icons = true;
+      icons = "auto";
     };
     fzf = {
       enable = true;

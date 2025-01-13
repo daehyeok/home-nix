@@ -119,6 +119,7 @@ with lib;
       choose
       wget
       bottom
+      sd
     ];
 
     shellAliases = {

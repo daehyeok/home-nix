@@ -120,6 +120,7 @@ with lib;
       wget
       bottom
       sd
+      emacs-lsp-booster
     ];
 
     shellAliases = {

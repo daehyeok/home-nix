@@ -28,13 +28,21 @@ with lib;
       packages =
         with pkgs;
         [
+          devenv
           fontconfig
-          (nerdfonts.override { fonts = [ "Hack" ]; })
+          nerd-fonts.hack
           emacs-all-the-icons-fonts
           gettext
           cargo-edit
           pkg-config
           openssl
+          (python313.withPackages(ps: with ps; [
+            toml
+            python-lsp-server
+            pyls-isort
+            flake8
+            yapf
+          ]))
         ]
         ++ vterm-build-deps;
     };

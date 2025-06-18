@@ -114,13 +114,13 @@ with lib;
       ruplacer
       shellcheck
       tldr
+      zellij
       nixfmt-rfc-style
       gh
       choose
       wget
       bottom
       sd
-      emacs-lsp-booster
     ];
 
     shellAliases = {

@@ -60,6 +60,8 @@ with lib;
         bind  c new-window  -c "#{pane_current_path}"
         set-option -g update-environment "DISPLAY WAYLAND_DISPLAY SWAYSOCK SSH_AUTH_SOCK"
         set-option -g default-shell $SHELL
+        set -s set-clipboard on
+        set -g allow-passthrough
       '';
       plugins = with pkgs; [
         tmuxPlugins.copycat

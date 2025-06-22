@@ -31,7 +31,6 @@ with lib;
         [
           devenv
           fontconfig
-          nerd-fonts.hack
           emacs-all-the-icons-fonts
           gettext
           cargo-edit

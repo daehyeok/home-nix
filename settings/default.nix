@@ -101,22 +101,23 @@ with lib;
       };
     };
     zellij.enable = true;
+    tealdeer.enable = true;
+    ripgrep.enable = true;
+    fd.enable = true;
+    htop.enable = true;
+    bottom.enable = true;
   };
 
   home = {
     packages = with pkgs; [
-      fd
-      htop
-      ripgrep
-      ruplacer
-      shellcheck
-      tldr
-      nixfmt-rfc-style
-      gh
       choose
-      wget
-      bottom
+      gh
+      nerd-fonts.hack
+      nixfmt-rfc-style
+      ruplacer
       sd
+      shellcheck
+      wget
     ];
 
     shellAliases = {

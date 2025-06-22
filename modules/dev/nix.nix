@@ -16,5 +16,12 @@ in
     enable = mkOption { default = false; };
   };
 
-  config = mkMerge [ (mkIf cfg.enable { home.packages = [ pkgs.nil ]; }) ];
+  config = mkMerge [
+    (mkIf cfg.enable {
+      home.packages = [
+        pkgs.nil
+        pkgs.nixfmt-rfc-style
+      ];
+    })
+  ];
 }

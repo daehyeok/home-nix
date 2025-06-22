@@ -52,6 +52,7 @@ with lib;
 
     catppuccin = {
       flavor = "mocha";
+      atuin.enable = true;
       bat.enable = true;
       starship.enable = true;
       delta.enable = true;

@@ -9,20 +9,17 @@ with lib;
   programs = {
     atuin = {
       enable = true;
-      settings = {
-        theme.name = "marin";
-      };
     };
     git = {
       enable = true;
-      extraConfig = {
-        core.pager = "delta";
-        interactive.diffFilter = "diffFilter = delta --color-only";
-        delta = {
-          enable = true;
+      delta = {
+        enable = true;
+        options = {
           navigate = true;
           side-by-side = true;
         };
+      };
+      extraConfig = {
         merge.conflictstyle = "zdiff3";
       };
     };
@@ -109,7 +106,6 @@ with lib;
   home = {
     packages = with pkgs; [
       fd
-      delta
       htop
       ripgrep
       ruplacer

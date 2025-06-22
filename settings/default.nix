@@ -19,6 +19,7 @@ with lib;
         core.pager = "delta";
         interactive.diffFilter = "diffFilter = delta --color-only";
         delta = {
+          enable = true;
           navigate = true;
           side-by-side = true;
         };
@@ -28,9 +29,6 @@ with lib;
     jq.enable = true;
     bat = {
       enable = true;
-      config = {
-        theme = "Dracula";
-      };
     };
     zoxide.enable = true;
     neovim = {
@@ -105,6 +103,7 @@ with lib;
         "WORDCHARS" = "''";
       };
     };
+    zellij.enable = true;
   };
 
   home = {
@@ -116,7 +115,6 @@ with lib;
       ruplacer
       shellcheck
       tldr
-      zellij
       nixfmt-rfc-style
       gh
       choose

@@ -16,6 +16,7 @@ with lib;
   imports = [
     ./modules
     ./settings
+    <catppuccin/modules/home-manager>
   ];
 
   config = {
@@ -36,15 +37,27 @@ with lib;
           cargo-edit
           pkg-config
           openssl
-          (python313.withPackages(ps: with ps; [
-            toml
-            python-lsp-server
-            pyls-isort
-            flake8
-            yapf
-          ]))
+          (python313.withPackages (
+            ps: with ps; [
+              toml
+              python-lsp-server
+              pyls-isort
+              flake8
+              yapf
+            ]
+          ))
         ]
         ++ vterm-build-deps;
+    };
+
+    catppuccin = {
+      flavor = "mocha";
+      bat.enable = true;
+      starship.enable = true;
+      delta.enable = true;
+      tmux.enable = true;
+      nvim.enable = true;
+      zellij.enable = true;
     };
 
     programs = {

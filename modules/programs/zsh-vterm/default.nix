@@ -24,8 +24,8 @@ in
       };
     };
 
-    programs.zsh.initExtra = ''
-      source ~/${zshVtermFilePath}
+    programs.zsh.initContent = ''
+      source ${zshVtermFilePath}
     '';
 
   };

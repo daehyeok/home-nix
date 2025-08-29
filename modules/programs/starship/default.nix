@@ -64,7 +64,7 @@ in
         };
       };
 
-      zsh.initExtra = mkIf config.programs.zsh.enable ''
+      zsh.initContent = mkIf config.programs.zsh.enable ''
         if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
           source ${initZshPath}
           enable_transience

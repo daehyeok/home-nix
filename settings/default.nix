@@ -79,7 +79,7 @@ with lib;
       completionsPlugin.enable = true;
       vterm.enable = true;
 
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
 
       history = {
         ignoreDups = true;
@@ -92,7 +92,7 @@ with lib;
         path = "${config.xdg.dataHome}/zsh/zsh_history";
       };
       #TODO   { url = "OMZP::safe-paste"; }
-      initExtra = ''
+      initContent = ''
         [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local                
       '';
       sessionVariables = {

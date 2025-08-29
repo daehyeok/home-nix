@@ -18,7 +18,7 @@ in
   config = mkIf cfg.enable {
     home.packages = [ pkgs.zsh-fast-syntax-highlighting ];
 
-    programs.zsh.initExtra = ''
+    programs.zsh.initContent = ''
       source ${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh
     '';
 

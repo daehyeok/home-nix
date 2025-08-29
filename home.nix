@@ -65,7 +65,7 @@ with lib;
       home-manager.enable = true;
       zsh = {
         enable = true;
-        initExtraFirst = ''
+        initContent = lib.mkBefore ''
           source /etc/static/bashrc  2> /dev/null
           source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
           source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"

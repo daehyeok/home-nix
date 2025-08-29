@@ -17,7 +17,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.zsh-completions ];
-    programs.zsh.initExtraFirst = ''
+    programs.zsh.initContent = lib.mkBefore ''
       fpath=(${pkgs.zsh-completions}/share/zsh/site-functions $fpath)
     '';
 

@@ -17,7 +17,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.zsh-autopair ];
-    programs.zsh.initExtra = ''
+    programs.zsh.initContent = ''
       source ${pkgs.zsh-autopair}/share/zsh/zsh-autopair/autopair.zsh
     '';
 

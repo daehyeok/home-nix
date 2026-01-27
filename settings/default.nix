@@ -10,16 +10,17 @@ with lib;
     atuin = {
       enable = true;
     };
-    git = {
+    delta = {
+      enableGitIntegration = true;
       enable = true;
-      delta = {
-        enable = true;
         options = {
           navigate = true;
           side-by-side = true;
         };
-      };
-      extraConfig = {
+    };
+    git = {
+      enable = true;
+      settings = {
         merge.conflictstyle = "zdiff3";
       };
     };

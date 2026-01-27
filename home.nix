@@ -25,11 +25,12 @@ with lib;
     home = {
       username = "daehyeok";
       homeDirectory = "/Users/daehyeok";
-      stateVersion = "23.05";
+      stateVersion = "26.05";
       packages =
         with pkgs;
         [
           devenv
+          gemini-cli
           fontconfig
           emacs-all-the-icons-fonts
           gettext
@@ -73,7 +74,7 @@ with lib;
           eval "$(/opt/homebrew/bin/brew shellenv)"
         '';
       };
-      git.userEmail = "daehyeok@gmail.com";
+      git.settings.user.email = "daehyeok@gmail.com";
       direnv = {
         enable = true;
         nix-direnv.enable = true;

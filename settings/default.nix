@@ -114,7 +114,7 @@ with lib;
       choose
       gh
       nerd-fonts.hack
-      nixfmt-rfc-style
+      nixfmt
       ruplacer
       sd
       shellcheck

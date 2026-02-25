@@ -33,6 +33,7 @@ with lib;
       enable = true;
       viAlias = true;
       vimAlias = true;
+      plugins = [ pkgs.vimPlugins.nvim-treesitter.withAllGrammars ];
     };
     eza = {
       enable = true;

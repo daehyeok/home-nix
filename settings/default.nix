@@ -64,6 +64,19 @@ with lib;
         tmuxPlugins.copycat
         tmuxPlugins.open
         tmuxPlugins.yank
+	  {
+        plugin = pkgs.tmuxPlugins.catppuccin;
+        extraConfig = ''
+          # Set the Catppuccin flavor
+          set -g @catppuccin_flavour 'mocha' # Options: latte, frappe, macchiato, mocha
+
+set -g status-right-length 100
+set -g status-left-length 100
+set -g status-left ""
+set -g @catppuccin_window_status_style "rounded"
+set -g status-right "#{E:@catppuccin_status_date_time}"
+        '';
+      }
       ];
     };
     starship.enable = true;

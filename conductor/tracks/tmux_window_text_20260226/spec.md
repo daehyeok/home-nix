@@ -1,0 +1,1 @@
+# Track Specification: Modify tmux window text with `window_text.sh`\n\n## Overview\nReorganize the tmux configuration into a dedicated module and update the Catppuccin window text settings to use a custom shell script (`window_text.sh`).

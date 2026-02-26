@@ -31,11 +31,13 @@ in
         {
           plugin = pkgs.tmuxPlugins.catppuccin;
           extraConfig = ''
-            set -g @catppuccin_flavour 'mocha' # Options: latte, frappe, macchiato, mocha
+            set -g @catppuccin_flavour 'mocha'
 
             set -g @catppuccin_window_status_style "rounded"
-            set -g @catppuccin_window_current_color '#{E:@thm_surface_2}'
-            set -g @catppuccin_status_module_text_bg '#{E:@thm_mantle}'
+
+            set -g @catppuccin_window_current_text "#(bash window_text.sh '#T' '#W')"
+            set -g @catppuccin_window_default_text "#(bash window_text.sh '#T' '#W')"
+            set -g @catppuccin_window_text "#(bash window_text.sh '#T' '#W')"
 
             set -g status-interval 1
             set -g status-right-length 100

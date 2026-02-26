@@ -67,14 +67,17 @@ with lib;
 	  {
         plugin = pkgs.tmuxPlugins.catppuccin;
         extraConfig = ''
-          # Set the Catppuccin flavor
           set -g @catppuccin_flavour 'mocha' # Options: latte, frappe, macchiato, mocha
 
-set -g status-right-length 100
-set -g status-left-length 100
-set -g status-left ""
-set -g @catppuccin_window_status_style "rounded"
-set -g status-right "#{E:@catppuccin_status_date_time}"
+          set -g @catppuccin_window_status_style "rounded"
+          set -g @catppuccin_window_current_color '#{E:@thm_surface_2}'
+          set -g @catppuccin_status_module_text_bg '#{E:@thm_mantle}'
+
+          set -g status-interval 1
+          set -g status-right-length 100
+          set -g status-left-length 100
+          set -g status-left ""
+          set -g status-right "#{E:@catppuccin_status_date_time}"
         '';
       }
       ];

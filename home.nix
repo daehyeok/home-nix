@@ -30,7 +30,6 @@ with lib;
         with pkgs;
         [
           devenv
-          gemini-cli
           fontconfig
           emacs-all-the-icons-fonts
           gettext
@@ -56,7 +55,6 @@ with lib;
       bat.enable = true;
       starship.enable = true;
       delta.enable = true;
-      tmux.enable = true;
       nvim.enable = true;
       zellij.enable = true;
     };

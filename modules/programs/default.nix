@@ -19,7 +19,7 @@ with lib;
     ./neovim.nix
     ./eza.nix
     ./fzf.nix
-    ./tmux.nix
+    ./tmux
     ./zellij.nix
     ./tealdeer.nix
     ./ripgrep.nix

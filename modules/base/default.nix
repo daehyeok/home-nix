@@ -22,6 +22,7 @@ in
         with pkgs;
         [
           devenv
+          pre-commit
           fontconfig
           emacs-all-the-icons-fonts
           gettext

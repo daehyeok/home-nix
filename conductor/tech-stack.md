@@ -1,1 +1,25 @@
-# Tech Stack: Home Manager & Cross-Platform Nix Configuration\n\n## Core Infrastructure\n- **Operating Systems:** macOS (darwin), Linux (NixOS or other distributions)\n- **Environment Management:** Nix (with Unstable channel)\n- **Configuration Frameworks:** \n  - **nix-darwin:** To manage system-level settings on macOS (darwin).\n  - **Home Manager:** To manage user-level dotfiles and application settings across both macOS and Linux.\n\n## Shell & CLI Tools\n- **Shell:** Zsh (with autopair, autosuggestions, completions, and fast-syntax-highlighting)\n- **Prompt:** Starship (for a fast, customizable prompt)\n- **Terminal Emulator:** vterm (for emacs integration)\n\n## Development Environments\n- **Python:** Python 3.13 with LSP, isort, flake8, and yapf.\n- **Rust:** Managed through Nix modules (cargo-edit, rust-analyzer).\n- **Dart & Kotlin:** Nix-managed development toolchains.\n- **Nix:** Self-managing configuration environment.\n\n## Built-in Utilities\n- **Home Manager modules:** Categorized by tool (modules/programs/, modules/dev/, etc.)\n- **Devenv:** For reproducible, project-specific developer environments.\n- **System Fonts:** fontconfig, emacs-all-the-icons-fonts.
+# Tech Stack: Home Manager & Cross-Platform Nix Configuration
+
+## Core Infrastructure
+- **Operating Systems:** macOS (darwin), Linux (NixOS or other distributions)
+- **Environment Management:** Nix (with Unstable channel)
+- **Configuration Frameworks:** 
+  - **nix-darwin:** To manage system-level settings on macOS (darwin).
+  - **Home Manager:** To manage user-level dotfiles and application settings across both macOS and Linux.
+
+## Shell & CLI Tools
+- **Shell:** Zsh (with autopair, autosuggestions, completions, and fast-syntax-highlighting)
+- **Prompt:** Starship (for a fast, customizable prompt)
+- **Terminal Emulator:** vterm (for emacs integration)
+
+## Development Environments
+- **Python:** Python 3.13 with LSP, isort, flake8, and yapf.
+- **Rust:** Managed through Nix modules (cargo-edit, rust-analyzer).
+- **Dart & Kotlin:** Nix-managed development toolchains.
+- **Nix:** Self-managing configuration environment.
+
+## Built-in Utilities
+- **Home Manager modules:** Categorized by tool (modules/programs/, modules/dev/, etc.)
+- **Devenv:** For reproducible, project-specific developer environments.
+- **Pre-commit:** Framework for managing and maintaining multi-language pre-commit hooks (Nix formatting, whitespace, etc.).
+- **System Fonts:** fontconfig, emacs-all-the-icons-fonts.

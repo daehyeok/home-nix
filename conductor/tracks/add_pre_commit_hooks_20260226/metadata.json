@@ -1,0 +1,1 @@
+{"track_id": "add_pre_commit_hooks_20260226", "type": "feature", "status": "new", "created_at": "2026-02-26T22:41:01Z", "updated_at": "2026-02-26T22:41:01Z", "description": "Add pre-commit hooks to automate Nix formatting and other code quality checks."}

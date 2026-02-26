@@ -7,6 +7,7 @@
 with lib;
 {
   imports = [
+    ./base
     ./dev
     ./programs
   ];

@@ -1,3 +1,4 @@
+# Main settings entry point for enabling modules and defining base environment
 {
   config,
   pkgs,
@@ -6,124 +7,35 @@
 }:
 with lib;
 {
+  modules = {
+    programs = {
+      zsh.enable = true;
+      atuin.enable = true;
+      delta.enable = true;
+      git.enable = true;
+      jq.enable = true;
+      bat.enable = true;
+      zoxide.enable = true;
+      neovim.enable = true;
+      eza.enable = true;
+      fzf.enable = true;
+      tmux.enable = true;
+      zellij.enable = true;
+      tealdeer.enable = true;
+      ripgrep.enable = true;
+      fd.enable = true;
+      htop.enable = true;
+      bottom.enable = true;
+      direnv.enable = true;
+    };
+    dev = {
+      nix.enable = true;
+    };
+  };
+
+  # Legacy direct enables (for modules that don't yet use the modules.programs pattern)
   programs = {
-    atuin = {
-      enable = true;
-    };
-    delta = {
-      enableGitIntegration = true;
-      enable = true;
-        options = {
-          navigate = true;
-          side-by-side = true;
-        };
-    };
-    git = {
-      enable = true;
-      settings = {
-        merge.conflictstyle = "zdiff3";
-      };
-    };
-    jq.enable = true;
-    bat = {
-      enable = true;
-    };
-    zoxide.enable = true;
-    neovim = {
-      enable = true;
-      viAlias = true;
-      vimAlias = true;
-      plugins = [ pkgs.vimPlugins.nvim-treesitter.withAllGrammars ];
-    };
-    eza = {
-      enable = true;
-      enableZshIntegration = true;
-      extraOptions = [
-        "--classify"
-        "--group-directories-first"
-        "--time-style=long-iso"
-        "--group"
-        "--color=auto"
-      ];
-      icons = "auto";
-    };
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    tmux = {
-      enable = true;
-      extraConfig = ''
-        bind  c new-window  -c "#{pane_current_path}"
-        set-option -g update-environment "DISPLAY WAYLAND_DISPLAY SWAYSOCK SSH_AUTH_SOCK"
-        set-option -g default-shell $SHELL
-        set -s set-clipboard on
-        set -g allow-passthrough
-      '';
-      plugins = with pkgs; [
-        tmuxPlugins.copycat
-        tmuxPlugins.open
-        tmuxPlugins.yank
-	  {
-        plugin = pkgs.tmuxPlugins.catppuccin;
-        extraConfig = ''
-          set -g @catppuccin_flavour 'mocha' # Options: latte, frappe, macchiato, mocha
-
-          set -g @catppuccin_window_status_style "rounded"
-          set -g @catppuccin_window_current_color '#{E:@thm_surface_2}'
-          set -g @catppuccin_status_module_text_bg '#{E:@thm_mantle}'
-
-          set -g status-interval 1
-          set -g status-right-length 100
-          set -g status-left-length 100
-          set -g status-left ""
-          set -g status-right "#{E:@catppuccin_status_date_time}"
-        '';
-      }
-      ];
-    };
     starship.enable = true;
-    zsh = {
-      enableCompletion = true;
-      autosuggestion = {
-        enable = true;
-        strategy = [
-          "history"
-          "completion"
-        ];
-      };
-      fastSyntaxHighlighting.enable = lib.mkDefault true;
-      autoPair.enable = true;
-      completionsPlugin.enable = true;
-      vterm.enable = true;
-
-      dotDir = "${config.xdg.configHome}/zsh";
-
-      history = {
-        ignoreDups = true;
-        ignoreSpace = true;
-        extended = true;
-        expireDuplicatesFirst = true;
-        share = true;
-        size = 1000;
-        save = 1000;
-        path = "${config.xdg.dataHome}/zsh/zsh_history";
-      };
-      #TODO   { url = "OMZP::safe-paste"; }
-      initContent = ''
-        [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local                
-      '';
-      sessionVariables = {
-        ZSH_CACHE_DIR = "${config.xdg.cacheHome}/zsh";
-        "WORDCHARS" = "''";
-      };
-    };
-    zellij.enable = true;
-    tealdeer.enable = true;
-    ripgrep.enable = true;
-    fd.enable = true;
-    htop.enable = true;
-    bottom.enable = true;
   };
 
   home = {
@@ -143,6 +55,7 @@ with lib;
       cat = "bat --plain";
       tree = "eza --tree";
     };
+
     sessionPath = [
       "$HOME/.config/emacs/bin"
       "$HOME/.bin"

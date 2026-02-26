@@ -1,3 +1,4 @@
+# Module for default configuration
 {
   config,
   pkgs,
@@ -8,10 +9,25 @@ with lib;
 {
   imports = [
     ./starship
-    ./zsh-fast-syntax-highlighting.nix
-    ./zsh-autosuggestion.nix
-    ./zsh-autopair.nix
-    ./zsh-completions.nix
-    ./zsh-vterm
+    ./zsh
+    ./atuin.nix
+    ./delta.nix
+    ./git.nix
+    ./jq.nix
+    ./bat.nix
+    ./zoxide.nix
+    ./neovim.nix
+    ./eza.nix
+    ./fzf.nix
+    ./tmux.nix
+    ./zellij.nix
+    ./tealdeer.nix
+    ./ripgrep.nix
+    ./fd.nix
+    ./htop.nix
+    ./bottom.nix
+    ./direnv.nix
   ];
+
+  config.programs.home-manager.enable = true;
 }

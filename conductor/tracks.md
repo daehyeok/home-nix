@@ -12,5 +12,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Compress CitC workspace path in tmux window titles**
+- [x] **Track: Compress CitC workspace path in tmux window titles**
 *Link: [./tracks/compress_citc_path_20260226/](./tracks/compress_citc_path_20260226/)*

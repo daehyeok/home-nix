@@ -36,7 +36,9 @@ in
         openssl
         (python313.withPackages (
           ps: with ps; [
-            toml
+          pytest
+          toml
+
             python-lsp-server
             pyls-isort
             flake8

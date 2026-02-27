@@ -3,9 +3,41 @@
 # Trim spaces just in case tmux pads pane_title
 pane_title=$(echo "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 window_name=$(echo "$2" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+pane_current_path=$(echo "$3" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
 
 host_name=$(hostname)
 host_short=$(hostname -s)
+
+compress_path() {
+    local path="$1"
+    # Replace $HOME with ~
+    if [[ "$path" == "$HOME"* ]]; then
+        path="~${path#$HOME}"
+    fi
+
+    # Shorten intermediate directories (e.g., ~/projects/my-app -> ~/p/my-app)
+    # This logic splits by / and shortens all but the last component
+    local IFS='/'
+    read -ra ADDR <<< "$path"
+    local len=${#ADDR[@]}
+    local compressed=""
+    for (( i=0; i<len; i++ )); do
+        if [[ $i -eq $((len-1)) ]]; then
+            compressed+="${ADDR[$i]}"
+        elif [[ $i -eq 0 && "${ADDR[$i]}" == "~" ]]; then
+            compressed+="${ADDR[$i]}"
+        elif [[ -z "${ADDR[$i]}" ]]; then
+            # Handle leading slash
+            compressed+=""
+        else
+            compressed+="${ADDR[$i]:0:1}"
+        fi
+        if [[ $i -lt $((len-1)) ]]; then
+            compressed+="/"
+        fi
+    done
+    echo "$compressed"
+}
 
 # Use window_name if pane_title is empty or the hostname.
 # Otherwise, we use the specific pane_title.
@@ -130,9 +162,14 @@ get_icon() {
 }
 
 icon=$(get_icon "$base_name")
+output_text="$base_name"
+
+if [[ "$base_name" == "zsh" && -n "$pane_current_path" ]]; then
+    output_text=$(compress_path "$pane_current_path")
+fi
 
 if [ -n "$icon" ]; then
-    echo " $icon $base_name"
+    echo " $icon $output_text"
 else
-    echo " $base_name"
+    echo " $output_text"
 fi

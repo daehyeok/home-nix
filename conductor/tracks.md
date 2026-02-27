@@ -1,2 +1,5 @@
-# Project Tracks\n\nThis file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.\n\n---
+# Project Tracks\n\nThis file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.\n\n---\n\n
+---
 
+- [ ] **Track: refactoring machine specified config.**
+*Link: [./refactoring_machine_specified_config_20260226/](./refactoring_machine_specified_config_20260226/)*

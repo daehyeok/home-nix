@@ -12,5 +12,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Update window_text.sh to display compressed path for zsh**
+- [x] **Track: Update window_text.sh to display compressed path for zsh**
 *Link: [./tracks/update_window_text_20260226/](./tracks/update_window_text_20260226/)*

@@ -1,6 +1,6 @@
 # Implementation Plan: Refactor Machine Specific Configuration
 
-## Phase 1: Relocate Configurations [checkpoint: 7825a83]
+## Phase 1: Relocate Configurations [checkpoint: e485a9b]
 
 - [x] Task: Backup existing configuration files.
     - [x] Sub-task: Copy `home.nix`, `modules/base/default.nix`, and `modules/zsh/default.nix` to a temporary backup location.

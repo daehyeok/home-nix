@@ -11,6 +11,7 @@
 - **Shell:** Zsh (with autopair, autosuggestions, completions, and fast-syntax-highlighting)
 - **Prompt:** Starship (for a fast, customizable prompt)
 - **Terminal Emulator:** vterm (for emacs integration)
+- **File Listing:** lsd (LSDeluxe) for improved icons and colors
 
 ## Development Environments
 - **Python:** Python 3.13 with LSP, isort, flake8, and yapf.

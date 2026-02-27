@@ -12,6 +12,29 @@ host_short=$(hostname -s)
 
 compress_path() {
     local path="$1"
+
+    # Handle Google Cloud (CitC) paths
+    # Format: /google/src/cloud/{user}/{workspace}/{dir_type}/...
+    if [[ "$path" == "/google/src/cloud/"* ]]; then
+        local workspace=$(echo "$path" | cut -d'/' -f6)
+        local dir_type=$(echo "$path" | cut -d'/' -f7)
+        local rest=$(echo "$path" | cut -d'/' -f8-)
+        local cur_dir=$(basename "$path")
+
+        if [[ -z "$dir_type" ]]; then
+             # Path is too short, fall back to standard compression
+             :
+        elif [[ "$path" == "/google/src/cloud/"*/*/* ]]; then
+             if [[ -z "$rest" ]]; then
+                 echo "($workspace:$dir_type)"
+                 return
+             else
+                 echo "($workspace:$dir_type) ... $cur_dir"
+                 return
+             fi
+        fi
+    fi
+
     # Replace $HOME with ~
     if [[ "$path" == "$HOME"* ]]; then
         path="~${path#$HOME}"

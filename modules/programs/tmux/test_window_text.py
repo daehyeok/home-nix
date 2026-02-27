@@ -41,3 +41,22 @@ def test_new_behavior_zsh_with_shortened_path():
     output = run_script("zsh", "zsh", path)
     assert "" in output
     assert "~/" in output
+
+def test_citc_behavior_standard():
+    path = "/google/src/cloud/daehyeok/my-ws/google3/devtools/devassist"
+    # Format: (workspace:dir_type) ... cur_dir
+    expected = "(my-ws:google3) ... devassist"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output
+
+def test_citc_behavior_short():
+    path = "/google/src/cloud/daehyeok/my-ws/google3"
+    expected = "(my-ws:google3)"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output
+
+def test_citc_behavior_deep():
+    path = "/google/src/cloud/daehyeok/my-ws/google3/java/com/google/devtools/devassist/gemini"
+    expected = "(my-ws:google3) ... gemini"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output

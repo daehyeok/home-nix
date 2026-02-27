@@ -25,4 +25,4 @@
     - [c] Sub-task: Test any other functionalities affected by the moved settings from `modules/base/default.nix`. (Skipped due to no build)
 - [x] Task: Cleanup backup files.
     - [x] Sub-task: Delete the temporary backup files created in Phase 1.
-- [~] Task: Conductor - User Manual Verification 'Verification and Cleanup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Verification and Cleanup' (Protocol in workflow.md)

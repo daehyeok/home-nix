@@ -1,4 +1,6 @@
 #!/bin/bash
+# Custom script to format tmux window titles with icons and compressed paths.
+# Usage: window_text.sh <pane_title> <window_name> <pane_current_path>
 
 # Trim spaces just in case tmux pads pane_title
 pane_title=$(echo "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')

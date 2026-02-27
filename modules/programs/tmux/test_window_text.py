@@ -1,3 +1,5 @@
+"""Tests for the window_text.sh tmux window title formatter."""
+
 import subprocess
 import os
 import pytest

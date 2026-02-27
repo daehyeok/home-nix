@@ -38,7 +38,6 @@ in
           ps: with ps; [
           pytest
           toml
-
             python-lsp-server
             pyls-isort
             flake8

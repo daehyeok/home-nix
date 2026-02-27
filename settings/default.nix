@@ -17,7 +17,7 @@ with lib;
       bat.enable = true;
       zoxide.enable = true;
       neovim.enable = true;
-      eza.enable = true;
+      lsd.enable = true;
       fzf.enable = true;
       tmux.enable = true;
       zellij.enable = true;
@@ -53,7 +53,6 @@ with lib;
     shellAliases = {
       diff = "delta";
       cat = "bat --plain";
-      tree = "eza --tree";
     };
 
     sessionPath = [

@@ -17,7 +17,7 @@ with lib;
     ./bat.nix
     ./zoxide.nix
     ./neovim.nix
-    ./eza.nix
+    ./lsd.nix
     ./fzf.nix
     ./tmux
     ./zellij.nix

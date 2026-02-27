@@ -1,0 +1,8 @@
+{
+  "track_id": "update_window_text_20260226",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-02-26T23:15:00Z",
+  "updated_at": "2026-02-26T23:15:00Z",
+  "description": "Update window_text.sh to display compressed path for zsh"
+}

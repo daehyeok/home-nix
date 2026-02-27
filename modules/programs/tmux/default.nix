@@ -35,9 +35,9 @@ in
 
             set -g @catppuccin_window_status_style "rounded"
 
-            set -g @catppuccin_window_current_text "#(bash ${./window_text.sh} '#T' '#W')"
-            set -g @catppuccin_window_default_text "#(bash ${./window_text.sh} '#T' '#W')"
-            set -g @catppuccin_window_text "#(bash ${./window_text.sh} '#T' '#W')"
+            set -g @catppuccin_window_current_text "#(bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
+            set -g @catppuccin_window_default_text "#(bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
+            set -g @catppuccin_window_text "#(bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
 
             set -g status-interval 1
             set -g status-right-length 100

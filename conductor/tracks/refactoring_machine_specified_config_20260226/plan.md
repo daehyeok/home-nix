@@ -9,20 +9,20 @@
     - [x] Sub-task: Cut these settings from `modules/base/default.nix`.
     - [x] Sub-task: Paste and integrate these settings into `home.nix` in a structured way.
     - [x] Sub-task: Ensure `modules/base/default.nix` is empty or remove the file if no longer needed.
-- [c] Task: Move `initContent` from `modules/zsh/default.nix` to `home.nix`.
-    - [c] Sub-task: Locate the `initContent` in `modules/zsh/default.nix`.
-    - [c] Sub-task: Cut the `initContent` string.
-    - [c] Sub-task: Paste the `initContent` into the appropriate section for Zsh configuration within `home.nix`.
-    - [c] Sub-task: Remove the `initContent` definition from `modules/zsh/default.nix`.
-- [~] Task: Conductor - User Manual Verification 'Relocate Configurations' (Protocol in workflow.md)
+- [x] Task: Move `initContent` from `modules/programs/zsh/default.nix` to `home.nix`.
+    - [x] Sub-task: Locate the `initContent` in `modules/programs/zsh/default.nix`.
+    - [x] Sub-task: Cut the `initContent` string.
+    - [x] Sub-task: Paste the `initContent` into the appropriate section for Zsh configuration within `home.nix`.
+    - [x] Sub-task: Remove the `initContent` definition from `modules/programs/zsh/default.nix`.
+- [x] Task: Conductor - User Manual Verification 'Relocate Configurations' (Protocol in workflow.md)
 
 ## Phase 2: Verification and Cleanup
 
-- [ ] Task: Verify the refactored configuration.
-    - [ ] Sub-task: Run `darwin-rebuild switch` to apply the changes.
-    - [ ] Sub-task: Check for any errors during the build process.
-    - [ ] Sub-task: Open a new terminal to ensure Zsh initializes correctly with the moved `initContent`.
-    - [ ] Sub-task: Test any other functionalities affected by the moved settings from `modules/base/default.nix`.
-- [ ] Task: Cleanup backup files.
-    - [ ] Sub-task: Delete the temporary backup files created in Phase 1.
-- [ ] Task: Conductor - User Manual Verification 'Verification and Cleanup' (Protocol in workflow.md)
+- [x] Task: Verify the refactored configuration.
+    - [c] Sub-task: Run `darwin-rebuild switch` to apply the changes. (Skipped by user)
+    - [c] Sub-task: Check for any errors during the build process. (Skipped by user)
+    - [c] Sub-task: Open a new terminal to ensure Zsh initializes correctly with the moved `initContent`. (Skipped due to no build)
+    - [c] Sub-task: Test any other functionalities affected by the moved settings from `modules/base/default.nix`. (Skipped due to no build)
+- [x] Task: Cleanup backup files.
+    - [x] Sub-task: Delete the temporary backup files created in Phase 1.
+- [~] Task: Conductor - User Manual Verification 'Verification and Cleanup' (Protocol in workflow.md)

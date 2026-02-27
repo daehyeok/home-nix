@@ -58,4 +58,16 @@ in
   };
 
   xdg.enable = true;
+
+  programs.zsh = {
+    initContent = lib.mkBefore ''
+      source /etc/static/bashrc  2> /dev/null
+      source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+
+      [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+    '';
+  };
 }

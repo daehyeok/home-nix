@@ -21,15 +21,37 @@ compress_path() {
         local rest=$(echo "$path" | cut -d'/' -f8-)
         local cur_dir=$(basename "$path")
 
-        if [[ -z "$dir_type" ]]; then
+        # Refined logic for special directory types
+        local effective_dir_type="$dir_type"
+        if [[ "$dir_type" == "google3" ]]; then
+            local next_dir=$(echo "$rest" | cut -d'/' -f1)
+            if [[ "$next_dir" == blaze-* || "$next_dir" == "java" || "$next_dir" == "javatests" ]]; then
+                effective_dir_type="$next_dir"
+                rest=$(echo "$rest" | cut -d'/' -f2-)
+            fi
+        fi
+
+        if [[ -z "$effective_dir_type" ]]; then
              # Path is too short, fall back to standard compression
              :
         elif [[ "$path" == "/google/src/cloud/"*/*/* ]]; then
              if [[ -z "$rest" ]]; then
-                 echo "($workspace:$dir_type)"
+                 echo "($workspace:$effective_dir_type)"
                  return
              else
-                 echo "($workspace:$dir_type) ... $cur_dir"
+                 # Compress the rest of the path with // separator
+                 local compressed_rest=""
+                 local IFS='/'
+                 read -ra ADDR <<< "$rest"
+                 local len=${#ADDR[@]}
+                 for (( i=0; i<len; i++ )); do
+                     if [[ $i -eq $((len-1)) ]]; then
+                         compressed_rest+="${ADDR[$i]}"
+                     elif [[ -n "${ADDR[$i]}" ]]; then
+                         compressed_rest+="${ADDR[$i]:0:1}/"
+                     fi
+                 done
+                 echo "($workspace:$effective_dir_type)//$compressed_rest"
                  return
              fi
         fi

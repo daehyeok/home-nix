@@ -60,3 +60,22 @@ def test_citc_behavior_deep():
     expected = "(my-ws:google3) ... gemini"
     output = run_script("zsh", "zsh", path)
     assert expected in output
+
+def test_citc_refinement_javatests():
+    path = "/google/src/cloud/daehyeok/firover/google3/javatests/com/google/firover"
+    # Format: (workspace:special_dir)//compressed_subpath
+    expected = "(firover:javatests)//c/g/firover"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output
+
+def test_citc_refinement_blaze_bin():
+    path = "/google/src/cloud/daehyeok/my-ws/google3/blaze-bin/path/to/app"
+    expected = "(my-ws:blaze-bin)//p/t/app"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output
+
+def test_citc_refinement_short_label():
+    path = "/google/src/cloud/daehyeok/ws/google3"
+    expected = "(ws:google3)"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output

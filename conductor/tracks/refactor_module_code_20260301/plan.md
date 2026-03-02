@@ -8,7 +8,7 @@
     - [x] Scan `modules/programs/` and `modules/dev/` for modules using the old `mkEnableOption` pattern.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and Pattern Definition' (Protocol in workflow.md) (9e8a92e)
 
-## Phase 2: Refactor Program Modules
+## Phase 2: Refactor Program Modules [checkpoint: b3e2943]
 - [x] Task: Refactor simple program modules.
     - [x] `modules/programs/atuin.nix`
     - [x] `modules/programs/bat.nix`
@@ -31,20 +31,20 @@
     - [x] `modules/programs/starship/default.nix`
 - [x] Task: Refactor system utility modules.
     - [x] `modules/programs/htop.nix`
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Refactor Program Modules' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Refactor Program Modules' (Protocol in workflow.md) (b3e2943)
 
-## Phase 3: Refactor Dev Modules
+## Phase 3: Refactor Dev Modules [checkpoint: b3e2943]
 - [x] Task: Refactor dev modules.
     - [x] `modules/dev/dart.nix`
     - [x] `modules/dev/nix.nix`
     - [x] `modules/dev/rust.nix`
     - [x] `modules/dev/kotlin.nix`
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Refactor Dev Modules' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Refactor Dev Modules' (Protocol in workflow.md) (b3e2943)
 
-## Phase 4: Cleanup and Verification
+## Phase 4: Cleanup and Verification [checkpoint: b3e2943]
 - [x] Task: Cleanup `settings/default.nix`.
     - [x] Remove redundant `modules.programs.<name>.enable = true` settings.
     - [x] Ensure any non-default configurations are preserved.
 - [x] Task: Verify configuration.
     - [x] Use `nix-instantiate --parse` or similar to check for syntax errors.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Cleanup and Verification' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Cleanup and Verification' (Protocol in workflow.md) (b3e2943)

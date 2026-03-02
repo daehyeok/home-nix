@@ -12,3 +12,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Refactoring change module's code for simplified program configuration**
 *Link: [./tracks/refactor_module_code_20260301/](./tracks/refactor_module_code_20260301/)*
 
+---
+
+- [ ] **Track: Refactor modules/programs/ to remove redundant code.**
+*Link: [./tracks/refactor_redundant_modules_20260301/](./tracks/refactor_redundant_modules_20260301/)*
+

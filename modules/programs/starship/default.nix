@@ -15,11 +15,6 @@ in
 {
   options = {
     modules.programs.starship = {
-      enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Enable starship configuration";
-      };
       transientPrompt = mkOption {
         type = types.bool;
         default = true;
@@ -28,43 +23,41 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf config.programs.starship.enable {
     programs = {
       starship = {
-        enable = mkDefault true;
-        enableZshIntegration = false;
+        enableZshIntegration = mkDefault false;
         settings = {
-          add_newline = false;
+          add_newline = mkDefault false;
 
-          format = " $directory$character";
+          format = mkDefault " $directory$character";
 
           character = {
-            success_symbol = "[❯](fg:76)";
-            error_symbol = "[❯](fg:196)";
+            success_symbol = mkDefault "[❯](fg:76)";
+            error_symbol = mkDefault "[❯](fg:196)";
           };
 
           directory = {
-            style = "bold fg:39";
-            truncation_symbol = "//.../";
-            truncate_to_repo = false;
-            # repo_root_style = "bold yellow";
+            style = mkDefault "bold fg:39";
+            truncation_symbol = mkDefault "//.../";
+            truncate_to_repo = mkDefault false;
           };
 
           git_branch = {
-            format = "[$symbol$branch(:$remote_branch)](fg:76)";
-            symbol = "";
+            format = mkDefault "[$symbol$branch(:$remote_branch)](fg:76)";
+            symbol = mkDefault "";
           };
 
           git_state = {
-            format = "([$state( $progress_current/$progress_total)]($style)) ";
-            style = "bright-black";
+            format = mkDefault "([$state( $progress_current/$progress_total)]($style)) ";
+            style = mkDefault "bright-black";
           };
 
-          time.disabled = false;
-          package.disabled = true;
+          time.disabled = mkDefault false;
+          package.disabled = mkDefault true;
 
-          scan_timeout = 10;
-          command_timeout = 80;
+          scan_timeout = mkDefault 10;
+          command_timeout = mkDefault 80;
           custom = {
             vterm = {
               command = "vterm_prompt_end";
@@ -77,7 +70,7 @@ in
       zsh.initContent = mkIf config.programs.zsh.enable ''
         if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
           source ${initZshPath}
-          enable_transience
+          ${optionalString cfg.transientPrompt "enable_transience"}
         fi
       '';
 

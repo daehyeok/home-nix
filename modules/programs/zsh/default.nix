@@ -6,9 +6,6 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.zsh;
-in
 {
   imports = [
     ./plugins/zsh-autopair.nix
@@ -18,46 +15,37 @@ in
     ./plugins/zsh-vterm
   ];
 
-  options.modules.programs.zsh = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable zsh configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
+  config = mkIf config.programs.zsh.enable {
     programs.zsh = {
-      enable = mkDefault true;
-      enableCompletion = true;
+      enableCompletion = mkDefault true;
       autosuggestion = {
-        enable = true;
-        strategy = [
+        enable = mkDefault true;
+        strategy = mkDefault [
           "history"
           "completion"
         ];
       };
-      fastSyntaxHighlighting.enable = lib.mkDefault true;
-      autoPair.enable = true;
-      completionsPlugin.enable = true;
-      vterm.enable = true;
+      fastSyntaxHighlighting.enable = mkDefault true;
+      autoPair.enable = mkDefault true;
+      completionsPlugin.enable = mkDefault true;
+      vterm.enable = mkDefault true;
 
-      dotDir = "${config.xdg.configHome}/zsh";
+      dotDir = mkDefault "${config.xdg.configHome}/zsh";
 
       history = {
-        ignoreDups = true;
-        ignoreSpace = true;
-        extended = true;
-        expireDuplicatesFirst = true;
-        share = true;
-        size = 1000;
-        save = 1000;
-        path = "${config.xdg.dataHome}/zsh/zsh_history";
+        ignoreDups = mkDefault true;
+        ignoreSpace = mkDefault true;
+        extended = mkDefault true;
+        expireDuplicatesFirst = mkDefault true;
+        share = mkDefault true;
+        size = mkDefault 1000;
+        save = mkDefault 1000;
+        path = mkDefault "${config.xdg.dataHome}/zsh/zsh_history";
       };
 
       sessionVariables = {
-        ZSH_CACHE_DIR = "${config.xdg.cacheHome}/zsh";
-        "WORDCHARS" = "''";
+        ZSH_CACHE_DIR = mkDefault "${config.xdg.cacheHome}/zsh";
+        "WORDCHARS" = mkDefault "''";
       };
     };
   };

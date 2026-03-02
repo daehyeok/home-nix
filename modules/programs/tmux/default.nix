@@ -6,30 +6,18 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.tmux;
-in
 {
-  options.modules.programs.tmux = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable tmux configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
+  config = mkIf config.programs.tmux.enable {
     programs.tmux = {
-      enable = mkDefault true;
-      mouse = true;
-      extraConfig = ''
+      mouse = mkDefault true;
+      extraConfig = mkDefault ''
         bind  c new-window  -c "#{pane_current_path}"
         set-option -g update-environment "DISPLAY WAYLAND_DISPLAY SWAYSOCK SSH_AUTH_SOCK"
         set-option -g default-shell $SHELL
         set -s set-clipboard on
         set -g allow-passthrough
       '';
-      plugins = with pkgs; [
+      plugins = with pkgs; mkDefault [
         tmuxPlugins.copycat
         tmuxPlugins.open
         tmuxPlugins.yank

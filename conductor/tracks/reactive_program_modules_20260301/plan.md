@@ -6,19 +6,19 @@
     - [x] Document the target structure: `config = mkIf config.programs.<name>.enable { ... }`.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and Pattern Definition' (Protocol in workflow.md) (e81ea68)
 
-## Phase 2: Refactor Simple Modules
+## Phase 2: Refactor Simple Modules [checkpoint: e73bb7e]
 - [x] Task: Refactor single-file program modules.
     - [x] Refactor `atuin.nix`, `bat.nix`, `bottom.nix`, `delta.nix`, `direnv.nix`, `fd.nix`, `fzf.nix`, `git.nix`, `htop.nix`, `jq.nix`, `lsd.nix`, `neovim.nix`, `ripgrep.nix`, `tealdeer.nix`, `zellij.nix`, `zoxide.nix`.
     - [x] Verify each one: If `programs.<name>.enable` is true, the customization is applied; if false, it is not.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Refactor Simple Modules' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Refactor Simple Modules' (Protocol in workflow.md) (e73bb7e)
 
 ## Phase 3: Refactor Complex Modules
-- [ ] Task: Refactor `tmux/default.nix`.
-    - [ ] Ensure plugin configurations and `window_text.sh` are conditional on `programs.tmux.enable`.
-- [ ] Task: Refactor `starship/default.nix`.
-    - [ ] Ensure `starship.zsh` and prompt customizations are conditional on `programs.starship.enable`.
-- [ ] Task: Refactor `zsh/default.nix`.
-    - [ ] Ensure plugin imports and session variables are conditional on `programs.zsh.enable`.
+- [x] Task: Refactor `tmux/default.nix`.
+    - [x] Ensure plugin configurations and `window_text.sh` are conditional on `programs.tmux.enable`.
+- [x] Task: Refactor `starship/default.nix`.
+    - [x] Ensure `starship.zsh` and prompt customizations are conditional on `programs.starship.enable`.
+- [x] Task: Refactor `zsh/default.nix`.
+    - [x] Ensure plugin imports and session variables are conditional on `programs.zsh.enable`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Refactor Complex Modules' (Protocol in workflow.md)
 
 ## Phase 4: Cleanup and Final Verification

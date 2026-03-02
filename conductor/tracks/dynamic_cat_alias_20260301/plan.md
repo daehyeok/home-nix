@@ -1,9 +1,9 @@
 # Implementation Plan: Dynamic 'cat' Alias for Gemini CLI Compatibility
 
-## Phase 1: Setup & Reproduce (Red Phase)
-- [ ] Task: Create a reproduction/test script `modules/programs/test_cat_wrapper.py` to verify the desired behavior of the new `cat` logic.
-- [ ] Task: Run the test and confirm it fails against the current system configuration.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup & Reproduce' (Protocol in workflow.md)
+## Phase 1: Setup & Reproduce (Red Phase) [checkpoint: b2fb361]
+- [x] Task: Create a reproduction/test script `modules/programs/test_cat_wrapper.py` to verify the desired behavior of the new `cat` logic. (470e8e8)
+- [x] Task: Run the test and confirm it fails against the current system configuration. (b2fb361)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Setup & Reproduce' (Protocol in workflow.md) (b2fb361)
 
 ## Phase 2: Implementation (Green Phase)
 - [ ] Task: Create a shell script `modules/programs/cat_wrapper.sh` that implements the conditional logic (use `bat` unless `GEMINI_CLI=1`).

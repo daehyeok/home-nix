@@ -6,21 +6,8 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.ripgrep;
-in
 {
-  options.modules.programs.ripgrep = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable ripgrep configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    programs.ripgrep = {
-      enable = mkDefault true;
-    };
+  config = mkIf config.programs.ripgrep.enable {
+    # Add opinionated ripgrep defaults here if needed
   };
 }

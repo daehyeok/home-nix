@@ -6,24 +6,12 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.git;
-in
 {
-  options.modules.programs.git = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable git configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
+  config = mkIf config.programs.git.enable {
     programs.git = {
-      enable = mkDefault true;
       settings = {
-        user.email = "daehyeok@gmail.com";
-        merge.conflictstyle = "zdiff3";
+        user.email = mkDefault "daehyeok@gmail.com";
+        merge.conflictstyle = mkDefault "zdiff3";
       };
     };
   };

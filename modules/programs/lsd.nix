@@ -6,29 +6,17 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.lsd;
-in
 {
-  options.modules.programs.lsd = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable lsd configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
+  config = mkIf config.programs.lsd.enable {
     programs.lsd = {
-      enable = mkDefault true;
-      enableBashIntegration = false;
-      enableZshIntegration = true;
-      enableFishIntegration = false;
+      enableBashIntegration = mkDefault false;
+      enableZshIntegration = mkDefault true;
+      enableFishIntegration = mkDefault false;
       settings = {
-        color = {
+        color = mkDefault {
           when = "always";
         };
-        icons = {
+        icons = mkDefault {
           when = "always";
           theme = "fancy";
         };
@@ -36,7 +24,7 @@ in
     };
 
     home.shellAliases = {
-      tree = "lsd --tree";
+      tree = mkDefault "lsd --tree";
     };
   };
 }

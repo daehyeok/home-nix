@@ -6,21 +6,8 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.htop;
-in
 {
-  options.modules.programs.htop = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable htop configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    programs.htop = {
-      enable = mkDefault true;
-    };
+  config = mkIf config.programs.htop.enable {
+    # Add opinionated htop defaults here if needed
   };
 }

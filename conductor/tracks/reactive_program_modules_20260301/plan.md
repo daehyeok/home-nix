@@ -1,15 +1,15 @@
 # Implementation Plan: Refactor Program Modules to Reactive Enablement
 
-## Phase 1: Research and Pattern Definition
+## Phase 1: Research and Pattern Definition [checkpoint: e81ea68]
 - [x] Task: Define the "Reactive" module pattern.
     - [x] Analyze `modules/programs/atuin.nix` and `modules/programs/tmux/default.nix` as representatives.
     - [x] Document the target structure: `config = mkIf config.programs.<name>.enable { ... }`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and Pattern Definition' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Research and Pattern Definition' (Protocol in workflow.md) (e81ea68)
 
 ## Phase 2: Refactor Simple Modules
-- [ ] Task: Refactor single-file program modules.
-    - [ ] Refactor `atuin.nix`, `bat.nix`, `bottom.nix`, `delta.nix`, `direnv.nix`, `fd.nix`, `fzf.nix`, `git.nix`, `htop.nix`, `jq.nix`, `lsd.nix`, `neovim.nix`, `ripgrep.nix`, `tealdeer.nix`, `zellij.nix`, `zoxide.nix`.
-    - [ ] Verify each one: If `programs.<name>.enable` is true, the customization is applied; if false, it is not.
+- [x] Task: Refactor single-file program modules.
+    - [x] Refactor `atuin.nix`, `bat.nix`, `bottom.nix`, `delta.nix`, `direnv.nix`, `fd.nix`, `fzf.nix`, `git.nix`, `htop.nix`, `jq.nix`, `lsd.nix`, `neovim.nix`, `ripgrep.nix`, `tealdeer.nix`, `zellij.nix`, `zoxide.nix`.
+    - [x] Verify each one: If `programs.<name>.enable` is true, the customization is applied; if false, it is not.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Refactor Simple Modules' (Protocol in workflow.md)
 
 ## Phase 3: Refactor Complex Modules

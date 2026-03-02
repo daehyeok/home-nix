@@ -6,21 +6,8 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.zoxide;
-in
 {
-  options.modules.programs.zoxide = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable zoxide configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    programs.zoxide = {
-      enable = mkDefault true;
-    };
+  config = mkIf config.programs.zoxide.enable {
+    # Add opinionated zoxide defaults here if needed
   };
 }

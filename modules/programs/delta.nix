@@ -6,27 +6,15 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.delta;
-in
 {
-  options.modules.programs.delta = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable delta configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
+  config = mkIf config.programs.delta.enable {
     programs.delta = {
-      enable = mkDefault true;
-      enableGitIntegration = true;
+      enableGitIntegration = mkDefault true;
       options = {
-        navigate = true;
-        side-by-side = true;
+        navigate = mkDefault true;
+        side-by-side = mkDefault true;
       };
     };
-    home.shellAliases.diff = "delta";
+    home.shellAliases.diff = mkDefault "delta";
   };
 }

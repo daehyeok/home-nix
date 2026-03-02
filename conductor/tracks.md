@@ -14,6 +14,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Refactoring program modules to reactive enablement**
+- [~] **Track: Refactoring program modules to reactive enablement**
 *Link: [./tracks/reactive_program_modules_20260301/](./tracks/reactive_program_modules_20260301/)*
 

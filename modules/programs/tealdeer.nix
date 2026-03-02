@@ -6,21 +6,8 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.tealdeer;
-in
 {
-  options.modules.programs.tealdeer = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable tealdeer configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    programs.tealdeer = {
-      enable = mkDefault true;
-    };
+  config = mkIf config.programs.tealdeer.enable {
+    # Add opinionated tealdeer defaults here if needed
   };
 }

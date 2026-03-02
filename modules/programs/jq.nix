@@ -6,21 +6,8 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.jq;
-in
 {
-  options.modules.programs.jq = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable jq configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    programs.jq = {
-      enable = mkDefault true;
-    };
+  config = mkIf config.programs.jq.enable {
+    # Add opinionated jq defaults here if needed
   };
 }

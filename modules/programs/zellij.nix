@@ -6,21 +6,8 @@
   ...
 }:
 with lib;
-let
-  cfg = config.modules.programs.zellij;
-in
 {
-  options.modules.programs.zellij = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable zellij configuration";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    programs.zellij = {
-      enable = mkDefault true;
-    };
+  config = mkIf config.programs.zellij.enable {
+    # Add opinionated zellij defaults here if needed
   };
 }

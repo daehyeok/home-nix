@@ -1,9 +1,9 @@
 # Implementation Plan: Refactor Program Modules to Reactive Enablement
 
 ## Phase 1: Research and Pattern Definition
-- [ ] Task: Define the "Reactive" module pattern.
-    - [ ] Analyze `modules/programs/atuin.nix` and `modules/programs/tmux/default.nix` as representatives.
-    - [ ] Document the target structure (e.g., replacing `modules.programs.<name>.enable` with `config.programs.<name>.enable`).
+- [x] Task: Define the "Reactive" module pattern.
+    - [x] Analyze `modules/programs/atuin.nix` and `modules/programs/tmux/default.nix` as representatives.
+    - [x] Document the target structure: `config = mkIf config.programs.<name>.enable { ... }`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and Pattern Definition' (Protocol in workflow.md)
 
 ## Phase 2: Refactor Simple Modules

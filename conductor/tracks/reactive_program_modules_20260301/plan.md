@@ -12,19 +12,18 @@
     - [x] Verify each one: If `programs.<name>.enable` is true, the customization is applied; if false, it is not.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Refactor Simple Modules' (Protocol in workflow.md) (e73bb7e)
 
-## Phase 3: Refactor Complex Modules
+## Phase 3: Refactor Complex Modules [checkpoint: a572b88]
 - [x] Task: Refactor `tmux/default.nix`.
     - [x] Ensure plugin configurations and `window_text.sh` are conditional on `programs.tmux.enable`.
 - [x] Task: Refactor `starship/default.nix`.
     - [x] Ensure `starship.zsh` and prompt customizations are conditional on `programs.starship.enable`.
 - [x] Task: Refactor `zsh/default.nix`.
     - [x] Ensure plugin imports and session variables are conditional on `programs.zsh.enable`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Refactor Complex Modules' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Refactor Complex Modules' (Protocol in workflow.md) (a572b88)
 
 ## Phase 4: Cleanup and Final Verification
-- [ ] Task: Clean up `settings/default.nix`.
-    - [ ] Remove redundant `modules.programs.<name>.enable = true` settings.
-- [ ] Task: Final Configuration Verification.
-    - [ ] Run `nix-instantiate` to ensure the configuration remains valid.
-    - [ ] (Optional) Perform a dry-run activation.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Cleanup and Final Verification' (Protocol in workflow.md)
+- [x] Task: Clean up `settings/default.nix`.
+    - [x] Remove redundant `modules.programs.<name>.enable = true` settings.
+- [x] Task: Final Configuration Verification.
+    - [x] Run `nix-instantiate` to ensure the configuration remains valid.
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Cleanup and Final Verification' (Protocol in workflow.md) (1dc9b0a)

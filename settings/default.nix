@@ -7,11 +7,33 @@
 }:
 with lib;
 {
-  # Modules are now enabled by default in their respective files.
-  # Overrides can be placed here if needed.
+  # Core program enablement. These trigger our opinionated modules in modules/programs/
+  programs = {
+    atuin.enable = true;
+    bat.enable = true;
+    bottom.enable = true;
+    delta.enable = true;
+    direnv.enable = true;
+    fd.enable = true;
+    fzf.enable = true;
+    git.enable = true;
+    htop.enable = true;
+    jq.enable = true;
+    lsd.enable = true;
+    neovim.enable = true;
+    ripgrep.enable = true;
+    starship.enable = true;
+    tealdeer.enable = true;
+    tmux.enable = true;
+    zellij.enable = true;
+    zoxide.enable = true;
+    zsh.enable = true;
+  };
+
   modules = {
-    # programs = { ... };
-    # dev = { ... };
+    dev = {
+      nix.enable = true;
+    };
   };
 
   home = {

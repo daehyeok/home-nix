@@ -10,22 +10,13 @@ with lib;
   imports = [
     ./starship
     ./zsh
-    ./atuin.nix
     ./delta.nix
     ./git.nix
-    ./jq.nix
     ./bat.nix
-    ./zoxide.nix
     ./neovim.nix
     ./lsd.nix
     ./fzf.nix
     ./tmux
-    ./zellij.nix
-    ./tealdeer.nix
-    ./ripgrep.nix
-    ./fd.nix
-    ./htop.nix
-    ./bottom.nix
     ./direnv.nix
   ];
 

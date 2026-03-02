@@ -1,10 +1,10 @@
 # Implementation Plan: Refactor Redundant Program Modules
 
 ## Phase 1: Cleanup and Deletion
-- [ ] Task: Delete redundant program modules in `modules/programs/`.
-    - [ ] Delete `atuin.nix`, `bottom.nix`, `fd.nix`, `htop.nix`, `jq.nix`, `ripgrep.nix`, `tealdeer.nix`, `zellij.nix`, `zoxide.nix`.
-- [ ] Task: Update `modules/programs/default.nix` to reflect changes.
-    - [ ] Remove imports for the deleted modules.
+- [x] Task: Delete redundant program modules in `modules/programs/`.
+    - [x] Delete `atuin.nix`, `bottom.nix`, `fd.nix`, `htop.nix`, `jq.nix`, `ripgrep.nix`, `tealdeer.nix`, `zellij.nix`, `zoxide.nix`.
+- [x] Task: Update `modules/programs/default.nix` to reflect changes.
+    - [x] Remove imports for the deleted modules.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Cleanup and Deletion' (Protocol in workflow.md)
 
 ## Phase 2: Verification

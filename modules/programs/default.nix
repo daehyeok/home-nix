@@ -8,16 +8,16 @@
 with lib;
 {
   imports = [
+    ./bat
     ./starship
+    ./tmux
     ./zsh
     ./delta.nix
-    ./git.nix
-    ./bat.nix
-    ./neovim.nix
-    ./lsd.nix
-    ./fzf.nix
-    ./tmux
     ./direnv.nix
+    ./fzf.nix
+    ./git.nix
+    ./lsd.nix
+    ./neovim.nix
   ];
 
   config.programs.home-manager.enable = true;

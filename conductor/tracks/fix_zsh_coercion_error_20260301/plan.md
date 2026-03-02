@@ -6,8 +6,11 @@
 - [x] Task: Run `home-manager switch --dry-run` to confirm the error persists. (Reproduced)
 
 ### Task: Apply Fix
-- [ ] Task: Edit `modules/programs/zsh/default.nix` to remove `mkDefault` from `sessionVariables`.
+- [x] Task: Edit `modules/programs/zsh/default.nix` to remove `mkDefault` from `sessionVariables`. (0b533a5)
+
+### Task: Resolve Starship Config Conflict
+- [x] Task: Edit `modules/programs/starship/default.nix` to use `mkForce` for `format` to resolve catppuccin conflict. (0b533a5)
 
 ### Task: Verification
-- [ ] Task: Run `home-manager switch --dry-run` to ensure the fix works.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Diagnosis and Fix' (Protocol in workflow.md)
+- [x] Task: Run `home-manager switch --dry-run` to ensure the fix works. (0b533a5)
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Diagnosis and Fix' (Protocol in workflow.md)

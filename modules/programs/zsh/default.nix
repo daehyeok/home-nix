@@ -44,8 +44,8 @@ with lib;
       };
 
       sessionVariables = {
-        ZSH_CACHE_DIR = mkDefault "${config.xdg.cacheHome}/zsh";
-        "WORDCHARS" = mkDefault "''";
+        ZSH_CACHE_DIR = "${config.xdg.cacheHome}/zsh";
+        "WORDCHARS" = "''";
       };
     };
   };

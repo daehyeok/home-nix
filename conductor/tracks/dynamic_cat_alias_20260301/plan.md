@@ -13,6 +13,6 @@
 - [x] Task: Run the reproduction test and confirm it passes. (22b8bae)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md) (22b8bae)
 
-## Phase 3: Finalize & Verification
-- [ ] Task: Perform manual verification by setting `GEMINI_CLI=1` and checking the output of `cat`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Finalize & Verification' (Protocol in workflow.md)
+## Phase 3: Finalize & Verification [checkpoint: 4b41c76]
+- [x] Task: Perform manual verification by setting `GEMINI_CLI=1` and checking the output of `cat`. (4b41c76)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Finalize & Verification' (Protocol in workflow.md) (4b41c76)

@@ -1,11 +1,11 @@
 # Implementation Plan: Refactor Nix Modules for Simplified Program Configuration
 
 ## Phase 1: Research and Pattern Definition
-- [ ] Task: Define the new simplified module pattern.
-    - [ ] Analyze `modules/programs/tmux/default.nix` as a reference.
-    - [ ] Document the target pattern: `options.modules...enable` defaults to `true`, and `config` uses `mkDefault` for `programs...enable`.
-- [ ] Task: List all modules to be refactored.
-    - [ ] Scan `modules/programs/` and `modules/dev/` for modules using the old `mkEnableOption` pattern.
+- [x] Task: Define the new simplified module pattern.
+    - [x] Analyze `modules/programs/tmux/default.nix` as a reference.
+    - [x] Document the target pattern: `options.modules...enable` defaults to `true`, and `config` uses `mkDefault` for `programs...enable`.
+- [x] Task: List all modules to be refactored.
+    - [x] Scan `modules/programs/` and `modules/dev/` for modules using the old `mkEnableOption` pattern.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and Pattern Definition' (Protocol in workflow.md)
 
 ## Phase 2: Refactor Program Modules

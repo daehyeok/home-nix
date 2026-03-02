@@ -19,11 +19,6 @@ in
       enable = true;
     };
 
-    home.file.".bin/cat_wrapper.sh" = {
-      source = ./cat_wrapper.sh;
-      executable = true;
-    };
-
-    home.shellAliases.cat = "$HOME/.bin/cat_wrapper.sh";
+    home.shellAliases.cat = "${pkgs.writeShellScript "cat-wrapper" (builtins.readFile ./cat_wrapper.sh)}";
   };
 }

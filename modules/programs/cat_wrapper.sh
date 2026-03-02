@@ -8,7 +8,7 @@ if [[ "$GEMINI_CLI" == "1" ]]; then
     # Use the real cat. We use 'command cat' to avoid calling ourselves if aliased.
     exec command cat "$@"
 else
-    # Use bat. 
+    # Use bat.
     # The current configuration uses 'bat --plain'.
     exec bat --plain "$@"
 fi

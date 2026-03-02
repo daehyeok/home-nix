@@ -18,6 +18,12 @@ in
     programs.bat = {
       enable = true;
     };
-    home.shellAliases.cat = "bat --plain";
+
+    home.file.".bin/cat_wrapper.sh" = {
+      source = ./cat_wrapper.sh;
+      executable = true;
+    };
+
+    home.shellAliases.cat = "$HOME/.bin/cat_wrapper.sh";
   };
 }

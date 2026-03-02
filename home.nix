@@ -36,8 +36,8 @@ in
         openssl
         (python313.withPackages (
           ps: with ps; [
-          pytest
-          toml
+            pytest
+            toml
             python-lsp-server
             pyls-isort
             flake8
@@ -61,6 +61,10 @@ in
   xdg.enable = true;
 
   programs.zsh = {
+    git.settings.user = {
+      email = "daehyeok@gmail.com";
+      name = "Daehyeok Mun";
+    };
     initContent = lib.mkBefore ''
       source /etc/static/bashrc  2> /dev/null
       source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'

@@ -13,6 +13,7 @@
 
 ## Modularity & Structure
 - **Tool-Centric Modules:** Prefer individual files for each tool (e.g., `dev/python.nix`, `dev/rust.nix`) rather than grouping multiple tools into a single Nix file.
+- **Reactive Module Pattern:** For program modules in `modules/programs/`, ensure all customizations (defaults, aliases, plugins) are wrapped in `mkIf config.programs.<name>.enable { ... }`. This ensures configurations are only applied when the program is explicitly enabled.
 - **Clear Separation:** Maintain a clear distinction between system-level settings (nix-darwin) and user-level configurations (home-manager) to avoid configuration bleed.
 
 ## Reproducibility & Stability

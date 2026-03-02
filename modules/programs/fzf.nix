@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.fzf = {
-    enable = mkEnableOption "fzf configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable fzf configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.fzf = {
-      enable = true;
+      enable = mkDefault true;
       enableZshIntegration = true;
     };
   };

@@ -8,13 +8,18 @@
 
 with lib;
 let
-  devCfg = config.modules.dev;
-  cfg = devCfg.dart;
+  cfg = config.modules.dev.dart;
 in
 {
   options.modules.dev.dart = {
-    enable = mkOption { default = false; };
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable dart development environment";
+    };
   };
 
-  config = mkMerge [ (mkIf cfg.enable { home.packages = [ pkgs.dart ]; }) ];
+  config = mkIf cfg.enable {
+    home.packages = [ pkgs.dart ];
+  };
 }

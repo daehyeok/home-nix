@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.jq = {
-    enable = mkEnableOption "jq configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable jq configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.jq = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

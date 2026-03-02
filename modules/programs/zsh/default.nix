@@ -19,12 +19,16 @@ in
   ];
 
   options.modules.programs.zsh = {
-    enable = mkEnableOption "zsh configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable zsh configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.zsh = {
-      enable = true;
+      enable = mkDefault true;
       enableCompletion = true;
       autosuggestion = {
         enable = true;

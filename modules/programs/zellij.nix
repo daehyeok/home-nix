@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.zellij = {
-    enable = mkEnableOption "zellij configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable zellij configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.zellij = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

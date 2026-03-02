@@ -7,35 +7,11 @@
 }:
 with lib;
 {
+  # Modules are now enabled by default in their respective files.
+  # Overrides can be placed here if needed.
   modules = {
-    programs = {
-      zsh.enable = true;
-      atuin.enable = true;
-      delta.enable = true;
-      git.enable = true;
-      jq.enable = true;
-      bat.enable = true;
-      zoxide.enable = true;
-      neovim.enable = true;
-      lsd.enable = true;
-      fzf.enable = true;
-      tmux.enable = true;
-      zellij.enable = true;
-      tealdeer.enable = true;
-      ripgrep.enable = true;
-      fd.enable = true;
-      htop.enable = true;
-      bottom.enable = true;
-      direnv.enable = true;
-    };
-    dev = {
-      nix.enable = true;
-    };
-  };
-
-  # Legacy direct enables (for modules that don't yet use the modules.programs pattern)
-  programs = {
-    starship.enable = true;
+    # programs = { ... };
+    # dev = { ... };
   };
 
   home = {
@@ -52,7 +28,6 @@ with lib;
 
     shellAliases = {
       diff = "delta";
-      cat = "bat --plain";
     };
 
     sessionPath = [

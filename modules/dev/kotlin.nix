@@ -8,13 +8,18 @@
 
 with lib;
 let
-  devCfg = config.modules.dev;
-  cfg = devCfg.kotlin;
+  cfg = config.modules.dev.kotlin;
 in
 {
   options.modules.dev.kotlin = {
-    enable = mkOption { default = false; };
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable kotlin development environment";
+    };
   };
 
-  config = mkMerge [ (mkIf cfg.enable { home.packages = [ ]; }) ];
+  config = mkIf cfg.enable {
+    home.packages = [ ];
+  };
 }

@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.bottom = {
-    enable = mkEnableOption "bottom configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable bottom configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.bottom = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

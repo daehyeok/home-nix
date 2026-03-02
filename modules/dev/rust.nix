@@ -8,24 +8,23 @@
 
 with lib;
 let
-  devCfg = config.modules.dev;
-  cfg = devCfg.rust;
+  cfg = config.modules.dev.rust;
 in
 {
   options.modules.dev.rust = {
-    enable = mkOption { default = false; };
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable rust development environment";
+    };
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
-      home.packages = [
-        pkgs.rust
-        pkgs.cargo
-        pkgs.rust-analyzer
-      ];
-      # env.RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
-      # env.CARGO_HOME = "$XDG_DATA_HOME/cargo";
-      home.sessionPath = [ "$CARGO_HOME/bin" ];
-    })
-  ];
+  config = mkIf cfg.enable {
+    home.packages = [
+      pkgs.rust
+      pkgs.cargo
+      pkgs.rust-analyzer
+    ];
+    home.sessionPath = [ "$CARGO_HOME/bin" ];
+  };
 }

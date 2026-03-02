@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.lsd = {
-    enable = mkEnableOption "lsd configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable lsd configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.lsd = {
-      enable = true;
+      enable = mkDefault true;
       enableBashIntegration = false;
       enableZshIntegration = true;
       enableFishIntegration = false;

@@ -11,13 +11,17 @@ let
 in
 {
   options.modules.programs.delta = {
-    enable = mkEnableOption "delta configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable delta configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.delta = {
+      enable = mkDefault true;
       enableGitIntegration = true;
-      enable = true;
       options = {
         navigate = true;
         side-by-side = true;

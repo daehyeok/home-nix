@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.htop = {
-    enable = mkEnableOption "htop configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable htop configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.htop = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

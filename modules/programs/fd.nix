@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.fd = {
-    enable = mkEnableOption "fd configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable fd configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.fd = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.atuin = {
-    enable = mkEnableOption "atuin configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable atuin configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.atuin = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

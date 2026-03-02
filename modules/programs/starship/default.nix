@@ -1,3 +1,4 @@
+# Starship configuration module
 {
   config,
   lib,
@@ -8,20 +9,29 @@
 with lib;
 
 let
-  cfg = config.programs.starship;
+  cfg = config.modules.programs.starship;
   initZshPath = "${config.xdg.configHome}/starship/starship.zsh";
-  starshipCmd = "${config.home.profileDirectory}/bin/starship";
 in
 {
   options = {
-    programs.starship = {
-      transientPrompt = mkOption { default = true; };
+    modules.programs.starship = {
+      enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Enable starship configuration";
+      };
+      transientPrompt = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Enable transient prompt";
+      };
     };
   };
 
   config = mkIf cfg.enable {
     programs = {
       starship = {
+        enable = mkDefault true;
         enableZshIntegration = false;
         settings = {
           add_newline = false;

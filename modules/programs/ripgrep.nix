@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.ripgrep = {
-    enable = mkEnableOption "ripgrep configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable ripgrep configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.ripgrep = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

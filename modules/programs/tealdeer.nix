@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.tealdeer = {
-    enable = mkEnableOption "tealdeer configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable tealdeer configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.tealdeer = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

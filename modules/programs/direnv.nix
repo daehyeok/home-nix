@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.direnv = {
-    enable = mkEnableOption "direnv configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable direnv configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.direnv = {
-      enable = true;
+      enable = mkDefault true;
       nix-direnv.enable = true;
     };
   };

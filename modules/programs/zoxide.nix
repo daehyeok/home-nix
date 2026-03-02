@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.zoxide = {
-    enable = mkEnableOption "zoxide configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable zoxide configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.zoxide = {
-      enable = true;
+      enable = mkDefault true;
     };
   };
 }

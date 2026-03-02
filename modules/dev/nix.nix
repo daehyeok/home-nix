@@ -8,20 +8,21 @@
 
 with lib;
 let
-  devCfg = config.modules.dev;
-  cfg = devCfg.nix;
+  cfg = config.modules.dev.nix;
 in
 {
   options.modules.dev.nix = {
-    enable = mkOption { default = false; };
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable nix development environment";
+    };
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
-      home.packages = [
-        pkgs.nil
-        pkgs.nixfmt
-      ];
-    })
-  ];
+  config = mkIf cfg.enable {
+    home.packages = [
+      pkgs.nil
+      pkgs.nixfmt
+    ];
+  };
 }

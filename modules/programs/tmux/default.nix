@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.tmux = {
-    enable = mkEnableOption "tmux configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable tmux configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.tmux = {
-      enable = true;
+      enable = mkDefault true;
       mouse = true;
       extraConfig = ''
         bind  c new-window  -c "#{pane_current_path}"

@@ -11,12 +11,16 @@ let
 in
 {
   options.modules.programs.neovim = {
-    enable = mkEnableOption "neovim configuration";
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable neovim configuration";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.neovim = {
-      enable = true;
+      enable = mkDefault true;
       viAlias = true;
       vimAlias = true;
       plugins = [ pkgs.vimPlugins.nvim-treesitter.withAllGrammars ];

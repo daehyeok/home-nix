@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# TODO: Implement emacs-editor logic
+exit 0

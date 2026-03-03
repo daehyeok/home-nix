@@ -30,7 +30,7 @@ in
         settings = {
           add_newline = mkDefault false;
 
-          format = mkForce " $directory$character";
+          format = mkDefault " $directory$character";
 
           character = {
             success_symbol = mkDefault "[❯](fg:76)";

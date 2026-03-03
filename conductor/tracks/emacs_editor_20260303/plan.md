@@ -3,7 +3,7 @@
 ## Phase 1: Create emacs-editor Script
 
 - [x] Task: Create the script file `modules/programs/emacs-editor` [793e0f0]
-- [ ] Task: Implement server check logic using `emacsclient -e t`.
+- [x] Task: Implement server check logic using `emacsclient -e t` [f9ec135]
 - [ ] Task: Implement inside Emacs check using `$INSIDE_EMACS`.
 - [ ] Task: Implement file opening logic for when server is running (inside/outside Emacs).
     - [ ] Sub-task: Use `emacsclient "$@" ` when inside Emacs.

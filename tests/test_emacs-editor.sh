@@ -16,29 +16,42 @@ fi
 
 echo "PASS: Script exists and is executable (initial check)"
 
-# --- Test emacsclient check ---
+# --- Test emacsclient and INSIDE_EMACS check ---
 
 TEST_PATH="$(pwd)/tests:$PATH"
 
-# Test case: Server running
-export EMACSCLIENT_TEST_RETURN=0
-PATH="$TEST_PATH" "$SCRIPT_PATH"
-if [[ $? -ne 0 ]]; then
-    echo "FAIL: Server check (running) - script exited with $?"
-    exit 1
-fi
-echo "PASS: Server check - Server running"
-
-# Test case: Server not running
+# Test case 1: Server NOT running
 export EMACSCLIENT_TEST_RETURN=1
+unset INSIDE_EMACS
 PATH="$TEST_PATH" "$SCRIPT_PATH"
-if [[ $? -ne 1 ]]; then # Expecting server not running code path
-    echo "FAIL: Server check (not running) - script exited with $?"
+if [[ $? -ne 1 ]]; then
+    echo "FAIL: Case 1 (Server NOT running) - script exited with $?"
     exit 1
 fi
-echo "PASS: Server check - Server not running"
+echo "PASS: Case 1 - Server NOT running"
 
+# Test case 2: Server running, INSIDE_EMACS set
+export EMACSCLIENT_TEST_RETURN=0
+export INSIDE_EMACS=t
+PATH="$TEST_PATH" "$SCRIPT_PATH"
+if [[ $? -ne 10 ]]; then
+    echo "FAIL: Case 2 (Server running, INSIDE_EMACS) - script exited with $?"
+    exit 1
+fi
+echo "PASS: Case 2 - Server running, INSIDE_EMACS"
+
+# Test case 3: Server running, INSIDE_EMACS NOT set
+export EMACSCLIENT_TEST_RETURN=0
+unset INSIDE_EMACS
+PATH="$TEST_PATH" "$SCRIPT_PATH"
+if [[ $? -ne 11 ]]; then
+    echo "FAIL: Case 3 (Server running, NOT INSIDE_EMACS) - script exited with $?"
+    exit 1
+fi
+echo "PASS: Case 3 - Server running, NOT INSIDE_EMACS"
+
+unset INSIDE_EMACS
 unset EMACSCLIENT_TEST_RETURN
 
-echo "All emacsclient tests passed"
+echo "All emacs-editor tests passed"
 exit 0

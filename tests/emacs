@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "$@" > tests/emacs_args.log
+exit 0

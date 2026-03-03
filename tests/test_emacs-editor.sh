@@ -23,9 +23,15 @@ TEST_PATH="$(pwd)/tests:$PATH"
 # Test case 1: Server NOT running
 export EMACSCLIENT_TEST_RETURN=1
 unset INSIDE_EMACS
-PATH="$TEST_PATH" "$SCRIPT_PATH"
-if [[ $? -ne 1 ]]; then
+rm -f tests/emacs_args.log
+PATH="$TEST_PATH" "$SCRIPT_PATH" no-server.txt
+if [[ $? -ne 0 ]]; then
     echo "FAIL: Case 1 (Server NOT running) - script exited with $?"
+    exit 1
+fi
+ARGS=$(cat tests/emacs_args.log)
+if [[ "$ARGS" != "-q no-server.txt" ]]; then
+    echo "FAIL: Case 1 - Expected args '-q no-server.txt', got '$ARGS'"
     exit 1
 fi
 echo "PASS: Case 1 - Server NOT running"

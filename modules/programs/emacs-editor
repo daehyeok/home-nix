@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
-# TODO: Implement emacs-editor logic
-exit 0
+if emacsclient -e t > /dev/null 2>&1; then
+  # Server is running
+  exit 0
+else
+  # Server is not running
+  exit 1
+fi

@@ -15,4 +15,30 @@ if [ ! -x "$SCRIPT_PATH" ]; then
 fi
 
 echo "PASS: Script exists and is executable (initial check)"
+
+# --- Test emacsclient check ---
+
+TEST_PATH="$(pwd)/tests:$PATH"
+
+# Test case: Server running
+export EMACSCLIENT_TEST_RETURN=0
+PATH="$TEST_PATH" "$SCRIPT_PATH"
+if [[ $? -ne 0 ]]; then
+    echo "FAIL: Server check (running) - script exited with $?"
+    exit 1
+fi
+echo "PASS: Server check - Server running"
+
+# Test case: Server not running
+export EMACSCLIENT_TEST_RETURN=1
+PATH="$TEST_PATH" "$SCRIPT_PATH"
+if [[ $? -ne 1 ]]; then # Expecting server not running code path
+    echo "FAIL: Server check (not running) - script exited with $?"
+    exit 1
+fi
+echo "PASS: Server check - Server not running"
+
+unset EMACSCLIENT_TEST_RETURN
+
+echo "All emacsclient tests passed"
 exit 0

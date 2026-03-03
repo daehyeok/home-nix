@@ -5,9 +5,9 @@
 - [x] Task: Create the script file `modules/programs/emacs-editor` [793e0f0]
 - [x] Task: Implement server check logic using `emacsclient -e t` [f9ec135]
 - [x] Task: Implement inside Emacs check using `$INSIDE_EMACS` [2728c0e]
-- [ ] Task: Implement file opening logic for when server is running (inside/outside Emacs).
-    - [ ] Sub-task: Use `emacsclient "$@" ` when inside Emacs.
-    - [ ] Sub-task: Use `emacsclient -nw "$@" ` when outside Emacs.
+- [x] Task: Implement file opening logic for when server is running (inside/outside Emacs) [2f42c89]
+    - [x] Sub-task: Use `emacsclient "$@" ` when inside Emacs.
+    - [x] Sub-task: Use `emacsclient -nw "$@" ` when outside Emacs.
 - [ ] Task: Implement file opening logic for when server is not running (`emacs -q "$@" `).
 - [ ] Task: Make the script executable (`chmod +x`).
 - [ ] Task: Write unit tests for the `emacs-editor` script.

@@ -4,10 +4,10 @@ if emacsclient -e t > /dev/null 2>&1; then
   # Server is running
   if [[ -n "$INSIDE_EMACS" ]]; then
     # Inside Emacs
-    exit 10 # Test code
+    emacsclient "$@"
   else
     # Not inside Emacs
-    exit 11 # Test code
+    emacsclient -nw "$@"
   fi
 else
   # Server is not running

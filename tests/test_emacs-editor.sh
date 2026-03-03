@@ -33,9 +33,15 @@ echo "PASS: Case 1 - Server NOT running"
 # Test case 2: Server running, INSIDE_EMACS set
 export EMACSCLIENT_TEST_RETURN=0
 export INSIDE_EMACS=t
-PATH="$TEST_PATH" "$SCRIPT_PATH"
-if [[ $? -ne 10 ]]; then
+rm -f tests/emacsclient_args.log
+PATH="$TEST_PATH" "$SCRIPT_PATH" test.txt
+if [[ $? -ne 0 ]]; then
     echo "FAIL: Case 2 (Server running, INSIDE_EMACS) - script exited with $?"
+    exit 1
+fi
+ARGS=$(cat tests/emacsclient_args.log)
+if [[ "$ARGS" != "test.txt" ]]; then
+    echo "FAIL: Case 2 - Expected args 'test.txt', got '$ARGS'"
     exit 1
 fi
 echo "PASS: Case 2 - Server running, INSIDE_EMACS"
@@ -43,9 +49,15 @@ echo "PASS: Case 2 - Server running, INSIDE_EMACS"
 # Test case 3: Server running, INSIDE_EMACS NOT set
 export EMACSCLIENT_TEST_RETURN=0
 unset INSIDE_EMACS
-PATH="$TEST_PATH" "$SCRIPT_PATH"
-if [[ $? -ne 11 ]]; then
+rm -f tests/emacsclient_args.log
+PATH="$TEST_PATH" "$SCRIPT_PATH" other.file
+if [[ $? -ne 0 ]]; then
     echo "FAIL: Case 3 (Server running, NOT INSIDE_EMACS) - script exited with $?"
+    exit 1
+fi
+ARGS=$(cat tests/emacsclient_args.log)
+if [[ "$ARGS" != "-nw other.file" ]]; then
+    echo "FAIL: Case 3 - Expected args '-nw other.file', got '$ARGS'"
     exit 1
 fi
 echo "PASS: Case 3 - Server running, NOT INSIDE_EMACS"

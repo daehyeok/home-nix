@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-echo "Mock emacsclient called with: $@" >&2
+echo "$@" > tests/emacsclient_args.log
 if [[ "$1" == "-e" && "$2" == "t" ]]; then
   exit ${EMACSCLIENT_TEST_RETURN}
 fi
-exit 1 # Default fail
+exit 0 # Default success for other calls

@@ -23,11 +23,11 @@
 - [x] Task: Define Nix options (`enable`, `zsh_integration`) [afe81bc]
 - [x] Task: Implement logic to add `emacs-editor` script to PATH when enabled. [0989449]
 - [x] Task: Implement logic to set `EDITOR` environment variable in Zsh when `zsh_integration` is true. [208ca60]
-- [ ] Task: Write tests for the Nix module.
-    - [ ] Sub-task: Test case: Module disabled.
-    - [ ] Sub-task: Test case: Module enabled, no zsh integration.
-    - [ ] Sub-task: Test case: Module enabled with zsh integration.
-- [ ] Task: Run tests and ensure they pass.
+- [x] Task: Write tests for the Nix module. [208ca60]
+    - [x] Sub-task: Test case: Module disabled.
+    - [x] Sub-task: Test case: Module enabled, no zsh integration.
+    - [x] Sub-task: Test case: Module enabled with zsh integration.
+- [x] Task: Run tests and ensure they pass. [208ca60]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Create Nix Module' (Protocol in workflow.md)
 
 ## Phase 3: Integration and Documentation

@@ -15,7 +15,7 @@
     - [x] Sub-task: Test case: Server running, outside Emacs.
     - [x] Sub-task: Test case: Server not running.
 - [x] Task: Run tests and ensure they pass. [c4cf4b4]
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Create emacs-editor Script' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Create emacs-editor Script' (Protocol in workflow.md) [bec493c]
 
 ## Phase 2: Create Nix Module [checkpoint: 1e74c15]
 
@@ -28,7 +28,7 @@
     - [x] Sub-task: Test case: Module enabled, no zsh integration.
     - [x] Sub-task: Test case: Module enabled with zsh integration.
 - [x] Task: Run tests and ensure they pass. [208ca60]
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Create Nix Module' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Create Nix Module' (Protocol in workflow.md) [1e74c15]
 
 ## Phase 3: Integration and Documentation [checkpoint: 4f94bd8]
 
@@ -36,4 +36,4 @@
 - [x] Task: Test the integration by rebuilding the Home Manager environment. [329b06f]
 - [x] Task: Verify `EDITOR` variable is set correctly in a new Zsh session. [0c8955c] (User to confirm in new terminal)
 - [x] Task: Add documentation for the new module and script if necessary. [05ff7c3]
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration and Documentation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration and Documentation' (Protocol in workflow.md) [8efc0a3]

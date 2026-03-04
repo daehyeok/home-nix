@@ -8,7 +8,7 @@
 - [x] Task: Implement file opening logic for when server is running (inside/outside Emacs) [2f42c89]
     - [x] Sub-task: Use `emacsclient "$@" ` when inside Emacs.
     - [x] Sub-task: Use `emacsclient -nw "$@" ` when outside Emacs.
-- [ ] Task: Implement file opening logic for when server is not running (`emacs -q "$@" `).
+- [x] Task: Implement file opening logic for when server is not running (`emacs -q "$@" `) [c4cf4b4]
 - [ ] Task: Make the script executable (`chmod +x`).
 - [ ] Task: Write unit tests for the `emacs-editor` script.
     - [ ] Sub-task: Test case: Server running, inside Emacs.

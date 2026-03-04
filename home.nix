@@ -17,6 +17,7 @@ in
     ./modules
     ./settings
     <catppuccin/modules/home-manager>
+    ./modules/programs/zsh/emacs-editor.nix
   ];
 
   home = {
@@ -59,6 +60,8 @@ in
   };
 
   xdg.enable = true;
+
+  programs.zsh.emacs-editor.enable = true;
 
   programs.zsh = {
     git.settings.user = {

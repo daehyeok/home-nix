@@ -30,7 +30,7 @@
 - [x] Task: Run tests and ensure they pass. [208ca60]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Create Nix Module' (Protocol in workflow.md)
 
-## Phase 3: Integration and Documentation
+## Phase 3: Integration and Documentation [checkpoint: 4f94bd8]
 
 - [x] Task: Update Home Manager configuration to use the new module (e.g., in `home.nix`). [c79d4e5]
 - [x] Task: Test the integration by rebuilding the Home Manager environment. [329b06f]

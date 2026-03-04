@@ -17,7 +17,7 @@
 - [x] Task: Run tests and ensure they pass. [c4cf4b4]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Create emacs-editor Script' (Protocol in workflow.md)
 
-## Phase 2: Create Nix Module
+## Phase 2: Create Nix Module [checkpoint: 1e74c15]
 
 - [x] Task: Create the Nix module file `modules/programs/zsh/emacs-editor.nix` [dee6aa9]
 - [x] Task: Define Nix options (`enable`, `zsh_integration`) [afe81bc]

@@ -33,5 +33,9 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = [ emacs-editor-script ];
+
+    home.sessionVariables = lib.mkIf cfg.zsh_integration {
+      EDITOR = "emacs-editor";
+    };
   };
 }

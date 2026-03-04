@@ -1,0 +1,8 @@
+{
+  "track_id": "emacs_editor_20260303",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-03T10:00:00Z",
+  "updated_at": "2026-03-03T10:00:00Z",
+  "description": "create emacs-editor shell script for EDITOR envrion ment and nix module to modules/programs/zsh"
+}

@@ -32,7 +32,7 @@
 
 ## Phase 3: Integration and Documentation
 
-- [ ] Task: Update Home Manager configuration to use the new module (e.g., in `home.nix`).
+- [x] Task: Update Home Manager configuration to use the new module (e.g., in `home.nix`). [c79d4e5]
 - [ ] Task: Test the integration by rebuilding the Home Manager environment.
 - [ ] Task: Verify `EDITOR` variable is set correctly in a new Zsh session.
 - [ ] Task: Add documentation for the new module and script if necessary.

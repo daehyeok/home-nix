@@ -7,16 +7,24 @@
 }:
 with lib;
 {
+  options.programs.tmux.extraConfigSet = mkOption {
+    type = types.listOf types.lines;
+    default = [];
+    description = "A set of extra configuration lines to add to tmux.conf.";
+  };
+
   config = mkIf config.programs.tmux.enable {
     programs.tmux = {
       mouse = mkDefault true;
-      extraConfig = mkDefault ''
-        bind  c new-window  -c "#{pane_current_path}"
-        set-option -g update-environment "DISPLAY WAYLAND_DISPLAY SWAYSOCK SSH_AUTH_SOCK"
-        set-option -g default-shell $SHELL
-        set -s set-clipboard on
-        set -g allow-passthrough
-      '';
+      extraConfig = concatStringsSep "
+" ([
+        ''
+          bind  c new-window  -c "#{pane_current_path}"
+          set-option -g default-shell $SHELL
+          set -s set-clipboard on
+          set -g allow-passthrough
+        ''
+      ] ++ config.programs.tmux.extraConfigSet);
       plugins = with pkgs; mkDefault [
         tmuxPlugins.copycat
         tmuxPlugins.open

@@ -13,6 +13,7 @@ with lib;
     ./plugins/zsh-completions.nix
     ./plugins/zsh-fast-syntax-highlighting.nix
     ./plugins/zsh-vterm
+    ./emacs-editor.nix
   ];
 
   config = mkIf config.programs.zsh.enable {

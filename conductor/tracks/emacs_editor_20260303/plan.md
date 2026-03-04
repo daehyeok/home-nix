@@ -1,6 +1,6 @@
 # Implementation Plan: emacs-editor Script and Nix Module
 
-## Phase 1: Create emacs-editor Script
+## Phase 1: Create emacs-editor Script [checkpoint: bec493c]
 
 - [x] Task: Create the script file `modules/programs/emacs-editor` [793e0f0]
 - [x] Task: Implement server check logic using `emacsclient -e t` [f9ec135]

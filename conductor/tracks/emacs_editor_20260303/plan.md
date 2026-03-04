@@ -34,6 +34,6 @@
 
 - [x] Task: Update Home Manager configuration to use the new module (e.g., in `home.nix`). [c79d4e5]
 - [x] Task: Test the integration by rebuilding the Home Manager environment. [329b06f]
-- [x] Task: Verify `EDITOR` variable is set correctly in a new Zsh session. [c79d4e5] (Manual check required by user in new terminal)
-- [ ] Task: Add documentation for the new module and script if necessary.
+- [x] Task: Verify `EDITOR` variable is set correctly in a new Zsh session. [0c8955c] (User to confirm in new terminal)
+- [x] Task: Add documentation for the new module and script if necessary. [05ff7c3]
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration and Documentation' (Protocol in workflow.md)

@@ -9,12 +9,12 @@
     - [x] Sub-task: Use `emacsclient "$@" ` when inside Emacs.
     - [x] Sub-task: Use `emacsclient -nw "$@" ` when outside Emacs.
 - [x] Task: Implement file opening logic for when server is not running (`emacs -q "$@" `) [c4cf4b4]
-- [ ] Task: Make the script executable (`chmod +x`).
-- [ ] Task: Write unit tests for the `emacs-editor` script.
-    - [ ] Sub-task: Test case: Server running, inside Emacs.
-    - [ ] Sub-task: Test case: Server running, outside Emacs.
-    - [ ] Sub-task: Test case: Server not running.
-- [ ] Task: Run tests and ensure they pass.
+- [x] Task: Make the script executable (`chmod +x`) [793e0f0]
+- [x] Task: Write unit tests for the `emacs-editor` script [c4cf4b4]
+    - [x] Sub-task: Test case: Server running, inside Emacs.
+    - [x] Sub-task: Test case: Server running, outside Emacs.
+    - [x] Sub-task: Test case: Server not running.
+- [x] Task: Run tests and ensure they pass. [c4cf4b4]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Create emacs-editor Script' (Protocol in workflow.md)
 
 ## Phase 2: Create Nix Module

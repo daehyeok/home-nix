@@ -5,6 +5,13 @@ let
   emacs-editor-script = pkgs.writeScriptBin "emacs-editor" ''
     #!/usr/bin/env bash
 
+    # GEMINI environment check
+    if [[ -n "$GEMINI_CLI" ]]; then
+      # In GEMINI environment, use vi as requested
+      vi "$@"
+      exit $?
+    fi
+
     if emacsclient -e t > /dev/null 2>&1; then
       # Server is running
       if [[ -n "$INSIDE_EMACS" ]]; then
@@ -36,6 +43,12 @@ in
 
     home.sessionVariables = lib.mkIf cfg.zsh_integration {
       EDITOR = "emacs-editor";
+    };
+
+    programs.zsh = lib.mkIf cfg.zsh_integration {
+      sessionVariables = {
+        EDITOR = "emacs-editor";
+      };
     };
   };
 }

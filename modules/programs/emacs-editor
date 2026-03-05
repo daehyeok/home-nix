@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# GEMINI environment check
+if [[ -n "$GEMINI_CLI" ]]; then
+  # In GEMINI environment, use vi as requested
+  vi "$@"
+  exit $?
+fi
+
 if emacsclient -e t > /dev/null 2>&1; then
   # Server is running
   if [[ -n "$INSIDE_EMACS" ]]; then

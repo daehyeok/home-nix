@@ -3,8 +3,8 @@
 This plan will update `conductor/workflow.md` to include mandatory Git synchronization at the start and end of each phase.
 
 ## Phase 1: Research & Integration Strategy
-- [ ] Task: Identify exact insertion points for `git pull --rebase` and `git push` in `workflow.md`
-- [ ] Task: Draft the conflict resolution instructions for the agent within the workflow document
+- [x] Task: Identify exact insertion points for `git pull --rebase` and `git push` in `workflow.md`
+- [x] Task: Draft the conflict resolution instructions for the agent within the workflow document
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Research & Integration Strategy' (Protocol in workflow.md)
 
 ## Phase 2: Implementation

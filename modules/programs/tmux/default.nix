@@ -23,6 +23,7 @@ with lib;
           set-option -g default-shell $SHELL
           set -s set-clipboard on
           set -g allow-passthrough
+          set -as terminal-features ",*:hyperlinks"
         ''
       ] ++ config.programs.tmux.extraConfigSet);
       plugins = with pkgs; mkDefault [

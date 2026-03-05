@@ -62,6 +62,7 @@ in
   xdg.enable = true;
 
   programs = {
+    starship.format = " $directory$character";
     git.settings.user = {
       email = "daehyeok@gmail.com";
       name = "Daehyeok Mun";

@@ -13,6 +13,25 @@
 
 All tasks follow a strict lifecycle:
 
+### User Input Transformation
+
+To ensure that all persistent project records are professionally written, clear, and free of errors, the agent MUST perform a grammar and clarity transformation on all user-provided text (e.g., track descriptions, task names, feedback) before it is written to any registry or documentation file (e.g., `tracks.md`, `plan.md`, `metadata.json`, `spec.md`).
+
+**Protocol:**
+1. **Analyze Input:** Identify the core intent and specific requirements within the user's input.
+2. **Rewrite for Clarity:** Rewrite the text to correct grammar, spelling, and punctuation errors. Improve the professional tone and ensure the sentence structure is clear and concise.
+3. **Preserve Intent:** Ensure that the rewritten text accurately reflects the user's original goal or information. Do not add or remove significant meaning.
+4. **Validation:** Review the transformed text to ensure it meets the project's quality standards before proceeding with the file write.
+
+### New Track Initialization
+
+When starting a new track, the agent MUST follow this protocol:
+
+1. **Obtain Description:** Get a brief description of the track from the user.
+2. **Transform Input:** Apply the **User Input Transformation** protocol to the user's description.
+3. **Generate Artifacts:** Use the transformed description to create the track's folder, `metadata.json`, `spec.md`, and `plan.md`.
+4. **Update Registry:** Add the new track with its transformed description to the `tracks.md` registry.
+
 ### Standard Task Workflow
 
 1. **Select Task:** Choose the next available task from `plan.md` in sequential order
@@ -20,7 +39,7 @@ All tasks follow a strict lifecycle:
 2. **Phase Start Sync (Recommended):** Before starting a new phase (the first task of a phase), execute `git pull --rebase` to ensure your local environment is up-to-date with the remote repository.
    - **Conflict Handling:** If a rebase conflict occurs, attempt to resolve trivial conflicts. If the conflict is complex or involves significant logic changes, **HALT** and ask the user for guidance.
 
-3. **Mark In Progress:** Before beginning work, edit `plan.md` and change the task from `[ ]` to `[~]`
+3. **Mark In Progress:** Before beginning work, edit `plan.md` and change the task from `[ ]` to `[~]`. If the task name was originally provided by the user and hasn't been transformed yet, apply the **User Input Transformation** protocol.
 
 4. **Write Failing Tests (Red Phase):**
    - Create a new test file for the feature or bug fix.
@@ -54,7 +73,7 @@ All tasks follow a strict lifecycle:
 
 10. **Attach Task Summary with Git Notes:**
    - **Step 10.1: Get Commit Hash:** Obtain the hash of the *just-completed commit* (`git log -1 --format="%H"`).
-   - **Step 10.2: Draft Note Content:** Create a detailed summary for the completed task. This should include the task name, a summary of changes, a list of all created/modified files, and the core "why" for the change.
+   - **Step 10.2: Draft Note Content:** Create a detailed summary for the completed task. This summary MUST be professionally written, applying the **User Input Transformation** protocol if based on user feedback or unstructured notes. It should include the task name, a summary of changes, a list of all created/modified files, and the core "why" for the change.
    - **Step 10.3: Attach Note:** Use the `git notes` command to attach the summary to the commit.
      ```bash
      # The note content from the previous step is passed via the -m flag.
@@ -91,7 +110,7 @@ All tasks follow a strict lifecycle:
 
 4.  **Propose a Detailed, Actionable Manual Verification Plan:**
     -   **CRITICAL:** To generate the plan, first analyze `product.md`, `product-guidelines.md`, and `plan.md` to determine the user-facing goals of the completed phase.
-    -   You **must** generate a step-by-step plan that walks the user through the verification process, including any necessary commands and specific, expected outcomes.
+    -   You **must** generate a step-by-step plan that walks the user through the verification process, including any necessary commands and specific, expected outcomes. This plan MUST be professionally written, applying the **User Input Transformation** protocol.
     -   The plan you present to the user **must** follow this format:
 
         **For a Frontend Change:**
@@ -123,7 +142,7 @@ All tasks follow a strict lifecycle:
     -   Perform the commit with a clear and concise message (e.g., `conductor(checkpoint): Checkpoint end of Phase X`).
 
 7.  **Attach Auditable Verification Report using Git Notes:**
-    -   **Step 7.1: Draft Note Content:** Create a detailed verification report including the automated test command, the manual verification steps, and the user's confirmation.
+    -   **Step 7.1: Draft Note Content:** Create a detailed verification report including the automated test command, the manual verification steps, and the user's confirmation. This report MUST be professionally written, applying the **User Input Transformation** protocol.
     -   **Step 7.2: Attach Note:** Use the `git notes` command and the full commit hash from the previous step to attach the full report to the checkpoint commit.
 
 8.  **Get and Record Phase Checkpoint SHA:**

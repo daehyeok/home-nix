@@ -61,21 +61,23 @@ in
 
   xdg.enable = true;
 
-  programs.zsh.emacs-editor.enable = true;
-
-  programs.zsh = {
+  programs = {
     git.settings.user = {
       email = "daehyeok@gmail.com";
       name = "Daehyeok Mun";
     };
-    initContent = lib.mkBefore ''
-      source /etc/static/bashrc  2> /dev/null
-      source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-      source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
-      eval "$(/opt/homebrew/bin/brew shellenv)"
+    zsh = {
+      emacs-editor.enable = true;
+      initContent = lib.mkBefore ''
+        source /etc/static/bashrc  2> /dev/null
+        source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+        source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
-      [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-    '';
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+
+        [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+      '';
+    };
   };
 }

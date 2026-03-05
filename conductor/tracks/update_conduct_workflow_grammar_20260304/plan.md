@@ -2,7 +2,7 @@
 
 This plan will update `conductor/workflow.md` to mandate a grammar and clarity transformation step for all user-provided text before it is written to persistent project files.
 
-## Phase 1: Research & Integration Strategy
+## Phase 1: Research & Integration Strategy [checkpoint: 8505a03]
 - [x] Task: Identify all points in the workflow where user input is written to files (New Track, Task Marking, Phase Completion, etc.)
 - [x] Task: Draft the "User Input Transformation" section for `workflow.md`
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research & Integration Strategy' (Protocol in workflow.md)

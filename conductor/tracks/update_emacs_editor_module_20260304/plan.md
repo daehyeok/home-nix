@@ -1,0 +1,25 @@
+# Implementation Plan: Update Emacs-Editor Module
+
+Update the `emacs-editor` module to consistently set the `EDITOR` environment variable and ensure correct editor selection in the `GEMINI` environment.
+
+## Phase 1: Research and Red Phase
+- [ ] Task: Inspect current `emacs-editor` module at `modules/programs/emacs-editor/`
+- [ ] Task: Identify shell initialization files (e.g., `modules/programs/zsh/default.nix`) and how they handle environment variables
+- [ ] Task: Write a failing test or reproduction script that checks if `EDITOR` is set and if it defaults to `vi` in the `GEMINI` environment
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and Red Phase' (Protocol in workflow.md)
+
+## Phase 2: Green Phase - Set EDITOR Variable
+- [ ] Task: Update `modules/programs/emacs-editor/default.nix` to include `home.sessionVariables.EDITOR = "emacsclient";` (or similar)
+- [ ] Task: Implement logic in the module to detect the `GEMINI` environment and ensure Emacs is prioritized
+- [ ] Task: Verify the failing test/script now passes
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Green Phase - Set EDITOR Variable' (Protocol in workflow.md)
+
+## Phase 3: Green Phase - Shell Integration
+- [ ] Task: Update Zsh module (`modules/programs/zsh/default.nix`) to ensure it correctly sources/inherits the `EDITOR` variable from Home Manager session variables
+- [ ] Task: Test the integration by launching a new shell session
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Green Phase - Shell Integration' (Protocol in workflow.md)
+
+## Phase 4: Refactor and Finalization
+- [ ] Task: Refactor any redundant environment variable declarations
+- [ ] Task: Ensure all changes follow project style guides
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Refactor and Finalization' (Protocol in workflow.md)

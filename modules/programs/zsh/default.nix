@@ -16,17 +16,8 @@ with lib;
     ./emacs-editor.nix
   ];
 
-  options.programs.zsh = {
-    initContent = mkOption {
-      type = types.lines;
-      default = "";
-      description = "Extra content to add to the beginning of .zshrc.";
-    };
-  };
-
   config = mkIf config.programs.zsh.enable {
     programs.zsh = {
-      initExtra = mkBefore config.programs.zsh.initContent;
       enableCompletion = mkDefault true;
       autosuggestion = {
         enable = mkDefault true;

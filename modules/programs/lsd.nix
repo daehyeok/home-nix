@@ -16,6 +16,7 @@ with lib;
         color = mkDefault {
           when = "always";
         };
+        sorting.dir-grouping = "first";
         icons = mkDefault {
           when = "always";
           theme = "fancy";

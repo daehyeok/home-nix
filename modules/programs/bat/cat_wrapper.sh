@@ -10,5 +10,5 @@ if [[ "$GEMINI_CLI" == "1" ]]; then
 else
     # Use bat.
     # The current configuration uses 'bat --plain'.
-    exec bat "$@"
+    exec bat --plain "$@"
 fi

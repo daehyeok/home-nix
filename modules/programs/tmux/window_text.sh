@@ -116,6 +116,7 @@ get_icon() {
         cargo|rustc|rustup) echo "" ;;
         cfdisk|fdisk|parted) echo "" ;;
         clang|gcc) echo "" ;;
+        cli|gcc) echo "" ;;
         clion|idea|pycharm) echo "" ;;
         cmake|julia|make) echo "" ;;
         code|code-insiders) echo "" ;;
@@ -213,6 +214,13 @@ output_text="$base_name"
 
 if [[ "$base_name" == "zsh" && -n "$pane_current_path" ]]; then
     output_text=$(compress_path "$pane_current_path")
+elif [[ "$base_name" == "cli" ]]; then
+    if [[ -n "$pane_current_path" && "$pane_current_path" != "/" ]]; then
+        cur_dir=$(basename "$pane_current_path")
+        output_text="jetski-cli ($cur_dir)"
+    else
+        output_text="jetski-cli"
+    fi
 fi
 
 if [ -n "$icon" ]; then

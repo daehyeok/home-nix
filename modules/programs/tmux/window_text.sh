@@ -14,27 +14,41 @@ compress_path() {
     local path="$1"
 
     # Handle Google Cloud (CitC) paths
-    # Format: /google/src/cloud/{user}/{workspace}/{dir_type}/...
-    if [[ "$path" == "/google/src/cloud/"* ]]; then
-        local workspace=$(echo "$path" | cut -d'/' -f6)
-        local dir_type=$(echo "$path" | cut -d'/' -f7)
-        local rest=$(echo "$path" | cut -d'/' -f8-)
-        local cur_dir=$(basename "$path")
+    # Format: */google/src/cloud/{user}/{workspace}/{dir_type}/...
+    if [[ "$path" == *"/google/src/cloud/"* ]]; then
+        local rest_citc="${path#*/google/src/cloud/}"
+        local workspace_rest="${rest_citc#*/}"
+        local workspace="${workspace_rest%%/*}"
+        local dir_type_rest="${workspace_rest#*/}"
+        local dir_type="${dir_type_rest%%/*}"
+        local rest="${dir_type_rest#*/}"
+
+        if [[ "$workspace_rest" == "$workspace" ]]; then
+            dir_type=""
+            rest=""
+        elif [[ "$dir_type_rest" == "$dir_type" ]]; then
+            rest=""
+        fi
 
         # Refined logic for special directory types
         local effective_dir_type="$dir_type"
         if [[ "$dir_type" == "google3" ]]; then
-            local next_dir=$(echo "$rest" | cut -d'/' -f1)
+            local next_dir="${rest%%/*}"
             if [[ "$next_dir" == blaze-* || "$next_dir" == "java" || "$next_dir" == "javatests" ]]; then
                 effective_dir_type="$next_dir"
-                rest=$(echo "$rest" | cut -d'/' -f2-)
+                local next_rest="${rest#*/}"
+                if [[ "$rest" == "$next_dir" ]]; then
+                    rest=""
+                else
+                    rest="$next_rest"
+                fi
             fi
         fi
 
         if [[ -z "$effective_dir_type" ]]; then
              # Path is too short, fall back to standard compression
              :
-        elif [[ "$path" == "/google/src/cloud/"*/*/* ]]; then
+        elif [[ "$path" == *"/google/src/cloud/"*/*/* ]]; then
              if [[ -z "$rest" ]]; then
                  echo "($workspace:$effective_dir_type)"
                  return

@@ -27,25 +27,25 @@ def test_new_behavior_zsh_with_path():
     # Icon for zsh is 
     home = os.environ.get("HOME", "/Users/test")
     path = f"{home}/projects/my-app"
-    expected_path = "~/projects/my-app" # Initial simple compression
+    expected_path = "~/p/my-app"
     output = run_script("zsh", "zsh", path)
     assert "" in output
     assert expected_path in output
     assert "zsh" not in output # Should show path, not "zsh"
 
 def test_new_behavior_zsh_with_shortened_path():
-    # Testing more aggressive compression if implemented
+    # Testing more aggressive compression
     home = os.environ.get("HOME", "/Users/test")
     path = f"{home}/extremely/long/path/to/something/deep"
-    # We'll refine the expected output once we decide on the compression algorithm
+    expected_path = "~/e/l/p/t/s/deep"
     output = run_script("zsh", "zsh", path)
     assert "" in output
-    assert "~/" in output
+    assert expected_path in output
 
 def test_citc_behavior_standard():
     path = "/google/src/cloud/daehyeok/my-ws/google3/devtools/devassist"
-    # Format: (workspace:dir_type) ... cur_dir
-    expected = "(my-ws:google3) ... devassist"
+    # Format: (workspace:dir_type)//compressed_subpath
+    expected = "(my-ws:google3)//d/devassist"
     output = run_script("zsh", "zsh", path)
     assert expected in output
 
@@ -57,7 +57,7 @@ def test_citc_behavior_short():
 
 def test_citc_behavior_deep():
     path = "/google/src/cloud/daehyeok/my-ws/google3/java/com/google/devtools/devassist/gemini"
-    expected = "(my-ws:google3) ... gemini"
+    expected = "(my-ws:java)//c/g/d/d/gemini"
     output = run_script("zsh", "zsh", path)
     assert expected in output
 

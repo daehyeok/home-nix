@@ -79,3 +79,17 @@ def test_citc_refinement_short_label():
     expected = "(ws:google3)"
     output = run_script("zsh", "zsh", path)
     assert expected in output
+
+def test_absolute_path_compression():
+    path = "/usr/lib/systemd"
+    expected = "/.../systemd"
+    # Testing with bash too
+    output = run_script("bash", "zsh", path)
+    assert expected in output
+
+def test_other_shells_compression():
+    path = "/usr/local/bin"
+    expected = "/.../bin"
+    for shell in ["bash", "fish", "nu", "sh"]:
+        output = run_script(shell, shell, path)
+        assert expected in output

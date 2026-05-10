@@ -68,7 +68,9 @@ compress_path() {
     fi
 
     # Replace $HOME with ~
-    if [[ "$path" == "$HOME"* ]]; then
+    if [[ "$path" == "$HOME" ]]; then
+        path="~"
+    elif [[ "$path" == "$HOME/"* ]]; then
         path="~${path#$HOME}"
     fi
 
@@ -85,7 +87,7 @@ compress_path() {
     elif [[ -z "${ADDR[0]}" && $len -gt 1 ]]; then
         # Absolute path starting with /
         if [[ $len -gt 2 ]]; then
-            echo "//.../${ADDR[$((len-1))]}"
+            echo "/.../${ADDR[$((len-1))]}"
             return
         fi
     elif [[ $len -gt 1 ]]; then
@@ -166,7 +168,6 @@ get_icon() {
         jekyll) echo "" ;;
         jenkins) echo "" ;;
         jest) echo "" ;;
-        jj|lazyjj|svn) echo "" ;;
         laravel) echo "" ;;
         lf|lfcd|ranger) echo "" ;;
         lvim|vi|vim) echo "" ;;
@@ -223,7 +224,7 @@ get_icon() {
 icon=$(get_icon "$base_name")
 output_text="$base_name"
 
-if [[ "$base_name" == "zsh" && -n "$pane_current_path" ]]; then
+if [[ "$base_name" =~ ^(bash|zsh|fish|nu|sh|fish-wrapped|.zsh-wrapped|.bash-wrapped)$ && -n "$pane_current_path" ]]; then
     output_text=$(compress_path "$pane_current_path")
 elif [[ "$base_name" == "cli" ]]; then
     if [[ -n "$pane_current_path" && "$pane_current_path" != "/" ]]; then

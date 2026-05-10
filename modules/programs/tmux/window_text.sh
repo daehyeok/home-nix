@@ -54,18 +54,14 @@ compress_path() {
                  return
              else
                  # Compress the rest of the path with // separator
-                 local compressed_rest=""
                  local IFS='/'
                  read -ra ADDR <<< "$rest"
                  local len=${#ADDR[@]}
-                 for (( i=0; i<len; i++ )); do
-                     if [[ $i -eq $((len-1)) ]]; then
-                         compressed_rest+="${ADDR[$i]}"
-                     elif [[ -n "${ADDR[$i]}" ]]; then
-                         compressed_rest+="${ADDR[$i]:0:1}/"
-                     fi
-                 done
-                 echo "($workspace:$effective_dir_type)//$compressed_rest"
+                 if [[ $len -gt 1 ]]; then
+                     echo "($workspace:$effective_dir_type)//.../${ADDR[$((len-1))]}"
+                 else
+                     echo "($workspace:$effective_dir_type)//$rest"
+                 fi
                  return
              fi
         fi
@@ -77,27 +73,28 @@ compress_path() {
     fi
 
     # Shorten intermediate directories (e.g., ~/projects/my-app -> ~/p/my-app)
-    # This logic splits by / and shortens all but the last component
     local IFS='/'
     read -ra ADDR <<< "$path"
     local len=${#ADDR[@]}
-    local compressed=""
-    for (( i=0; i<len; i++ )); do
-        if [[ $i -eq $((len-1)) ]]; then
-            compressed+="${ADDR[$i]}"
-        elif [[ $i -eq 0 && "${ADDR[$i]}" == "~" ]]; then
-            compressed+="${ADDR[$i]}"
-        elif [[ -z "${ADDR[$i]}" ]]; then
-            # Handle leading slash
-            compressed+=""
-        else
-            compressed+="${ADDR[$i]:0:1}"
+
+    if [[ "${ADDR[0]}" == "~" ]]; then
+        if [[ $len -gt 2 ]]; then
+            echo "~/.../${ADDR[$((len-1))]}"
+            return
         fi
-        if [[ $i -lt $((len-1)) ]]; then
-            compressed+="/"
+    elif [[ -z "${ADDR[0]}" && $len -gt 1 ]]; then
+        # Absolute path starting with /
+        if [[ $len -gt 2 ]]; then
+            echo "//.../${ADDR[$((len-1))]}"
+            return
         fi
-    done
-    echo "$compressed"
+    elif [[ $len -gt 1 ]]; then
+        # Relative path
+        echo ".../${ADDR[$((len-1))]}"
+        return
+    fi
+
+    echo "$path"
 }
 
 # Use window_name if pane_title is empty or the hostname.

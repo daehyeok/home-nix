@@ -27,7 +27,7 @@ def test_new_behavior_zsh_with_path():
     # Icon for zsh is 
     home = os.environ.get("HOME", "/Users/test")
     path = f"{home}/projects/my-app"
-    expected_path = "~/p/my-app"
+    expected_path = "~/.../my-app"
     output = run_script("zsh", "zsh", path)
     assert "" in output
     assert expected_path in output
@@ -37,7 +37,7 @@ def test_new_behavior_zsh_with_shortened_path():
     # Testing more aggressive compression
     home = os.environ.get("HOME", "/Users/test")
     path = f"{home}/extremely/long/path/to/something/deep"
-    expected_path = "~/e/l/p/t/s/deep"
+    expected_path = "~/.../deep"
     output = run_script("zsh", "zsh", path)
     assert "" in output
     assert expected_path in output
@@ -45,7 +45,7 @@ def test_new_behavior_zsh_with_shortened_path():
 def test_citc_behavior_standard():
     path = "/google/src/cloud/daehyeok/my-ws/google3/devtools/devassist"
     # Format: (workspace:dir_type)//compressed_subpath
-    expected = "(my-ws:google3)//d/devassist"
+    expected = "(my-ws:google3)//.../devassist"
     output = run_script("zsh", "zsh", path)
     assert expected in output
 
@@ -57,20 +57,20 @@ def test_citc_behavior_short():
 
 def test_citc_behavior_deep():
     path = "/google/src/cloud/daehyeok/my-ws/google3/java/com/google/devtools/devassist/gemini"
-    expected = "(my-ws:java)//c/g/d/d/gemini"
+    expected = "(my-ws:java)//.../gemini"
     output = run_script("zsh", "zsh", path)
     assert expected in output
 
 def test_citc_refinement_javatests():
     path = "/google/src/cloud/daehyeok/firover/google3/javatests/com/google/firover"
     # Format: (workspace:special_dir)//compressed_subpath
-    expected = "(firover:javatests)//c/g/firover"
+    expected = "(firover:javatests)//.../firover"
     output = run_script("zsh", "zsh", path)
     assert expected in output
 
 def test_citc_refinement_blaze_bin():
     path = "/google/src/cloud/daehyeok/my-ws/google3/blaze-bin/path/to/app"
-    expected = "(my-ws:blaze-bin)//p/t/app"
+    expected = "(my-ws:blaze-bin)//.../app"
     output = run_script("zsh", "zsh", path)
     assert expected in output
 

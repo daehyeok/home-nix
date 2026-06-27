@@ -13,6 +13,7 @@ with lib;
     ./plugins/zsh-completions.nix
     ./plugins/zsh-fast-syntax-highlighting.nix
     ./plugins/zsh-vterm
+    ./plugins/zsh-tmux-title
     ./emacs-editor.nix
   ];
 
@@ -30,6 +31,7 @@ with lib;
       autoPair.enable = mkDefault true;
       completionsPlugin.enable = mkDefault true;
       vterm.enable = mkDefault true;
+      tmuxTitle.enable = mkDefault true;
 
       dotDir = mkDefault "${config.xdg.configHome}/zsh";
 

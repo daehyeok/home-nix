@@ -89,7 +89,38 @@ def test_absolute_path_compression():
 
 def test_other_shells_compression():
     path = "/usr/local/bin"
-    expected = "/.../bin"
+    expected = "/." + ".." + "/bin"
     for shell in ["bash", "fish", "nu", "sh"]:
         output = run_script(shell, shell, path)
         assert expected in output
+
+def test_precmd_compressed_path_window_name():
+    compressed = "(my-ws:google3)//." + ".." + "/devassist"
+    output = run_script("", compressed, "")
+    assert "" in output
+    assert compressed in output
+
+def test_trailing_slash_compression():
+    path = "/google/src/cloud/daehyeok/my-ws/google3/devtools/devassist/"
+    expected = "(my-ws:google3)//." + ".." + "/devassist"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output
+
+def test_home_trailing_slash_compression():
+    home = os.environ.get("HOME", "/Users/test")
+    path = f"{home}/projects/my-app/"
+    expected = "~/." + ".." + "/my-app"
+    output = run_script("zsh", "zsh", path)
+    assert expected in output
+
+def test_nounset_compatibility():
+    # Verify window_text.sh runs without errors when set -u (nounset) is active
+    # and environment variables like COMPRESS_PATH_SH are unset.
+    cmd = f'set -u; unset COMPRESS_PATH_SH; bash "{SCRIPT_PATH}" zsh zsh "/usr/local/bin"'
+    result = subprocess.run(
+        ["bash", "-c", cmd],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert "/." + ".." + "/bin" in result.stdout

@@ -47,9 +47,9 @@ with lib;
         set -g @plugin 'catppuccin/tmux#v2.1.3'
         set -g @catppuccin_flavour 'mocha'
         set -g @catppuccin_window_status_style "rounded"
-        set -g @catppuccin_window_current_text "#(bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
-        set -g @catppuccin_window_default_text "#(bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
-        set -g @catppuccin_window_text "#(bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
+        set -g @catppuccin_window_current_text "#(COMPRESS_PATH_SH=${./compress_path.sh} bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
+        set -g @catppuccin_window_default_text "#(COMPRESS_PATH_SH=${./compress_path.sh} bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
+        set -g @catppuccin_window_text "#(COMPRESS_PATH_SH=${./compress_path.sh} bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
 
         set -g status-interval 1
         set -g status-right-length 100

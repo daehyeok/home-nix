@@ -10,6 +10,7 @@ with lib;
   config = mkIf config.programs.fzf.enable {
     programs.fzf = {
       enableZshIntegration = mkDefault true;
+      historyWidget.command = "";
     };
   };
 }

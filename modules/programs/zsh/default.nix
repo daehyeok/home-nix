@@ -11,7 +11,6 @@ with lib;
     ./plugins/zsh-autopair.nix
     ./plugins/zsh-autosuggestion.nix
     ./plugins/zsh-completions.nix
-    ./plugins/zsh-fast-syntax-highlighting.nix
     ./plugins/zsh-vterm
     ./plugins/zsh-tmux-title
     ./emacs-editor.nix

@@ -171,3 +171,19 @@ def test_corrupted_compress_path_sh_retry(tmp_path):
     result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
     assert result.returncode == 0
     assert "/." + ".." + "/systemd" in result.stdout.strip()
+
+def test_tmux_guard_outside_session():
+    # Outside a tmux session, hooks should NOT be registered into precmd_functions / preexec_functions
+    cmd = f'unset TMUX; source "{SCRIPT_PATH}"; echo "precmd=${{precmd_functions[(r)_tmux_window_title_precmd]:-none}} preexec=${{preexec_functions[(r)_tmux_window_title_preexec]:-none}}"'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "precmd=none" in result.stdout
+    assert "preexec=none" in result.stdout
+
+def test_tmux_guard_inside_session():
+    # Inside a tmux session, hooks SHOULD be registered into precmd_functions and preexec_functions
+    cmd = f'export TMUX="1"; source "{SCRIPT_PATH}"; echo "precmd=${{precmd_functions[(r)_tmux_window_title_precmd]:-none}} preexec=${{preexec_functions[(r)_tmux_window_title_preexec]:-none}}"'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "precmd=_tmux_window_title_precmd" in result.stdout
+    assert "preexec=_tmux_window_title_preexec" in result.stdout

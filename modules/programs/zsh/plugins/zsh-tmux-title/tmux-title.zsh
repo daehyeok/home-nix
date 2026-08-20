@@ -42,11 +42,6 @@ function _tmux_title_find_compress_path() {
   return 1
 }
 
-_tmux_title_find_compress_path
-if [[ -n "${COMPRESS_PATH_SH:-}" && -f "${COMPRESS_PATH_SH:-}" ]]; then
-  source "${COMPRESS_PATH_SH:-}"
-fi
-
 function _tmux_compress_path() {
   emulate -L zsh
   if ! typeset -f compress_path >/dev/null 2>&1; then
@@ -117,6 +112,13 @@ function _tmux_window_title_preexec() {
   [[ -n "$cmd" ]] && printf "\033k%s\033\\" "${cmd:t}"
 }
 
-autoload -U add-zsh-hook
-add-zsh-hook precmd _tmux_window_title_precmd
-add-zsh-hook preexec _tmux_window_title_preexec
+if [[ -n "${TMUX:-}" ]]; then
+  _tmux_title_find_compress_path
+  if [[ -n "${COMPRESS_PATH_SH:-}" && -f "${COMPRESS_PATH_SH:-}" ]]; then
+    source "${COMPRESS_PATH_SH:-}"
+  fi
+
+  autoload -U add-zsh-hook
+  add-zsh-hook precmd _tmux_window_title_precmd
+  add-zsh-hook preexec _tmux_window_title_preexec
+fi

@@ -16,7 +16,7 @@ with lib;
   config = mkIf config.programs.tmux.enable {
     programs.tmux = {
       mouse = mkDefault true;
-      terminal = mkDefault "xterm-256color";
+      terminal = mkDefault "tmux-256color";
       extraConfig = lib.mkMerge [
         config.programs.tmux.extraConfigSet
 
@@ -40,7 +40,7 @@ with lib;
         bind  c new-window  -c "#{pane_current_path}"
         set-option -g default-shell $SHELL
         set -s set-clipboard on
-        set -g allow-passthrough
+        set -g allow-passthrough on
         set -as terminal-features ",*:hyperlinks"
 
         # catppuccin theme

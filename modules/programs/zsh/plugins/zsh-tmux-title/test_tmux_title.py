@@ -187,3 +187,15 @@ def test_tmux_guard_inside_session():
     assert result.returncode == 0
     assert "precmd=_tmux_window_title_precmd" in result.stdout
     assert "preexec=_tmux_window_title_preexec" in result.stdout
+
+def test_preexec_escape_sequence_path_with_command_arg():
+    # Regression test: when command is a path (/usr/bin/git) and argument (diff) is also a valid command in PATH,
+    # preexec must identify git as the command rather than skipping /usr/bin/git and matching diff.
+    cmd = f'source "{SCRIPT_PATH}" && TMUX=1 _tmux_window_title_preexec "nocorrect /usr/bin/git diff"'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert result.stdout == "\x1bkgit\x1b\\"
+
+def test_preexec_escape_sequence_relative_path_with_command_arg():
+    cmd = f'source "{SCRIPT_PATH}" && TMUX=1 _tmux_window_title_preexec "./myscript.sh ls"'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert result.stdout == "\x1bkmyscript.sh\x1b\\"

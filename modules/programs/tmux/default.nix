@@ -17,6 +17,7 @@ with lib;
     programs.tmux = {
       mouse = mkDefault true;
       terminal = mkDefault "tmux-256color";
+      shell = mkDefault "$SHELL";
       extraConfig = lib.mkMerge [
         config.programs.tmux.extraConfigSet
 
@@ -38,10 +39,14 @@ with lib;
       ];
       extraConfigSet = ''
         bind  c new-window  -c "#{pane_current_path}"
-        set-option -g default-shell $SHELL
         set -s set-clipboard on
         set -g allow-passthrough on
         set -as terminal-features ",*:hyperlinks"
+        set -as terminal-features ",*:clipboard"
+
+        # Force tmux-yank (mouse drag, y, prefix+y, prefix+Y) to copy via tmux's
+        # native OSC 52 clipboard (-w) rather than piping to remote Linux xsel/xclip
+        set -g @override_copy_command "tmux load-buffer -w -"
 
         # catppuccin theme
         set -g @plugin 'catppuccin/tmux#v2.1.3'

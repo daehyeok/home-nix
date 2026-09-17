@@ -1,5 +1,7 @@
 # Zsh hooks for dynamic tmux window title and path compression updates.
 
+zmodload zsh/parameter 2>/dev/null
+
 typeset -g _TMUX_TITLE_RAW_DIR="${0:h}"
 typeset -g _TMUX_TITLE_REAL_DIR="${0:A:h}"
 
@@ -102,8 +104,7 @@ function _tmux_window_title_preexec() {
         ;;
     esac
     [[ -z "$fallback_cmd" ]] && fallback_cmd="$w"
-    local res=$(whence -w -- "$w" 2>/dev/null)
-    if [[ -n "$res" && "$res" != *": none" ]]; then
+    if (( $+commands[$w] || $+functions[$w] || $+aliases[$w] || $+builtins[$w] )) || [[ "$w" == */* ]]; then
       cmd="$w"
       break
     fi

@@ -50,6 +50,8 @@ in
   };
 
   catppuccin = {
+    enable = true;
+    autoEnable = false;
     flavor = "mocha";
     atuin.enable = true;
     bat.enable = true;

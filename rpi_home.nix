@@ -22,11 +22,13 @@ in
 
   home = {
     username = "daehyeok";
-    homeDirectory = "/Users/daehyeok";
+    homeDirectory = "/home/daehyeok";
     stateVersion = "26.05";
     packages =
       with pkgs;
       [
+        bitwarden-cli
+        nodejs
         devenv
         pre-commit
         fontconfig
@@ -62,23 +64,43 @@ in
   xdg.enable = true;
 
   programs = {
-    starship.settings.format = " $directory$git_branch$git_commit$git_state$git_metrics$git_status$character";
+    starship.settings.format = " $directory$git_branch$git_commit$git_state$git_metrics$git_status$character";
     git.settings.user = {
       email = "daehyeok@gmail.com";
       name = "Daehyeok Mun";
     };
+    emacs = {
+      enable = true;
+      # Use the 'No X' package flavor to drop all graphical requirements
+      package = pkgs.emacs-nox;
 
+      extraPackages = epkgs: [
+        epkgs.vterm
+      ];
+
+      extraConfig = ''
+        (use-package vterm
+          :ensure nil
+          :defer t)
+      '';
+    };
     zsh = {
       emacs-editor.enable = true;
       initContent = lib.mkBefore ''
-        source /etc/static/bashrc  2> /dev/null
-        source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-        source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+                source /etc/static/bashrc  2> /dev/null
+                [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ] && source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+                [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+                [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
-        eval "$(/opt/homebrew/bin/brew shellenv)"
+                [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-        [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+                [[ -f ~/.local_env ]] && source ~/.local_env
+        	path+=($HOME/.local/bin $HOME/.npm-global/bin)
       '';
     };
+  };
+  services.emacs = {
+    enable = true;
+    package = config.programs.emacs.finalPackage; # Ensures daemon uses emacs-nox wrapper
   };
 }

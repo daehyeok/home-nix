@@ -1,8 +1,0 @@
-{
-  "track_id": "refine_citc_path_20260226",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-02-26T23:58:00Z",
-  "updated_at": "2026-02-26T23:58:00Z",
-  "description": "Refine CitC path compression with special directories and // separator"
-}

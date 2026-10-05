@@ -1,8 +1,0 @@
-{
-  "track_id": "replace_eza_with_lsd_20260226",
-  "type": "chore",
-  "status": "new",
-  "created_at": "2026-02-26T23:55:00Z",
-  "updated_at": "2026-02-26T23:55:00Z",
-  "description": "use lsd instead of eza"
-}

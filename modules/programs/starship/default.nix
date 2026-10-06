@@ -56,17 +56,11 @@ in
 
           scan_timeout = mkDefault 10;
           command_timeout = mkDefault 80;
-          custom = {
-            vterm = {
-              command = "vterm_prompt_end";
-              when = " test ! -z $INSIDE_EMACS ";
-            };
-          };
         };
       };
 
       zsh.initContent = mkIf config.programs.zsh.enable ''
-        if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
+        if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "ghostel") ]]; then
           source ${initZshPath}
           ${optionalString cfg.transientPrompt "enable_transience"}
         fi

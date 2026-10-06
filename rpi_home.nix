@@ -6,12 +6,6 @@
   ...
 }:
 with lib;
-let
-  vterm-build-deps = with pkgs; [
-    cmake
-    glibtool
-  ];
-in
 {
   imports = [
     ./modules
@@ -75,16 +69,6 @@ in
       enable = true;
       # Use the 'No X' package flavor to drop all graphical requirements
       package = pkgs.emacs-nox;
-
-      extraPackages = epkgs: [
-        epkgs.vterm
-      ];
-
-      extraConfig = ''
-        (use-package vterm
-          :ensure nil
-          :defer t)
-      '';
     };
     zsh = {
       emacs-editor.enable = true;

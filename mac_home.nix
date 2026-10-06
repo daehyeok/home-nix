@@ -6,12 +6,6 @@
   ...
 }:
 with lib;
-let
-  vterm-build-deps = with pkgs; [
-    cmake
-    glibtool
-  ];
-in
 {
   imports = [
     ./modules
@@ -24,29 +18,26 @@ in
     username = "daehyeok";
     homeDirectory = "/Users/daehyeok";
     stateVersion = "26.05";
-    packages =
-      with pkgs;
-      [
-        devenv
-        pre-commit
-        fontconfig
-        emacs-all-the-icons-fonts
-        gettext
-        cargo-edit
-        pkg-config
-        openssl
-        (python313.withPackages (
-          ps: with ps; [
-            pytest
-            toml
-            python-lsp-server
-            pyls-isort
-            flake8
-            yapf
-          ]
-        ))
-      ]
-      ++ vterm-build-deps;
+    packages = with pkgs; [
+      devenv
+      pre-commit
+      fontconfig
+      emacs-all-the-icons-fonts
+      gettext
+      cargo-edit
+      pkg-config
+      openssl
+      (python313.withPackages (
+        ps: with ps; [
+          pytest
+          toml
+          python-lsp-server
+          pyls-isort
+          flake8
+          yapf
+        ]
+      ))
+    ];
   };
 
   catppuccin = {

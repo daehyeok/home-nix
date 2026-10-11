@@ -22,6 +22,7 @@ with lib;
     jq.enable = true;
     lsd.enable = true;
     neovim.enable = true;
+    npm.enable = true;
     ripgrep.enable = true;
     starship.enable = true;
     tealdeer.enable = true;

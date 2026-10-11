@@ -81,7 +81,7 @@ with lib;
                 [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
                 [[ -f ~/.local_env ]] && source ~/.local_env
-        	path+=($HOME/.local/bin $HOME/.npm-global/bin)
+        	path+=($HOME/.local/bin)
       '';
     };
   };

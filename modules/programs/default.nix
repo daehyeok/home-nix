@@ -19,6 +19,7 @@ with lib;
     ./git.nix
     ./lsd.nix
     ./neovim.nix
+    ./npm.nix
   ];
 
   config.programs.home-manager.enable = true;

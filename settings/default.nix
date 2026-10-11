@@ -9,6 +9,7 @@ with lib;
 {
   # Core program enablement. These trigger our opinionated modules in modules/programs/
   programs = {
+    antigravity.enable = true;
     atuin.enable = true;
     bat.enable = true;
     bottom.enable = true;

@@ -8,6 +8,7 @@
 with lib;
 {
   imports = [
+    ./antigravity
     ./bat
     ./starship
     ./tmux

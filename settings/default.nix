@@ -42,7 +42,7 @@ with lib;
     packages = with pkgs; [
       choose
       gh
-      nerd-fonts.hack
+      monaspace
       nixfmt
       ruplacer
       sd

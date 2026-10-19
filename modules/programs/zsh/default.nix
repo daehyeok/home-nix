@@ -63,13 +63,29 @@ with lib;
         ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE = "20";
       };
 
-      initContent = mkAfter ''
-        if (( $+functions[_zsh_autosuggest_strategy_atuin] )); then
-          ZSH_AUTOSUGGEST_STRATEGY=(history atuin)
-        else
-          ZSH_AUTOSUGGEST_STRATEGY=(history)
-        fi
-      '';
+      initContent = mkMerge [
+        (mkBefore ''
+          fpath=("$HOME/.zsh/completions" $fpath)
+        '')
+        (mkAfter ''
+          if (( $+functions[_zsh_autosuggest_strategy_atuin] )); then
+            ZSH_AUTOSUGGEST_STRATEGY=(history atuin)
+          else
+            ZSH_AUTOSUGGEST_STRATEGY=(history)
+          fi
+
+          # Source mutable ~/.zshrc for local customizations and third-party tool additions
+          if [[ -z "''${_HM_ZSHRC_LOADING:-}" && -f "$HOME/.zshrc" ]]; then
+            _HM_ZSHRC_LOADING=1
+            source "$HOME/.zshrc"
+            unset _HM_ZSHRC_LOADING
+          fi
+        '')
+      ];
     };
+
+    home.activation.ensureUserZshrc = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD ${pkgs.bash}/bin/bash ${./ensure_zshrc.sh} "$HOME/.zshrc"
+    '';
   };
 }

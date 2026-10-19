@@ -69,8 +69,6 @@ with lib;
         source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
         eval "$(/opt/homebrew/bin/brew shellenv)"
-
-        [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
       '';
     };
   };

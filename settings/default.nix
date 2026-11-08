@@ -27,7 +27,6 @@ with lib;
     starship.enable = true;
     tealdeer.enable = true;
     tmux.enable = true;
-    zellij.enable = true;
     zoxide.enable = true;
     zsh.enable = true;
   };

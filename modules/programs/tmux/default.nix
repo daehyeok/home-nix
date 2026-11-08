@@ -49,7 +49,7 @@ with lib;
         set -g @override_copy_command "tmux load-buffer -w -"
 
         # catppuccin theme
-        set -g @plugin 'catppuccin/tmux#v2.1.3'
+        set -g @plugin 'catppuccin/tmux'
         set -g @catppuccin_flavour 'mocha'
         set -g @catppuccin_window_status_style "rounded"
         set -g @catppuccin_window_current_text "#(COMPRESS_PATH_SH=${./compress_path.sh} bash ${./window_text.sh} '#T' '#W' '#{pane_current_path}')"
@@ -62,9 +62,19 @@ with lib;
         set -g status-left ""
         set -g status-right "#{E:@catppuccin_status_date_time}"
 
-        set -g @plugin 'tmux-plugins/tmux-copycat'
         set -g @plugin 'tmux-plugins/tmux-yank'
         set -g @plugin 'tmux-plugins/tmux-open'
+
+        set -g @plugin 'omerxx/tmux-sessionx'
+        set -g @sessionx-bind 'o'
+
+        set -g @plugin 'jaclu/tmux-menus'
+        run-shell ~/.config/tmux/plugins/tmux-menus/menus.tmux
+
+        # Sidebar tmux manager that tracks AI coding agents (prefix + A).
+        # Custom agent rules live in ~/.config/agenmux/agents/*.conf.
+        # set -g @plugin 'snirt/agenmux'
+        source-file ~/.config/tmux/plugins/tmux.local.conf
       '';
     };
   };

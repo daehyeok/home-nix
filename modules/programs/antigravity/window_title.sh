@@ -33,14 +33,18 @@ else
     DIR_FMT="#[fg=cyan]$(basename $CWD)"
 fi
 
+# One distinct leading emoji per agent_state. The agenmux jetski.conf
+# (WORKING_TITLE / BLOCKED_TITLE) matches on these, so keep them in sync.
 case "$STATE" in
-    Ready|idle)   EMOJI="🚀" ;;
-    thinking)     EMOJI="🤔" ;;
-    working)      EMOJI="🏃" ;;
-    tool_use)     EMOJI="🛠️" ;;
-    authenticating)            EMOJI="🛂" ;;
-    reviewing)            EMOJI="🔍" ;;
-    *)            EMOJI="⏳" ;;
+    Ready|idle)     EMOJI="🚀" ;;
+    thinking)       EMOJI="🤔" ;;
+    working)        EMOJI="🏃" ;;
+    tool_use)       EMOJI="🛠️" ;;
+    reviewing)      EMOJI="🔍" ;;
+    authenticating) EMOJI="🛂" ;;
+    initializing)   EMOJI="⏳" ;;
+    error)          EMOJI="❌" ;;
+    *)              EMOJI="❓" ;;
 esac
 
 if [ "$TASKS_COUNT" != "0" ]; then

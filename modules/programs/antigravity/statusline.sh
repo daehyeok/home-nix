@@ -26,13 +26,19 @@ eval $(jq -r '
 
 USED_PCT_FMT=$(printf "%.2f" "$USED_PCT")
 
-# Format agent state with ANSI colors
+# Format agent state with ANSI colors.
+# Covers every documented agent_state value (go/jetski-cli statusline docs):
+# idle, thinking, working, tool_use, reviewing, authenticating, initializing, error.
 case "$STATE" in
-    idle)     STATE_FMT="\033[1;32m🚀 READY\033[0m" ;;
-    thinking) STATE_FMT="\033[1;33m🤔 THINKING\033[0m" ;;
-    working)  STATE_FMT="\033[1;36m🏃 WORKING\033[0m" ;;
-    tool_use) STATE_FMT="\033[1;35m🛠 TOOL USE\033[0m" ;;
-    *)        STATE_FMT="\033[2m⏳ ${STATE}\033[0m" ;;
+    idle)           STATE_FMT="\033[1;32m🚀 READY\033[0m" ;;
+    thinking)       STATE_FMT="\033[1;33m🤔 THINKING\033[0m" ;;
+    working)        STATE_FMT="\033[1;36m🏃 WORKING\033[0m" ;;
+    tool_use)       STATE_FMT="\033[1;35m🛠 TOOL USE\033[0m" ;;
+    reviewing)      STATE_FMT="\033[1;35m🔍 REVIEWING\033[0m" ;;
+    authenticating) STATE_FMT="\033[1;33m🛂 AUTHENTICATING\033[0m" ;;
+    initializing)   STATE_FMT="\033[1;34m⏳ INITIALIZING\033[0m" ;;
+    error)          STATE_FMT="\033[1;31m❌ ERROR\033[0m" ;;
+    *)              STATE_FMT="\033[2m❓ ${STATE}\033[0m" ;;
 esac
 
 # Format Workspace / Folder Directory & Branch details

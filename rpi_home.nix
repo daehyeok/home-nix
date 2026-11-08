@@ -54,7 +54,6 @@ with lib;
     starship.enable = true;
     delta.enable = true;
     nvim.enable = true;
-    zellij.enable = true;
   };
 
   xdg.enable = true;

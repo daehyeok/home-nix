@@ -173,8 +173,8 @@ def test_corrupted_compress_path_sh_retry(tmp_path):
     assert "/." + ".." + "/systemd" in result.stdout.strip()
 
 def test_tmux_guard_outside_session():
-    # Outside a tmux session, hooks should NOT be registered into precmd_functions / preexec_functions
-    cmd = f'unset TMUX; source "{SCRIPT_PATH}"; echo "precmd=${{precmd_functions[(r)_tmux_window_title_precmd]:-none}} preexec=${{preexec_functions[(r)_tmux_window_title_preexec]:-none}}"'
+    # Outside tmux/Rex, hooks should NOT be registered into precmd_functions / preexec_functions
+    cmd = f'unset TMUX REX_BLOCK TERM_PROGRAM; source "{SCRIPT_PATH}"; echo "precmd=${{precmd_functions[(r)_tmux_window_title_precmd]:-none}} preexec=${{preexec_functions[(r)_tmux_window_title_preexec]:-none}}"'
     result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
     assert result.returncode == 0
     assert "precmd=none" in result.stdout
@@ -199,3 +199,62 @@ def test_preexec_escape_sequence_relative_path_with_command_arg():
     cmd = f'source "{SCRIPT_PATH}" && TMUX=1 _tmux_window_title_preexec "./myscript.sh ls"'
     result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
     assert result.stdout == "\x1bkmyscript.sh\x1b\\"
+
+def test_precmd_rex_osc_title():
+    cmd = f'unset TMUX; source "{SCRIPT_PATH}" && REX_BLOCK=block:x _tmux_window_title_precmd'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert result.stdout.startswith("\x1b]2;")
+    assert result.stdout.endswith("\x07")
+
+def test_preexec_rex_osc_title():
+    cmd = f'unset TMUX; source "{SCRIPT_PATH}" && REX_BLOCK=block:x _tmux_window_title_preexec "sudo vim file.txt"'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert result.stdout == "\x1b]2;vim\x07"
+
+def test_no_title_outside_tmux_and_rex():
+    cmd = f'unset TMUX REX_BLOCK TERM_PROGRAM; source "{SCRIPT_PATH}" && _tmux_window_title_precmd'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert result.stdout == ""
+
+def test_rex_guard_registers_hooks():
+    cmd = f'unset TMUX; export REX_BLOCK=block:x; source "{SCRIPT_PATH}"; echo "precmd=${{precmd_functions[(r)_tmux_window_title_precmd]:-none}}"'
+    result = subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+    assert "precmd=_tmux_window_title_precmd" in result.stdout
+
+def _rex_run(script):
+    cmd = f'unset TMUX; export REX_BLOCK=block:x; source "{SCRIPT_PATH}"; {script}'
+    return subprocess.run(["zsh", "-c", cmd], capture_output=True, text=True)
+
+def test_rex_status_working():
+    r = _rex_run('_rex_status_preexec "make all" 2>/dev/null')
+    assert r.stdout == "\x1b]7501;state=working:app=make:msg=bWFrZSBhbGw=\x1b\\"
+
+def test_rex_status_ignored_program_not_working():
+    r = _rex_run('_rex_status_preexec "nvim foo"')
+    assert r.stdout == ""
+
+def test_rex_status_short_command_clears():
+    r = _rex_run('_rex_status_preexec "make" >/dev/null; true; _rex_status_precmd')
+    assert r.stdout == "\x1b]7501;state=clear\x1b\\"
+
+def test_rex_status_long_command_done():
+    r = _rex_run('_rex_status_preexec "make" >/dev/null; _REX_STATUS_START=$((EPOCHREALTIME-30)); true; _rex_status_precmd')
+    assert r.stdout.startswith("\x1b]7501;state=done:app=make:msg=")
+
+def test_rex_status_long_command_error():
+    r = _rex_run('_rex_status_preexec "make" >/dev/null; _REX_STATUS_START=$((EPOCHREALTIME-30)); (exit 2); _rex_status_precmd')
+    assert r.stdout.startswith("\x1b]7501;state=error:app=make:msg=")
+
+def test_rex_status_precmd_without_command_is_silent():
+    r = _rex_run('_rex_status_precmd')
+    assert r.stdout == ""
+
+def test_rex_title_error_mark():
+    r = _rex_run('_rex_status_preexec "make" >/dev/null; (exit 3); _rex_status_precmd >/dev/null; _tmux_window_title_precmd')
+    assert r.stdout.startswith("\x1b]2;❌3 ")
+
+def test_rex_title_no_mark_on_success_or_interrupt():
+    r = _rex_run('_rex_status_preexec "make" >/dev/null; (exit 130); _rex_status_precmd >/dev/null; _tmux_window_title_precmd')
+    assert "❌" not in r.stdout
+    r = _rex_run('_rex_status_preexec "make" >/dev/null; true; _rex_status_precmd >/dev/null; _tmux_window_title_precmd')
+    assert "❌" not in r.stdout

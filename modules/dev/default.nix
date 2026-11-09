@@ -10,9 +10,7 @@ let
 in
 {
   imports = [
-    ./dart.nix
     ./nix.nix
     ./rust.nix
-    ./kotlin.nix
   ];
 }

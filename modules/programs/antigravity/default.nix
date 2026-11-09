@@ -33,6 +33,8 @@ in
       source = ./statusline.sh;
       executable = true;
     };
+    # Shared path compression (same as zsh tab titles), used by window_title.sh.
+    home.file."${cfg.cliDir}/compress_path.sh".source = ../tmux/compress_path.sh;
     home.file."${cfg.cliDir}/window_title.sh" = {
       source = ./window_title.sh;
       executable = true;

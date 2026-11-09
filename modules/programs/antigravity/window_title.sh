@@ -8,7 +8,9 @@
 # The title depends on where Jetski runs:
 #   * inside tmux: "<state emoji>[📋][🤖] <dir>". The leading emoji is what
 #     agenmux (modules/programs/jetski/agenmux-jetski.conf) matches on.
-#   * in Rex, outside tmux: "🚀 jetski" (fixed rocket). Agent state goes to Rex through
+#   * in Rex, outside tmux: "🚀 <dir> · jetski" (fixed rocket; "jetski" so
+#     tabs are findable by name in fuzzy search; dir compressed like the
+#     zsh tab title via compress_path.sh). Agent state goes to Rex through
 #     the Program Status Protocol (OSC 7501) instead, and Rex draws its own
 #     spinner/blocked/done indicators on the tab.
 #   * in any other terminal: same as tmux, so the state is still visible.
@@ -73,7 +75,15 @@ rex_report_status() {
 
 if [ -z "${TMUX:-}" ] && { [ -n "${REX_BLOCK:-}" ] || [ "${TERM_PROGRAM:-}" = "rex" ]; }; then
     rex_report_status || true
-    echo "🚀 jetski"
+    # Same compressed path as the zsh tab title, e.g. "(ws:google3)//.../dir".
+    REX_DIR="$DIR_LABEL"
+    COMPRESS_PATH_SH="$(dirname "${BASH_SOURCE[0]}")/compress_path.sh"
+    if [ -n "$CWD" ] && [ -f "$COMPRESS_PATH_SH" ]; then
+        # shellcheck source=/dev/null
+        source "$COMPRESS_PATH_SH"
+        REX_DIR="$(compress_path "$CWD")"
+    fi
+    echo "🚀 ${REX_DIR} · jetski"
     exit 0
 fi
 

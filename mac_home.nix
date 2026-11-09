@@ -23,6 +23,8 @@ with lib;
       pre-commit
       fontconfig
       emacs-all-the-icons-fonts
+      # D2Coding Nerd Font (Korean); installs as "D2KodingLigature Nerd Font".
+      nerd-fonts.d2coding
       gettext
       cargo-edit
       pkg-config

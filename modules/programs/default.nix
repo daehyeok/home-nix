@@ -20,6 +20,7 @@ with lib;
     ./lsd.nix
     ./neovim.nix
     ./npm.nix
+    ./rex
   ];
 
   config.programs.home-manager.enable = true;

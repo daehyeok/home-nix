@@ -35,6 +35,17 @@ in
     # `rex terminfo setup` on the Mac instead.)
     programs.rex.package = mkIf pkgs.stdenv.hostPlatform.isDarwin (mkDefault null);
 
+    # init.lua ends with `require("local")` for unmanaged per-host overrides.
+    # Create an empty ~/.config/rex/local.lua on switch if it doesn't exist
+    # (never overwrite an existing one).
+    home.activation.rexLocalConfig = hm.dag.entryAfter [ "writeBoundary" ] ''
+      rexLocal="${config.xdg.configHome}/rex/local.lua"
+      if [ ! -e "$rexLocal" ]; then
+        run mkdir -p "$(dirname "$rexLocal")"
+        run touch "$rexLocal"
+      fi
+    '';
+
     # The ssh guard is added through programs.ssh, which home-manager only
     # writes when enabled. Keep ssh behavior otherwise unchanged.
     programs.ssh = mkIf cfg.sshGuard {

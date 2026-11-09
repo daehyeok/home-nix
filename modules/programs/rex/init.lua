@@ -129,3 +129,10 @@ rex.bind("ctrl+b>s>c", "session.new")             -- c: new session on the curre
 rex.bind("ctrl+b>s>r", "session.rename")          -- r: rename current session
 rex.bind("ctrl+b>s>shift+r", "session.refresh")   -- R: refresh sessions
 
+-- Host-specific overrides from ~/.config/rex/local.lua (not managed by
+-- home-manager, so it can be edited freely per machine).
+-- KEEP THIS AT THE END OF THE FILE: later bindings win, so loading local.lua
+-- last gives it the highest priority and lets it override anything above.
+-- home-manager creates an empty file on switch if it is missing (see
+-- default.nix), so this require never fails.
+require("local")

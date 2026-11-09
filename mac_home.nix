@@ -51,6 +51,16 @@ with lib;
     nvim.enable = true;
   };
 
+  # Enable flakes in ~/.config/nix/nix.conf (builtins.getFlake, used by the
+  # Rex module, needs them).
+  nix = {
+    package = mkDefault pkgs.nix;
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+
   xdg.enable = true;
 
   programs = {

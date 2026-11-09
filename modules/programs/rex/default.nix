@@ -46,6 +46,20 @@ in
       fi
     '';
 
+    # The Rex server doesn't notice when home-manager swaps the init.lua
+    # symlink, so reload it after linking. Ignore failures (no running server,
+    # or no `rex` on PATH, e.g. on macOS where the app ships the CLI).
+    home.activation.rexConfigReload = hm.dag.entryAfter [ "linkGeneration" "rexLocalConfig" ] ''
+      rexBin="${if cfg.package != null then "${cfg.package}/bin/rex" else "rex"}"
+      if [ -n "''${DRY_RUN:-}" ]; then
+        verboseEcho "Would run: $rexBin config reload"
+      elif command -v "$rexBin" >/dev/null 2>&1; then
+        "$rexBin" --autostart=false config reload >/dev/null 2>&1 \
+          && verboseEcho "Reloaded Rex config" \
+          || verboseEcho "Rex config reload skipped (server not running?)"
+      fi
+    '';
+
     # The ssh guard is added through programs.ssh, which home-manager only
     # writes when enabled. Keep ssh behavior otherwise unchanged.
     programs.ssh = mkIf cfg.sshGuard {

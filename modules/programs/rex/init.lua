@@ -45,19 +45,45 @@ rex.bind("ctrl+m", "pane.send_key", { key = "enter" })
 rex.bind("ctrl+i", "pane.send_key", { key = "tab" })
 rex.bind("ctrl+[", "pane.send_key", { key = "escape" })
 
--- ctrl+b <number> jumps to a tab in the CURRENT session (1-9, 0 = tab 10).
--- client.tab.goto counts tabs across all sessions in the sidebar, so use the session's own window list.
+-- Tab switching inside the CURRENT session (same host).
+-- The app can't "session.select" a session that lives on a remote host (cloudtop), and
+-- client.tab.goto counts tabs across every host in the sidebar. So we find the current tab's
+-- position in this session and step there with client.tab.next/previous: a session's tabs are
+-- contiguous in the sidebar, so the steps never leave the session.
+local function session_tabs(ctx)
+  local view, err = rex.session.view{}
+  if err ~= nil then error(err, 0) end
+  local windows = view.windows or {}
+  local cur
+  for i, w in ipairs(windows) do
+    for _, layer in ipairs(w.layers or {}) do
+      for _, b in ipairs(layer.blocks or {}) do
+        if b.block_id == ctx.block_id then cur = i end
+      end
+    end
+  end
+  if cur == nil then -- fallback: the server's active window
+    for i, w in ipairs(windows) do
+      if w.window_id == view.active_window_id then cur = i end
+    end
+  end
+  return #windows, cur or 1
+end
+
+local function step_tabs(delta)
+  local action = delta > 0 and "client.tab.next" or "client.tab.previous"
+  for _ = 1, math.abs(delta) do rex.client.queue(action, {}) end
+end
+
+-- ctrl+b <number>: go to tab N of the current session (1-9, 0 = tab 10).
 rex.action{
   name  = "goto_session_tab",
   title = "Go to Tab in Current Session",
   args  = { index = "integer" },
   run   = function(ctx, args)
-    local view, err = rex.session.view{}
-    if err ~= nil then error(err, 0) end
-    local w = (view.windows or {})[args.index]
-    if w == nil then return end -- no such tab: do nothing
-    -- the app keeps its own tab selection, so ask it to show this session's window N
-    rex.client.queue("session.select", { session_id = view.session_id, window_id = w.window_id })
+    local n, cur = session_tabs(ctx)
+    if args.index > n then return end -- no such tab: do nothing
+    step_tabs(args.index - cur)
   end,
 }
 for i = 1, 9 do
@@ -65,31 +91,16 @@ for i = 1, 9 do
 end
 rex.bind("ctrl+b>0", "goto_session_tab", { index = 10 })
 
--- ctrl+b n / p: next / previous tab, wrapping around inside the CURRENT session (same host).
--- client.tab.next/previous walk every tab in the sidebar and jump to other hosts.
+-- ctrl+b n / p: next / previous tab, wrapping around inside the current session.
 rex.action{
   name  = "cycle_session_tab",
   title = "Next/Previous Tab in Current Session",
   args  = { step = "integer" },
   run   = function(ctx, args)
-    local view, err = rex.session.view{}
-    if err ~= nil then error(err, 0) end
-    local windows = view.windows or {}
-    local n = #windows
+    local n, cur = session_tabs(ctx)
     if n < 2 then return end
-    -- find the tab holding the block the key went to (fallback: server's active window)
-    local cur
-    for i, w in ipairs(windows) do
-      for _, layer in ipairs(w.layers or {}) do
-        for _, b in ipairs(layer.blocks or {}) do
-          if b.block_id == ctx.block_id then cur = i end
-        end
-      end
-      if cur == nil and w.window_id == view.active_window_id then cur = i end
-    end
-    cur = cur or 1
     local nxt = ((cur - 1 + args.step) % n) + 1
-    rex.client.queue("session.select", { session_id = view.session_id, window_id = windows[nxt].window_id })
+    step_tabs(nxt - cur)
   end,
 }
 rex.bind("ctrl+b>n", "cycle_session_tab", { step = 1 })

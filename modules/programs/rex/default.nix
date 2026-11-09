@@ -27,6 +27,9 @@ in
   imports = [ rex.homeManagerModules.default ];
 
   config = mkIf cfg.enable {
+    # Shared ~/.config/rex/init.lua for every host.
+    programs.rex.config = mkDefault ./init.lua;
+
     # On macOS the Rex app ships its own `rex` CLI; only manage config there.
     # (terminfo and sshGuard default to off when package is null; run
     # `rex terminfo setup` on the Mac instead.)

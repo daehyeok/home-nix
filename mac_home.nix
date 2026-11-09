@@ -54,6 +54,9 @@ with lib;
   xdg.enable = true;
 
   programs = {
+    # Rex config only (~/.config/rex/init.lua); the Rex app provides the CLI,
+    # so the module installs no package on macOS.
+    rex.enable = true;
     starship.settings.format = " $directory$git_branch$git_commit$git_state$git_metrics$git_status$character";
     git.settings.user = {
       email = "daehyeok@gmail.com";

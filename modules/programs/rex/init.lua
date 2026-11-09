@@ -1,0 +1,12 @@
+-- Rex configuration (~/.config/rex/init.lua), shared by every host through
+-- common/modules/programs/rex. Read by the Rex server on each machine.
+--
+-- Apply after `home-manager switch` with:  rex config reload
+-- Validate a draft with:                  rex config check <path>
+--
+-- Docs: https://www.superlogical.com/rex/docs/customize/config
+--       https://www.superlogical.com/rex/docs/reference/lua
+--
+-- Examples:
+--   rex.bind("cmd+d", "pane.split", { direction = "right" })
+--   rex.bind("ctrl+b>c", "window.new")

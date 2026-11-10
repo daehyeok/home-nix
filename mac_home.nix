@@ -12,6 +12,7 @@ with lib;
     ./settings
     <catppuccin/modules/home-manager>
     ./modules/programs/zsh/emacs-editor.nix
+    ./modules/programs/omniwm
   ];
 
   home = {

@@ -4,13 +4,10 @@
 rex.bind("ctrl+b>c", "client.tab.new")                -- tmux.conf:6
 rex.bind("ctrl+b>ctrl+b", "pane.send_key", { key = "ctrl+b" }) -- pass the prefix through
 
--- iTerm2 GlobalKeyMap
-rex.bind("shift+cmd+left", "client.tab.move", { direction = "backward" }) -- 0xf702-0x320000, action 33
-rex.bind("shift+cmd+right", "client.tab.move", { direction = "forward" }) -- 0xf703-0x320000, action 34
+-- cmd+arrows (and shift+cmd+arrows) are left unbound: OmniWM uses them on macOS for
+-- window focus/move (common/modules/programs/omniwm). Use ctrl+a / ctrl+e for line start/end.
 
--- iTerm2 profile "Default" Keyboard Map (overrides GlobalKeyMap on the same key)
-rex.bind("cmd+left", "pane.send_key", { key = "ctrl+a" })      -- 0xf702-0x300000, action 11 0x1
-rex.bind("cmd+right", "pane.send_key", { key = "ctrl+e" })     -- 0xf703-0x300000, action 11 0x5
+-- iTerm2 profile "Default" Keyboard Map
 -- rex.bind("cmd+backspace", "pane.send_key", { key = "ctrl+u" }) -- 0x7f-0x100000, action 11 0x15
 rex.bind("delete", "pane.send_key", { key = "ctrl+d" })        -- 0xf728-0x0, action 11 0x4
 

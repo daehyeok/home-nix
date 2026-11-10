@@ -127,7 +127,7 @@ rex.action{
 rex.bind("ctrl+b>shift+x", "client.tab.close") -- X: close with the app's confirmation
 
 -- Panes, Emacs C-x style: ctrl+b x <key> (ctrl may stay held on the x: ctrl+b ctrl+x <key>).
---   2 split below   3 split right   0 close pane   1 close other panes   o/O next/previous pane   x close tab
+--   2 split below   3 split right   0 close pane   1 zoom (toggle)   o/O next/previous pane   x close tab
 rex.action{
   name  = "close_pane_now",
   title = "Close Pane Without Confirmation",
@@ -140,7 +140,7 @@ local pane_keys = {
   ["2"] = { "pane.split", { direction = "down" } },
   ["3"] = { "pane.split", { direction = "right" } },
   ["0"] = { "close_pane_now" },
-  ["1"] = { "pane.close_others" },
+  ["1"] = { "pane.zoom" },
   ["o"] = { "pane.focus_next" },
   ["shift+o"] = { "pane.focus_previous" },
   ["x"] = { "close_tab_now" },

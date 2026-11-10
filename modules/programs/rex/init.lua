@@ -137,6 +137,64 @@ rex.bind("ctrl+b>s>c", "session.new")             -- c: new session on the curre
 rex.bind("ctrl+b>s>r", "session.rename")          -- r: rename current session
 rex.bind("ctrl+b>s>shift+r", "session.refresh")   -- R: refresh sessions
 
+-- ctrl+b [: copy mode, like tmux. Rex has no keyboard copy mode, so this opens the pane's
+-- screen and scrollback read-only in Emacs, in a full-window floating pane on the same host
+-- (works for remote hosts too). Emacs keys select text: C-SPC mark, C-n/C-p/M-v/C-v/C-s move,
+-- M-w copies to the clipboard (OSC 52, which Rex hands to the client) and exits, q quits.
+local copy_mode_el = [==[
+(progn
+  (setq inhibit-startup-screen t make-backup-files nil auto-save-default nil)
+  (menu-bar-mode -1)
+  (setq-default truncate-lines t)
+  (defun rex-copy-mode-copy (beg end)
+    (interactive "r")
+    (let ((s (buffer-substring-no-properties beg end)))
+      (send-string-to-terminal
+       (format "%c]52;c;%s%c" 27 (base64-encode-string (encode-coding-string s 'utf-8) t) 7))
+      (kill-emacs 0)))
+  (global-set-key (kbd "M-w") #'rex-copy-mode-copy)
+  (global-set-key (kbd "q") (lambda () (interactive) (kill-emacs 0)))
+  (read-only-mode 1)
+  (setq-default mode-line-format " COPY MODE  C-SPC mark  M-w copy+exit  C-s search  q quit")
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (goto-char (point-max))
+              (skip-chars-backward " \t\n")
+              (beginning-of-line)
+              (ignore-errors (recenter -1)))))
+]==]
+
+-- $1 = block to capture, $2 = the Emacs setup above. Runs on the block's own host, where
+-- `rex` talks to that host's server.
+local copy_mode_sh = [[
+f=$(mktemp "${TMPDIR:-/tmp}/rex-copy.XXXXXX") || exit 1
+trap 'rm -f "$f"' EXIT HUP INT TERM
+rex block capture -b "$1" --unwrap > "$f" && emacs -nw -Q "$f" --eval "$2"
+]]
+
+rex.action{
+  name  = "copy_mode",
+  title = "Copy Mode (Emacs)",
+  run   = function(ctx)
+    local req = {
+      session_id = ctx.session_id,
+      bounds = { 0, 0, 1, 1 },
+      focus = true,
+      layout = { block = {
+        flavor = "com.superlogical.terminal.shell",
+        label = "copy mode",
+        options = { command = { "sh", "-c", copy_mode_sh, "rex-copy", ctx.block_id, copy_mode_el } },
+      } },
+    }
+    local _, err = rex.session.new_layer(req)
+    if err ~= nil and ctx.server then -- remote tab: call that host's server directly
+      _, err = rex.server(ctx.server).session.new_layer(req)
+    end
+    if err ~= nil then error(err, 0) end
+  end,
+}
+rex.bind("ctrl+b>[", "copy_mode")
+
 -- Host-specific overrides from ~/.config/rex/local.lua (not managed by
 -- home-manager, so it can be edited freely per machine).
 -- KEEP THIS AT THE END OF THE FILE: later bindings win, so loading local.lua

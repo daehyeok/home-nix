@@ -103,7 +103,7 @@ rex.action{
 rex.bind("ctrl+b>n", "cycle_session_tab", { step = 1 })
 rex.bind("ctrl+b>p", "cycle_session_tab", { step = -1 })
 
--- ctrl+b x: close the current tab immediately, without the app's "is still running" confirmation.
+-- ctrl+b x x: close the current tab immediately, without the app's "is still running" confirmation.
 -- (client.tab.close asks first; the server API closes the window and its programs directly.)
 rex.action{
   name  = "close_tab_now",
@@ -124,8 +124,78 @@ rex.action{
     end
   end,
 }
-rex.bind("ctrl+b>x", "close_tab_now")
 rex.bind("ctrl+b>shift+x", "client.tab.close") -- X: close with the app's confirmation
+
+-- Panes, Emacs C-x style: ctrl+b x <key> (ctrl may stay held on the x: ctrl+b ctrl+x <key>).
+--   2 split below   3 split right   0 close pane   1 close other panes   o next pane   x close tab
+rex.action{
+  name  = "close_pane_now",
+  title = "Close Pane Without Confirmation",
+  run   = function(ctx)
+    local _, err = rex.call("block.close", { session_id = ctx.session_id, block_id = ctx.block_id })
+    if err ~= nil then error(err, 0) end
+  end,
+}
+local pane_keys = {
+  ["2"] = { "pane.split", { direction = "down" } },
+  ["3"] = { "pane.split", { direction = "right" } },
+  ["0"] = { "close_pane_now" },
+  ["1"] = { "pane.close_others" },
+  ["o"] = { "pane.focus_next" },
+  ["x"] = { "close_tab_now" },
+}
+for key, b in pairs(pane_keys) do
+  rex.bind("ctrl+b>x>" .. key, b[1], b[2])
+  rex.bind("ctrl+b>ctrl+x>" .. key, b[1], b[2])
+end
+
+-- cmd+1..9: go to pane N of the current tab, numbered like Emacs winum (Spacemacs M-1..9,
+-- cmd = Meta): top-left first, in layout order. When the focused pane runs Emacs, or the tab
+-- has fewer panes than N, the key goes to the program as alt+N instead (so winum inside a
+-- terminal Emacs keeps working).
+local function tab_panes(ctx)
+  local view = rex.session.view{}
+  for _, w in ipairs((view and view.windows) or {}) do
+    for _, layer in ipairs(w.layers or {}) do
+      if layer.kind == "tiled" then
+        local ids, found = {}, false
+        local function walk(n)
+          if not n then return end
+          if n.block_id then
+            ids[#ids + 1] = n.block_id
+            if n.block_id == ctx.block_id then found = true end
+          elseif n.split then
+            walk(n.split.before); walk(n.split.after)
+          end
+        end
+        walk(layer.layout)
+        if found then return ids end
+      end
+    end
+  end
+  return {}
+end
+
+rex.action{
+  name  = "goto_pane",
+  title = "Go to Pane N in Current Tab",
+  args  = { index = "integer" },
+  run   = function(ctx, args)
+    local proc = rex.block.call("com.superlogical.terminal", "process",
+      { session_id = ctx.session_id, block_id = ctx.block_id })
+    local fg = (proc and proc.foreground and proc.foreground.name) or ""
+    local panes = tab_panes(ctx)
+    if fg:match("emacs") or args.index > #panes then
+      rex.client.queue("pane.send_key", { key = "alt+" .. args.index })
+      return
+    end
+    local _, err = rex.session.focus_block{ block_id = panes[args.index] }
+    if err ~= nil then error(err, 0) end
+  end,
+}
+for i = 1, 9 do
+  rex.bind("cmd+" .. i, "goto_pane", { index = i }) -- after the cmd->alt loop above, so this wins
+end
 
 -- ctrl+b m: command palette
 rex.bind("ctrl+b>m", "client.palette.toggle")

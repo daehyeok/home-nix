@@ -65,7 +65,7 @@ with lib;
 
       initContent = mkMerge [
         (mkBefore ''
-          fpath=("$HOME/.zsh/completions" $fpath)
+          fpath=("${config.xdg.dataHome}/zsh/completions" $fpath)
         '')
         (mkAfter ''
           if (( $+functions[_zsh_autosuggest_strategy_atuin] )); then

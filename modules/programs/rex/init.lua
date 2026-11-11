@@ -45,7 +45,62 @@ rex.bind("cmd+backspace", "pane.send_key", { key = "alt+backspace" })
 rex.bind("ctrl+m", "pane.send_key", { key = "enter" })
 rex.bind("ctrl+i", "pane.send_key", { key = "tab" })
 rex.bind("ctrl+[", "pane.send_key", { key = "escape" })
-rex.bind(PREFIX .. ">" .. PREFIX, "pane.send_key", { key = PREFIX }) -- pass the prefix through
+
+-- PREFIX PREFIX: send the prefix to the pane, then keep sending one per extra PREFIX pressed
+-- within PREFIX_REPEAT_WINDOW seconds of the last (3 ctrl+b = 4 presses, not 6). Rex's config
+-- has no timers and keeps no mode open on its own clock, so the window is a key mode
+-- (prefix_repeat) that a detached background timer closes with `rex do client.mode.exit_all`;
+-- after that PREFIX is the real prefix again. Other keys pass through untouched meanwhile.
+-- Needs Rex > Settings > Rex Server > Remote Control (Rex shows a notice for each close).
+-- Without it the mode can't be closed on time: a late PREFIX then only closes the mode, and
+-- the next PREFIX is the prefix.
+PREFIX_REPEAT_WINDOW = 0.35
+local REX_CLI = os.getenv("HOME")
+  .. "/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex"
+do
+  local f = io.open(REX_CLI, "r")
+  if f then f:close() else REX_CLI = "rex" end -- not macOS: rex on PATH
+end
+local PREFIX_TOKEN_FILE = (os.getenv("TMPDIR") or "/tmp"):gsub("/$", "") .. "/rex-prefix-repeat-" .. (os.getenv("USER") or "user")
+-- Rex kills processes an action starts as soon as the action returns, so the timer double-forks
+-- (setsid) to outlive it. Each arm writes a new token; a timer whose token is stale exits quietly.
+local PREFIX_TIMER_PL = [[
+my ($secs, $rex, $tok, $state) = @ARGV;
+exit 0 if fork(); POSIX::setsid(); exit 0 if fork();
+open(STDIN, "</dev/null"); open(STDOUT, ">/dev/null"); open(STDERR, ">/dev/null");
+select(undef, undef, undef, $secs);
+open(my $s, "<", $state) or exit 0; my $cur = <$s>; close $s; chomp $cur;
+exec($rex, "do", "--origin", "key", "client.mode.exit_all") if $cur eq $tok;
+]]
+local prefix_token, prefix_last = 0, -math.huge
+
+local function prefix_send()
+  rex.client.queue("pane.send_key", { key = PREFIX })
+  rex.client.queue("client.mode.enter", { name = "prefix_repeat", once = true })
+  prefix_token = prefix_token + 1
+  local f = io.open(PREFIX_TOKEN_FILE, "w")
+  if f then f:write(prefix_token, "\n"); f:close() end
+  rex.exec({ "/usr/bin/perl", "-MPOSIX", "-e", PREFIX_TIMER_PL,
+    tostring(PREFIX_REPEAT_WINDOW), REX_CLI, tostring(prefix_token), PREFIX_TOKEN_FILE })
+  prefix_last = os.clock() -- elapsed wall time in Rex's Lua
+end
+
+rex.mode("prefix_repeat", { exclusive = false })
+rex.action{ name = "prefix_send", title = "Send Prefix to Pane", run = prefix_send }
+rex.action{
+  name  = "prefix_send_again",
+  title = "Send Prefix Again (repeat window)",
+  run   = function()
+    -- 0.1 s of slack: the timer needs a moment to start `rex do` after the window ends.
+    if os.clock() - prefix_last <= PREFIX_REPEAT_WINDOW + 0.1 then
+      prefix_send()
+    else -- the window is long over, so the timer couldn't close the mode (Remote Control off?)
+      rex.client.queue("client.mode.exit_all")
+    end
+  end,
+}
+rex.bind(PREFIX .. ">" .. PREFIX, "prefix_send")
+rex.bind("prefix_repeat/" .. PREFIX, "prefix_send_again")
 
 -- Tab switching inside the CURRENT session (same host).
 -- The app can't "session.select" a session that lives on a remote host (cloudtop), and
@@ -154,6 +209,10 @@ for key, b in pairs(pane_keys) do
   rex.bind(PREFIX .. ">x>" .. key, b[1], b[2])
   rex.bind(PREFIX .. ">ctrl+x>" .. key, b[1], b[2])
 end
+
+-- cmd+w: close the focused pane without confirmation (replaces cmd+w -> alt+w from the
+-- cmd-as-Meta loop above; M-w is still reachable as escape w).
+rex.bind("cmd+w", "close_pane_now")
 
 -- cmd+1..9: go to pane N of the current tab, numbered like Emacs winum (Spacemacs M-1..9,
 -- cmd = Meta): top-left first, in layout order. When the focused pane runs Emacs, or the tab
@@ -280,9 +339,9 @@ rex keymap --json 2>/dev/null | jq -r --arg p "$1" '
   | def lbl: ($t[.action] // "") as $title
       | (if $title != "" then $title else .action end)
         + (if .args then "  " + (.args | tojson) else "" end);
-  def row: "  \(.keys | join(" ") | .[0:28] | . + (" " * (28 - length)))  \(lbl)";
-  (.bindings | map(select(.keys[0] == $p)) | sort_by(.keys)) as $pre
-  | (.bindings | map(select(.keys[0] != $p)) | sort_by(.keys)) as $rest
+  def row: "  \((if .mode then .mode + "/" else "" end) + (.keys | join(" ")) | .[0:28] | . + (" " * (28 - length)))  \(lbl)";
+  (.bindings | map(select(.keys[0] == $p and .mode == null)) | sort_by(.keys)) as $pre
+  | (.bindings | map(select(.keys[0] != $p or .mode != null)) | sort_by(.keys)) as $rest
   | "PREFIX (\($p)) bindings", "", ($pre[] | row), "", "Other bindings", "", ($rest[] | row)
 ' | less -R -S -P " Rex keys  (q quit, / search)"
 ]==]

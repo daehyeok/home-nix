@@ -30,13 +30,13 @@ splitWidthMultiplier = 1.0
 useGlobalGaps = true
 
 [focus]
-crossesMonitorAtEdge = false
+crossesMonitorAtEdge = true
 edgeNavigationInterval = 1.5
 followsMouse = false
 followsMouseOnlyFullyVisible = false
-followsWindowToMonitor = false
+followsWindowToMonitor = true
 lockModifier = "off"
-moveCrossesMonitorAtEdge = false
+moveCrossesMonitorAtEdge = true
 moveMouseToFocusedWindow = false
 raiseOnMouseFocus = false
 
@@ -56,14 +56,14 @@ animationsEnabled = true
 defaultLayoutType = "niri"
 hotkeysEnabled = true
 hyperKeyModifiers = "Control+Command"
-ipcEnabled = false
+ipcEnabled = true
 preventSleepEnabled = false
 systemHyperTrigger = "None"
 updateChecksEnabled = true
 workspaceAutoBackAndForth = false
 
 [gestures]
-adoptNativeMoveAcrossDisplays = false
+adoptNativeMoveAcrossDisplays = true
 adoptNativeResize = false
 dwindleGroupDragAcrossDisplays = "group"
 fingerCount = 3
@@ -90,7 +90,7 @@ workspaceSwipeFingerCount = 3
 
 [hiddenBar]
 enabled = true
-hiddenBundleIDs = ["com.hegenberg.BetterTouchTool", "com.google.corp.gmenu", "com.google.santa", "com.apple.Passwords", "com.google.snipit.macos", "com.tinycast.app", "com.bitwarden.desktop", "com.google.GeminiMacOS", "com.superlogical.rex"]
+hiddenBundleIDs = ["com.hegenberg.BetterTouchTool", "com.google.corp.gmenu", "com.google.santa", "com.apple.Passwords", "com.google.snipit.macos", "com.tinycast.app", "com.bitwarden.desktop", "com.google.GeminiMacOS", "com.superlogical.rex", "org.hammerspoon.Hammerspoon"]
 rehideIntervalSeconds = 5.0
 
 [island]
@@ -173,8 +173,28 @@ provider = "ghostty"
 widthPercent = 50.0
 
 [routing]
-arrangements = []
-mode = "macOS"
+mode = "custom"
+
+[[routing.arrangements]]
+id = "8281F6B4-7121-4C3A-A05F-9C3E2095508F"
+
+[[routing.arrangements.monitors]]
+gridColumn = 0
+gridRow = 0
+monitorDisplayUUID = "C9EF0890-A418-474F-92C5-35247CD57A82"
+monitorName = "P27h-20"
+
+[[routing.arrangements.monitors]]
+gridColumn = 1
+gridRow = 0
+monitorDisplayUUID = "F1483A01-A7D2-4F68-A716-5EDB6DCC2838"
+monitorName = "U32J59x"
+
+[[routing.arrangements.monitors]]
+gridColumn = 2
+gridRow = 0
+monitorDisplayUUID = "37D8832A-2D66-02CA-B9F7-8F30A301B230"
+monitorName = "Built-in Retina Display"
 
 [scratchpads]
 
@@ -572,22 +592,18 @@ id = "switchWorkspace.previous"
 [[hotkeys]]
 binding = "Command+Left Arrow"
 id = "focus.left"
-modeKey = "Left Arrow"
 
 [[hotkeys]]
 binding = "Command+Down Arrow"
 id = "focus.down"
-modeKey = "Down Arrow"
 
 [[hotkeys]]
 binding = "Command+Up Arrow"
 id = "focus.up"
-modeKey = "Up Arrow"
 
 [[hotkeys]]
 binding = "Command+Right Arrow"
 id = "focus.right"
-modeKey = "Right Arrow"
 
 [[hotkeys]]
 binding = "Unassigned"
@@ -688,22 +704,18 @@ id = "moveColumnToWorkspace.8"
 [[hotkeys]]
 binding = "Shift+Command+Left Arrow"
 id = "move.left"
-modeKey = "Shift+Left Arrow"
 
 [[hotkeys]]
 binding = "Shift+Command+Down Arrow"
 id = "move.down"
-modeKey = "Shift+Down Arrow"
 
 [[hotkeys]]
 binding = "Shift+Command+Up Arrow"
 id = "move.up"
-modeKey = "Shift+Up Arrow"
 
 [[hotkeys]]
 binding = "Shift+Command+Right Arrow"
 id = "move.right"
-modeKey = "Shift+Right Arrow"
 
 [[hotkeys]]
 binding = "Unassigned"
@@ -1078,7 +1090,7 @@ binding = "Unassigned"
 id = "toggleShortcutPause"
 
 [[hotkeys]]
-binding = "Left Command+Left Bracket"
+binding = "Left Command+Right Bracket"
 id = "beginPrefix"
 
 [[hotkeys]]
@@ -1101,6 +1113,7 @@ id = "newShellAppWindow.example"
 [[hotkeys]]
 binding = "Control+Option+Space"
 id = "openCommandPalette"
+modeKey = "P"
 
 [[hotkeys]]
 binding = "Unassigned"
@@ -1236,7 +1249,7 @@ layoutType = "niri"
 name = "2"
 
 [workspaces.monitorAssignment]
-type = "main"
+type = "secondary"
 
 [[workspaces]]
 id = "BEB842B5-E894-4791-9FD1-397C3CDD3538"
@@ -1244,7 +1257,7 @@ layoutType = "niri"
 name = "3"
 
 [workspaces.monitorAssignment]
-type = "main"
+type = "tertiary"
 
 [[workspaces]]
 id = "248AA883-2261-4D45-943C-79C0E46A232B"

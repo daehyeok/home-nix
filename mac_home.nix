@@ -13,6 +13,7 @@ with lib;
     <catppuccin/modules/home-manager>
     ./modules/programs/zsh/emacs-editor.nix
     ./modules/programs/omniwm
+    ./modules/programs/hammerspoon
   ];
 
   home = {

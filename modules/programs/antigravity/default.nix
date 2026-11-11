@@ -54,11 +54,13 @@ in
 
     # Force the built-in OSC 7501 status only in Rex outside tmux: "on" skips
     # Jetski's support check, so elsewhere it could print escape junk.
+    # "brief" leaves the reply / pending command / question text out of the
+    # status (raw markdown reads badly in banners).
     programs.zsh.initContent = mkIf config.programs.zsh.enable ''
       if [[ -z "''${TMUX:-}" && ( -n "''${REX_BLOCK:-}" || "''${TERM_PROGRAM:-}" == rex ) ]]; then
-        export AGY_CLI_OSC7501=on
+        export AGY_CLI_OSC7501=on AGY_CLI_OSC7501_MESSAGES=brief
       else
-        unset AGY_CLI_OSC7501
+        unset AGY_CLI_OSC7501 AGY_CLI_OSC7501_MESSAGES
       fi
     '';
   };

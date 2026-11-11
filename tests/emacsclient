@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-echo "$@" > tests/emacsclient_args.log
+# Test stub for emacsclient: `-e t` reports the server state from EMACSCLIENT_TEST_RETURN;
+# any other call records its arguments.
 if [[ "$1" == "-e" && "$2" == "t" ]]; then
-  exit ${EMACSCLIENT_TEST_RETURN}
+  exit "${EMACSCLIENT_TEST_RETURN:-1}"
 fi
-exit 0 # Default success for other calls
+echo "$@" > "${STUB_LOG_DIR:?}/emacsclient_args.log"
+exit 0

@@ -61,6 +61,27 @@ with lib;
 
   xdg.enable = true;
 
+  # Emacs server for emacs-editor and GUI frames (emacsclient -c). Same label as the GMac's
+  # tools/launchd/dev.daehyeok.emacs.plist, so one restart command works on both Macs:
+  #   launchctl kickstart -k gui/$(id -u)/dev.daehyeok.emacs
+  # Not services.emacs: that needs a Nix-built Emacs, and this Mac runs Emacs.app.
+  launchd.agents.emacs = {
+    enable = true;
+    config = {
+      Label = "dev.daehyeok.emacs";
+      ProgramArguments = [
+        "/Applications/Emacs.app/Contents/MacOS/Emacs"
+        "--fg-daemon"
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      ThrottleInterval = 30;
+      ProcessType = "Interactive";
+      StandardOutPath = "${config.home.homeDirectory}/Library/Logs/emacs-server.log";
+      StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/emacs-server.log";
+    };
+  };
+
   programs = {
     # Rex config only (~/.config/rex/init.lua); the Rex app provides the CLI,
     # so the module installs no package on macOS.

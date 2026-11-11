@@ -7,30 +7,9 @@
 with lib;
 let
   cfg = config.programs.zsh.emacs-editor;
-  emacs-editor-script = pkgs.writeScriptBin "emacs-editor" ''
-    #!/usr/bin/env bash
-
-    # GEMINI environment check
-    if [[ -n "$GEMINI_CLI" ]]; then
-      # In GEMINI environment, use vi as requested
-      vi "$@"
-      exit $?
-    fi
-
-    if emacsclient -e t > /dev/null 2>&1; then
-      # Server is running
-      if [[ -n "$INSIDE_EMACS" ]]; then
-        # Inside Emacs
-        emacsclient "$@"
-      else
-        # Not inside Emacs
-        emacsclient -nw "$@"
-      fi
-    else
-      # Server is not running
-      emacs -q "$@"
-    fi
-  '';
+  # Single source: ../emacs-editor (also exercised by tests/test_emacs-editor.sh and
+  # linked as-is on the GMac by home-gmac).
+  emacs-editor-script = pkgs.writeScriptBin "emacs-editor" (builtins.readFile ../emacs-editor);
 in
 {
   options.programs.zsh.emacs-editor = {
@@ -39,7 +18,7 @@ in
     zsh_integration = mkOption {
       type = types.bool;
       default = true;
-      description = "Set EDITOR environment variable in Zsh.";
+      description = "Set EDITOR to emacs-editor and alias emacs to it in Zsh.";
     };
   };
 
@@ -53,6 +32,11 @@ in
     programs.zsh = lib.mkIf cfg.zsh_integration {
       sessionVariables = {
         EDITOR = "emacs-editor";
+      };
+      # `emacs` goes through the script too; option args (emacs --version, -Q, ...) reach the
+      # real emacs because the script hands them over unchanged.
+      shellAliases = {
+        emacs = "emacs-editor";
       };
     };
   };

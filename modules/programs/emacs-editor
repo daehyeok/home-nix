@@ -1,22 +1,30 @@
 #!/usr/bin/env bash
+# emacs-editor: $EDITOR and `alias emacs=emacs-editor` on every host.
+#
+#   any arg starting with "-"   -> real emacs, args unchanged (emacs --version, -Q, --daemon, ...)
+#   no server reachable         -> emacs -nw -q   (fast terminal fallback, no init files)
+#   inside an Emacs terminal    -> emacsclient    (open in the server you are in)
+#   in a terminal               -> emacsclient -nw
+#   no terminal (GUI caller)    -> emacsclient -c (new frame from the server)
+#
+# The emacs alias is zsh-only, so `emacs` below is always the real binary on PATH.
 
-# GEMINI environment check
-if [[ -n "$GEMINI_CLI" ]]; then
-  # In GEMINI environment, use vi as requested
-  vi "$@"
-  exit $?
-fi
-
-if emacsclient -e t > /dev/null 2>&1; then
-  # Server is running
-  if [[ -n "$INSIDE_EMACS" ]]; then
-    # Inside Emacs
-    emacsclient "$@"
-  else
-    # Not inside Emacs
-    emacsclient -nw "$@"
+for arg in "$@"; do
+  if [[ "$arg" == -* ]]; then
+    exec emacs "$@"
   fi
-else
-  # Server is not running
-  emacs -q "$@"
+done
+
+if ! emacsclient -e t > /dev/null 2>&1; then
+  exec emacs -nw -q "$@"
 fi
+
+if [[ -n "$INSIDE_EMACS" ]]; then
+  exec emacsclient "$@"
+fi
+
+if [[ -t 0 && -t 1 ]]; then
+  exec emacsclient -nw "$@"
+fi
+
+exec emacsclient -c "$@"

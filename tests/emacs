@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-echo "$@" > tests/emacs_args.log
+# Test stub for the real emacs: records its arguments.
+echo "$@" > "${STUB_LOG_DIR:?}/emacs_args.log"
 exit 0

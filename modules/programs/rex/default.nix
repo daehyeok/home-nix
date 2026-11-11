@@ -35,15 +35,17 @@ in
     # `rex terminfo setup` on the Mac instead.)
     programs.rex.package = mkIf pkgs.stdenv.hostPlatform.isDarwin (mkDefault null);
 
-    # init.lua ends with `require("local")` for unmanaged per-host overrides.
-    # Create an empty ~/.config/rex/local.lua on switch if it doesn't exist
-    # (never overwrite an existing one).
+    # init.lua ends by loading two optional per-host layers: local_machine.lua
+    # (managed per-host config), then local.lua (personal, never tracked).
+    # Create both empty on switch if they don't exist (never overwrite an
+    # existing one), so there is always a file to edit.
     home.activation.rexLocalConfig = hm.dag.entryAfter [ "writeBoundary" ] ''
-      rexLocal="${config.xdg.configHome}/rex/local.lua"
-      if [ ! -e "$rexLocal" ]; then
-        run mkdir -p "$(dirname "$rexLocal")"
-        run touch "$rexLocal"
-      fi
+      for rexLocal in "${config.xdg.configHome}/rex/local_machine.lua" "${config.xdg.configHome}/rex/local.lua"; do
+        if [ ! -e "$rexLocal" ]; then
+          run mkdir -p "$(dirname "$rexLocal")"
+          run touch "$rexLocal"
+        fi
+      done
     '';
 
     # The Rex server doesn't notice when home-manager swaps the init.lua

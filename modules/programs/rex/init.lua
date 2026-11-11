@@ -1,7 +1,8 @@
 -- Rex config, migrated from tmux and iTerm2.
 
 -- Prefix key for every tmux-style sequence below: ctrl+b, the tmux default (PREFIX PREFIX
--- sends ctrl+b to the pane). Global so local.lua can bind under the same prefix.
+-- sends ctrl+b to the pane). Global so the per-host layers (local_machine.lua, local.lua;
+-- see the end of this file) can bind under the same prefix.
 PREFIX = "ctrl+b"
 
 -- tmux (~/.config/tmux/tmux.conf), prefix PREFIX
@@ -309,10 +310,21 @@ rex.action{
 }
 rex.bind(PREFIX .. ">shift+/", "show_keys") -- "?" (Rex names it shift+/)
 
--- Host-specific overrides from ~/.config/rex/local.lua (not managed by
--- home-manager, so it can be edited freely per machine).
--- KEEP THIS AT THE END OF THE FILE: later bindings win, so loading local.lua
--- last gives it the highest priority and lets it override anything above.
--- home-manager creates an empty file on switch if it is missing (see
--- default.nix), so this require never fails.
-require("local")
+-- Per-host layers, loaded from the Rex config directory in this order:
+--   local_machine.lua  managed per-host config (e.g. linked from a dotfiles repo)
+--   local.lua          personal config and temporary test code, never tracked
+-- KEEP THIS AT THE END OF THE FILE: later bindings win, so local_machine.lua
+-- overrides everything above and local.lua overrides local_machine.lua.
+-- A missing file is skipped (home-manager creates both empty on switch, see
+-- default.nix); a file that exists but fails to load is reported by `rex config check`.
+local function load_layer(name)
+  for template in package.path:gmatch("[^;]+") do
+    local f = io.open((template:gsub("%?", name)), "r")
+    if f then
+      f:close()
+      return require(name)
+    end
+  end
+end
+load_layer("local_machine")
+load_layer("local")

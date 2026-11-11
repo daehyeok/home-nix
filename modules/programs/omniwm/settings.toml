@@ -1082,7 +1082,7 @@ binding = "Left Command+Left Bracket"
 id = "beginPrefix"
 
 [[hotkeys]]
-binding = "Unassigned"
+binding = "Control+W"
 id = "toggleWindowMode"
 modeKey = "W"
 

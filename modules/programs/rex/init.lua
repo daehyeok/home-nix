@@ -26,7 +26,7 @@ for _, k in ipairs({ ",", ".", "/", ";", "'", "[", "]", "\\", "-", "=", "`" }) d
   table.insert(meta_keys, k)
 end
 for _, k in ipairs(meta_keys) do
-  if k ~= "v" then -- cmd+v keeps the system paste
+  if k ~= "v" and k ~= "w" then -- cmd+v keeps the system paste; cmd+w closes the pane (below)
     rex.bind("cmd+" .. k, "pane.send_key", { key = "alt+" .. k })
   end
   if k:match("%a") then
@@ -210,8 +210,8 @@ for key, b in pairs(pane_keys) do
   rex.bind(PREFIX .. ">ctrl+x>" .. key, b[1], b[2])
 end
 
--- cmd+w: close the focused pane without confirmation (replaces cmd+w -> alt+w from the
--- cmd-as-Meta loop above; M-w is still reachable as escape w).
+-- cmd+w: close the focused pane without confirmation (the cmd-as-Meta loop above skips w;
+-- M-w is still reachable as escape w).
 rex.bind("cmd+w", "close_pane_now")
 
 -- cmd+1..9: go to pane N of the current tab, numbered like Emacs winum (Spacemacs M-1..9,

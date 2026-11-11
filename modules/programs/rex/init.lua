@@ -1,8 +1,11 @@
 -- Rex config, migrated from tmux and iTerm2.
 
--- tmux (~/.config/tmux/tmux.conf), prefix ctrl+b
-rex.bind("ctrl+b>c", "client.tab.new")                -- tmux.conf:6
-rex.bind("ctrl+b>ctrl+b", "pane.send_key", { key = "ctrl+b" }) -- pass the prefix through
+-- Prefix key for every tmux-style sequence below: ctrl+b, the tmux default (PREFIX PREFIX
+-- sends ctrl+b to the pane). Global so local.lua can bind under the same prefix.
+PREFIX = "ctrl+b"
+
+-- tmux (~/.config/tmux/tmux.conf), prefix PREFIX
+rex.bind(PREFIX .. ">c", "client.tab.new")                -- tmux.conf:6
 
 -- cmd+arrows (and shift+cmd+arrows) are left unbound: OmniWM uses them on macOS for
 -- window focus/move (common/modules/programs/omniwm). Use ctrl+a / ctrl+e for line start/end.
@@ -41,6 +44,7 @@ rex.bind("cmd+backspace", "pane.send_key", { key = "alt+backspace" })
 rex.bind("ctrl+m", "pane.send_key", { key = "enter" })
 rex.bind("ctrl+i", "pane.send_key", { key = "tab" })
 rex.bind("ctrl+[", "pane.send_key", { key = "escape" })
+rex.bind(PREFIX .. ">" .. PREFIX, "pane.send_key", { key = PREFIX }) -- pass the prefix through
 
 -- Tab switching inside the CURRENT session (same host).
 -- The app can't "session.select" a session that lives on a remote host (cloudtop), and
@@ -72,7 +76,7 @@ local function step_tabs(delta)
   for _ = 1, math.abs(delta) do rex.client.queue(action, {}) end
 end
 
--- ctrl+b <number>: go to tab N of the current session (1-9, 0 = tab 10).
+-- PREFIX <number>: go to tab N of the current session (1-9, 0 = tab 10).
 rex.action{
   name  = "goto_session_tab",
   title = "Go to Tab in Current Session",
@@ -84,11 +88,11 @@ rex.action{
   end,
 }
 for i = 1, 9 do
-  rex.bind("ctrl+b>" .. i, "goto_session_tab", { index = i })
+  rex.bind(PREFIX .. ">" .. i, "goto_session_tab", { index = i })
 end
-rex.bind("ctrl+b>0", "goto_session_tab", { index = 10 })
+rex.bind(PREFIX .. ">0", "goto_session_tab", { index = 10 })
 
--- ctrl+b n / p: next / previous tab, wrapping around inside the current session.
+-- PREFIX n / p: next / previous tab, wrapping around inside the current session.
 rex.action{
   name  = "cycle_session_tab",
   title = "Next/Previous Tab in Current Session",
@@ -100,10 +104,10 @@ rex.action{
     step_tabs(nxt - cur)
   end,
 }
-rex.bind("ctrl+b>n", "cycle_session_tab", { step = 1 })
-rex.bind("ctrl+b>p", "cycle_session_tab", { step = -1 })
+rex.bind(PREFIX .. ">n", "cycle_session_tab", { step = 1 })
+rex.bind(PREFIX .. ">p", "cycle_session_tab", { step = -1 })
 
--- ctrl+b x x: close the current tab immediately, without the app's "is still running" confirmation.
+-- PREFIX x x: close the current tab immediately, without the app's "is still running" confirmation.
 -- (client.tab.close asks first; the server API closes the window and its programs directly.)
 rex.action{
   name  = "close_tab_now",
@@ -124,9 +128,9 @@ rex.action{
     end
   end,
 }
-rex.bind("ctrl+b>shift+x", "client.tab.close") -- X: close with the app's confirmation
+rex.bind(PREFIX .. ">shift+x", "client.tab.close") -- X: close with the app's confirmation
 
--- Panes, Emacs C-x style: ctrl+b x <key> (ctrl may stay held on the x: ctrl+b ctrl+x <key>).
+-- Panes, Emacs C-x style: PREFIX x <key> (ctrl may stay held on the x: PREFIX ctrl+x <key>).
 --   2 split below   3 split right   0 close pane   1 zoom (toggle)   o/O next/previous pane   x close tab
 rex.action{
   name  = "close_pane_now",
@@ -146,8 +150,8 @@ local pane_keys = {
   ["x"] = { "close_tab_now" },
 }
 for key, b in pairs(pane_keys) do
-  rex.bind("ctrl+b>x>" .. key, b[1], b[2])
-  rex.bind("ctrl+b>ctrl+x>" .. key, b[1], b[2])
+  rex.bind(PREFIX .. ">x>" .. key, b[1], b[2])
+  rex.bind(PREFIX .. ">ctrl+x>" .. key, b[1], b[2])
 end
 
 -- cmd+1..9: go to pane N of the current tab, numbered like Emacs winum (Spacemacs M-1..9,
@@ -198,17 +202,17 @@ for i = 1, 9 do
   rex.bind("cmd+" .. i, "goto_pane", { index = i }) -- after the cmd->alt loop above, so this wins
 end
 
--- ctrl+b m: command palette
-rex.bind("ctrl+b>m", "client.palette.toggle")
+-- PREFIX m: command palette
+rex.bind(PREFIX .. ">m", "client.palette.toggle")
 
--- ctrl+b s <key>: sidebar / session group (ctrl+b s alone is only a prefix)
-rex.bind("ctrl+b>s>t", "client.sidebar.toggle")   -- t: toggle sidebar
-rex.bind("ctrl+b>s>f", "session.switch")          -- f: change session (picker)
-rex.bind("ctrl+b>s>c", "session.new")             -- c: new session on the current host
-rex.bind("ctrl+b>s>r", "session.rename")          -- r: rename current session
-rex.bind("ctrl+b>s>shift+r", "session.refresh")   -- R: refresh sessions
+-- PREFIX s <key>: sidebar / session group (PREFIX s alone is only a prefix)
+rex.bind(PREFIX .. ">s>t", "client.sidebar.toggle")   -- t: toggle sidebar
+rex.bind(PREFIX .. ">s>f", "session.switch")          -- f: change session (picker)
+rex.bind(PREFIX .. ">s>c", "session.new")             -- c: new session on the current host
+rex.bind(PREFIX .. ">s>r", "session.rename")          -- r: rename current session
+rex.bind(PREFIX .. ">s>shift+r", "session.refresh")   -- R: refresh sessions
 
--- ctrl+b [: copy mode, like tmux. Rex has no keyboard copy mode, so this opens the pane's
+-- PREFIX [: copy mode, like tmux. Rex has no keyboard copy mode, so this opens the pane's
 -- screen and scrollback read-only in Emacs, in a full-window floating pane on the same host
 -- (works for remote hosts too). Emacs keys select text: C-SPC mark, C-n/C-p/M-v/C-v/C-s move,
 -- M-w copies to the clipboard (OSC 52, which Rex hands to the client) and exits, q quits.
@@ -264,7 +268,46 @@ rex.action{
     if err ~= nil then error(err, 0) end
   end,
 }
-rex.bind("ctrl+b>[", "copy_mode")
+rex.bind(PREFIX .. ">[", "copy_mode")
+
+-- PREFIX ? (shift+/): list every key binding (which-key style), PREFIX bindings first, in a full-window
+-- floating pane; q quits. Rex has no bindable action for the hint popup's "Show keys", so this
+-- reads the live keymap (`rex keymap --json`) on the tab's host instead.
+local show_keys_sh = [==[
+rex keymap --json 2>/dev/null | jq -r --arg p "$1" '
+  (.actions | map({key: .name, value: (.title // "")}) | from_entries) as $t
+  | def lbl: ($t[.action] // "") as $title
+      | (if $title != "" then $title else .action end)
+        + (if .args then "  " + (.args | tojson) else "" end);
+  def row: "  \(.keys | join(" ") | .[0:28] | . + (" " * (28 - length)))  \(lbl)";
+  (.bindings | map(select(.keys[0] == $p)) | sort_by(.keys)) as $pre
+  | (.bindings | map(select(.keys[0] != $p)) | sort_by(.keys)) as $rest
+  | "PREFIX (\($p)) bindings", "", ($pre[] | row), "", "Other bindings", "", ($rest[] | row)
+' | less -R -S -P " Rex keys  (q quit, / search)"
+]==]
+
+rex.action{
+  name  = "show_keys",
+  title = "Show Key Bindings",
+  run   = function(ctx)
+    local req = {
+      session_id = ctx.session_id,
+      bounds = { 0, 0, 1, 1 },
+      focus = true,
+      layout = { block = {
+        flavor = "com.superlogical.terminal.shell",
+        label = "keys",
+        options = { command = { "sh", "-c", show_keys_sh, "rex-keys", PREFIX } },
+      } },
+    }
+    local _, err = rex.session.new_layer(req)
+    if err ~= nil and ctx.server then -- remote tab: call that host's server directly
+      _, err = rex.server(ctx.server).session.new_layer(req)
+    end
+    if err ~= nil then error(err, 0) end
+  end,
+}
+rex.bind(PREFIX .. ">shift+/", "show_keys") -- "?" (Rex names it shift+/)
 
 -- Host-specific overrides from ~/.config/rex/local.lua (not managed by
 -- home-manager, so it can be edited freely per machine).

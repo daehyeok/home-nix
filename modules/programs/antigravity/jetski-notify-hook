@@ -11,8 +11,10 @@
 #         ERROR                           -> error (msg = error)
 #         USER_CANCELED                   -> clear
 #
-# Subagent events (parentConversationId set) are ignored. The hook always
-# prints {} and exits 0: it must never block or fail the agent loop.
+# Subagent events (parentConversationId set) are ignored. The hook prints
+# nothing and exits 0: it must never block or fail the agent loop. (Empty
+# output is "no opinion" for every event; "{}" from a PreToolUse hook has no
+# "decision" and Jetski treats it as a deny.)
 
 event="${1:-}"
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
@@ -117,5 +119,4 @@ run() {
 }
 
 ( run ) >/dev/null 2>&1 || true
-echo '{}'
 exit 0

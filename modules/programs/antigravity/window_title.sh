@@ -11,8 +11,8 @@
 #   * in Rex, outside tmux: "🚀 <dir> · jetski" (fixed rocket; "jetski" so
 #     tabs are findable by name in fuzzy search; dir compressed like the
 #     zsh tab title via compress_path.sh). Agent status (working, blocked,
-#     done with a summary) goes to Rex from the Jetski hooks instead
-#     (hooks.json -> jetski-notify-hook -> agent-notify, OSC 7501), so this
+#     done, failed) goes to Rex from Jetski's built-in OSC 7501 reporting
+#     (AGY_CLI_OSC7501=on, set by the antigravity module's zsh init), so this
 #     script only prints the title.
 #   * in any other terminal: same as tmux, so the state is still visible.
 set -euo pipefail

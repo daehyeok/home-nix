@@ -40,19 +40,26 @@ in
       executable = true;
     };
 
-    # Agent status notifications (Rex OSC 7501): agent-notify is the one
-    # emitter (also used by the notify-user skill and scripts); Jetski hooks
-    # report working / blocked (ask_question) / done (with a summary) through
-    # jetski-notify-hook. The GMac links the same files (home-gmac [jetski]).
+    # Agent status notifications (Rex OSC 7501). Jetski reports its own
+    # lifecycle (working, blocked on permission / question / plan review /
+    # sign-in / expired credentials, done, failed) when AGY_CLI_OSC7501=on.
+    # agent-notify stays for what the CLI can't see (background jobs, scripts,
+    # other agents) and backs the notify-user skill. The GMac links the same
+    # files (home-gmac [jetski]).
     home.file.".local/bin/agent-notify" = {
       source = ./agent-notify;
       executable = true;
     };
-    home.file."${cfg.cliDir}/jetski-notify-hook" = {
-      source = ./jetski-notify-hook;
-      executable = true;
-    };
-    home.file.".gemini/config/hooks.json".source = ./hooks.json;
     home.file.".gemini/config/skills/notify-user/SKILL.md".source = ./skills/notify-user/SKILL.md;
+
+    # Force the built-in OSC 7501 status only in Rex outside tmux: "on" skips
+    # Jetski's support check, so elsewhere it could print escape junk.
+    programs.zsh.initContent = mkIf config.programs.zsh.enable ''
+      if [[ -z "''${TMUX:-}" && ( -n "''${REX_BLOCK:-}" || "''${TERM_PROGRAM:-}" == rex ) ]]; then
+        export AGY_CLI_OSC7501=on
+      else
+        unset AGY_CLI_OSC7501
+      fi
+    '';
   };
 }

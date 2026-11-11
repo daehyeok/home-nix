@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# agent-notify: report agent status to the terminal (Rex Program Status
+# Protocol, OSC 7501). The one place that speaks the protocol, so Jetski hooks,
+# other agents and scripts all go through it.
+#
+#   agent-notify <working|blocked|done|error|clear>
+#                [--kind question|permission|auth] [--app NAME]
+#                [--title TEXT] [--msg TEXT]
+#
+# Inside Rex (REX_BLOCK set or TERM_PROGRAM=rex, not inside tmux) it writes one
+# OSC 7501 sequence to /dev/tty and skips a report identical to the previous
+# one for the same Rex block. Anywhere else, or with no terminal, it does
+# nothing. It always exits 0 so callers (hooks) never fail because of it.
+# AGENT_NOTIFY_DRY_RUN=1 prints the report body to stdout instead.
+# Spec: https://www.superlogical.com/rex/docs/build/program-status
+
+state="${1:-}"
+shift 2>/dev/null || true
+kind="" app="${AGENT_NOTIFY_APP:-jetski}" title="" msg=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --kind)  kind="${2:-}"; shift ;;
+        --app)   app="${2:-}"; shift ;;
+        --title) title="${2:-}"; shift ;;
+        --msg)   msg="${2:-}"; shift ;;
+    esac
+    shift
+done
+
+case "$state" in
+    working|blocked|done|error|clear) ;;
+    *) exit 0 ;;
+esac
+case "$kind" in
+    ""|question|permission|auth) ;;
+    *) kind="" ;;
+esac
+
+# One line, no control characters, at most N characters (UTF-8 aware via bash).
+clean() {
+    local s="$1" max="$2"
+    s="${s//[$'\t\r\n']/ }"
+    s="$(printf '%s' "$s" | tr -d '\000-\010\013\014\016-\037\177')"
+    s="${s#"${s%%[![:space:]]*}"}"
+    s="${s%"${s##*[![:space:]]}"}"
+    if [ "${#s}" -gt "$max" ]; then
+        s="${s:0:$((max - 3))}..."
+    fi
+    printf '%s' "$s"
+}
+b64() { printf '%s' "$1" | base64 | tr -d '\n'; }
+
+app="$(printf '%s' "$app" | tr -cd 'A-Za-z0-9_.+-' | cut -c1-32)"
+title="$(clean "$title" 80)"
+msg="$(clean "$msg" 160)"
+
+body="state=$state"
+[ "$state" = "blocked" ] && [ -n "$kind" ] && body+=":kind=$kind"
+[ -n "$app" ] && body+=":app=$app"
+[ -n "$title" ] && body+=":title=$(b64 "$title")"
+[ -n "$msg" ] && body+=":msg=$(b64 "$msg")"
+
+if [ -n "${AGENT_NOTIFY_DRY_RUN:-}" ]; then
+    printf '%s\n' "$body"
+    exit 0
+fi
+
+# Rex only, and not from inside a nested tmux.
+[ -z "${TMUX:-}" ] || exit 0
+[ -n "${REX_BLOCK:-}" ] || [ "${TERM_PROGRAM:-}" = "rex" ] || exit 0
+
+# Skip a report identical to the last one for this Rex block.
+key="${REX_BLOCK:-tty}"
+cache_dir="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"
+cache="${cache_dir%/}/agent-notify-${key//[^A-Za-z0-9_.-]/_}"
+if [ -r "$cache" ] && [ "$(cat "$cache" 2>/dev/null)" = "$body" ]; then
+    exit 0
+fi
+
+{ printf '\033]7501;%s\033\\' "$body" > /dev/tty; } 2>/dev/null || exit 0
+printf '%s' "$body" > "$cache" 2>/dev/null || true
+exit 0

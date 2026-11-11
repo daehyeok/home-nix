@@ -1,0 +1,42 @@
+{
+  "rex-notify": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "~/.gemini/jetski/cli/jetski-notify-hook PreInvocation",
+        "timeout": 5
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "ask_question|ask_custom_permission",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.gemini/jetski/cli/jetski-notify-hook PreToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "ask_question|ask_custom_permission",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.gemini/jetski/cli/jetski-notify-hook PostToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "~/.gemini/jetski/cli/jetski-notify-hook Stop",
+        "timeout": 5
+      }
+    ]
+  }
+}

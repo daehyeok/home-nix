@@ -39,5 +39,20 @@ in
       source = ./window_title.sh;
       executable = true;
     };
+
+    # Agent status notifications (Rex OSC 7501): agent-notify is the one
+    # emitter (also used by the notify-user skill and scripts); Jetski hooks
+    # report working / blocked (ask_question) / done (with a summary) through
+    # jetski-notify-hook. The GMac links the same files (home-gmac [jetski]).
+    home.file.".local/bin/agent-notify" = {
+      source = ./agent-notify;
+      executable = true;
+    };
+    home.file."${cfg.cliDir}/jetski-notify-hook" = {
+      source = ./jetski-notify-hook;
+      executable = true;
+    };
+    home.file.".gemini/config/hooks.json".source = ./hooks.json;
+    home.file.".gemini/config/skills/notify-user/SKILL.md".source = ./skills/notify-user/SKILL.md;
   };
 }

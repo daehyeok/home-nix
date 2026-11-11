@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# jetski-notify-hook <event>: Jetski lifecycle hook (hooks.json "rex-notify")
+# that turns hook events into agent-notify reports.
+#
+#   PreInvocation                         -> working
+#   PreToolUse  ask_question|permission   -> blocked (kind question/permission,
+#                                            msg = the first question)
+#   PostToolUse ask_question|permission   -> working
+#   Stop  NO_TOOL_CALL (and other ends)   -> done  (msg = first sentence of the
+#                                            final reply, else "Done: <request>")
+#         ERROR                           -> error (msg = error)
+#         USER_CANCELED                   -> clear
+#
+# Subagent events (parentConversationId set) are ignored. The hook always
+# prints {} and exits 0: it must never block or fail the agent loop.
+
+event="${1:-}"
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+notify="${AGENT_NOTIFY:-}"
+if [ -z "$notify" ]; then
+    for c in "$here/agent-notify" "$HOME/.local/bin/agent-notify"; do
+        [ -x "$c" ] && { notify="$c"; break; }
+    done
+fi
+
+# First plain sentence of a markdown reply, at most 100 characters.
+summarize() {
+    awk '
+        /^[[:space:]]*```/ { fence = !fence; next }
+        fence { next }
+        /^[[:space:]]*$/ { next }
+        /^[[:space:]]*(#|>|\||---|\*\*\*|<)/ { next }
+        { print; exit }
+    ' | sed -E \
+        -e 's/^[[:space:]]*([-*+]|[0-9]+\.)[[:space:]]+//' \
+        -e 's/\[([^]]*)\]\([^)]*\)/\1/g' \
+        -e 's/\*\*|__|`//g' \
+        -e 's/(^|[^A-Za-z0-9])[*_]([^*_]+)[*_]/\1\2/g' \
+        -e 's/^[[:space:]]+//; s/[[:space:]]+$//' |
+    awk '{
+        s = $0
+        if (match(s, /[.!?]([[:space:]]|$)/)) s = substr(s, 1, RSTART)
+        print s
+    }'
+}
+
+run() {
+    local input title ws parent
+    input="$(cat)"
+    [ -n "$input" ] || return
+    [ -n "$notify" ] || return
+    jq -e 'type == "object"' >/dev/null 2>&1 <<<"$input" || return
+
+    parent="$(jq -r '.parentConversationId // ""' <<<"$input")"
+    [ -z "$parent" ] || return
+
+    ws="$(jq -r '.workspacePaths[0] // ""' <<<"$input")"
+    title="jetski - ${ws##*/}"
+    [ -n "$ws" ] || title="jetski"
+
+    case "$event" in
+        PreInvocation)
+            "$notify" working --title "$title"
+            ;;
+        PreToolUse)
+            local tool kind msg
+            tool="$(jq -r '.toolCall.name // ""' <<<"$input")"
+            case "$tool" in
+                ask_question) kind=question ;;
+                ask_custom_permission) kind=permission ;;
+                *) return ;;
+            esac
+            msg="$(jq -r '
+                (.toolCall.args // {}) as $a
+                | ([($a.questions // [])[]? | .question? // empty][0]
+                   // $a.question // $a.Reason // $a.reason // $a.Description
+                   // $a.description // "")
+                | tostring' <<<"$input" | head -n 1)"
+            [ -n "$msg" ] || msg="Jetski needs your input"
+            "$notify" blocked --kind "$kind" --title "$title" --msg "$msg"
+            ;;
+        PostToolUse)
+            "$notify" working --title "$title"
+            ;;
+        Stop)
+            local reason err reply msg request transcript
+            reason="$(jq -r '.terminationReason // ""' <<<"$input")"
+            case "$reason" in
+                USER_CANCELED)
+                    "$notify" clear
+                    return
+                    ;;
+                ERROR)
+                    err="$(jq -r '.error // ""' <<<"$input" | head -n 1)"
+                    "$notify" error --title "$title" --msg "${err:-Jetski stopped with an error}"
+                    return
+                    ;;
+            esac
+            reply="$(jq -r '.finalModelOutput // ""' <<<"$input")"
+            if [ -z "$reply" ]; then
+                transcript="$(jq -r '.transcriptPath // ""' <<<"$input")"
+                if [ -r "$transcript" ]; then
+                    reply="$(tail -n 200 "$transcript" | jq -rs '
+                        [.[] | select(.source == "MODEL" and ((.content // "") != ""))]
+                        | last | .content // ""' 2>/dev/null)"
+                fi
+            fi
+            msg="$(printf '%s\n' "$reply" | summarize)"
+            if [ -z "$msg" ]; then
+                request="$(jq -r '.lastUserInput // ""' <<<"$input" | tr '\n' ' ')"
+                [ "${#request}" -gt 80 ] && request="${request:0:77}..."
+                msg="Done${request:+: $request}"
+            fi
+            "$notify" done --title "$title" --msg "$msg"
+            ;;
+    esac
+}
+
+( run ) >/dev/null 2>&1 || true
+echo '{}'
+exit 0

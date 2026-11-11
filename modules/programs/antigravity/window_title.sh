@@ -10,9 +10,10 @@
 #     agenmux (modules/programs/jetski/agenmux-jetski.conf) matches on.
 #   * in Rex, outside tmux: "🚀 <dir> · jetski" (fixed rocket; "jetski" so
 #     tabs are findable by name in fuzzy search; dir compressed like the
-#     zsh tab title via compress_path.sh). Agent state goes to Rex through
-#     the Program Status Protocol (OSC 7501) instead, and Rex draws its own
-#     spinner/blocked/done indicators on the tab.
+#     zsh tab title via compress_path.sh). Agent status (working, blocked,
+#     done with a summary) goes to Rex from the Jetski hooks instead
+#     (hooks.json -> jetski-notify-hook -> agent-notify, OSC 7501), so this
+#     script only prints the title.
 #   * in any other terminal: same as tmux, so the state is still visible.
 set -euo pipefail
 
@@ -43,38 +44,7 @@ else
     DIR_LABEL="${DIR_NAME}"
 fi
 
-# Report agent state to Rex (OSC 7501). Written straight to the controlling
-# terminal because stdout is captured by Jetski. Only sent when the state
-# changes, keyed by Rex block + Jetski pid.
-rex_report_status() {
-    local status cache key prev msg
-    case "$STATE" in
-        Ready|idle)     status="idle" ;;
-        thinking|working|tool_use|reviewing|initializing)
-                        status="working" ;;
-        authenticating) status="blocked:kind=auth" ;;
-        error)          status="error" ;;
-        *)              return 0 ;;
-    esac
-
-    key="${REX_BLOCK:-tty}-${PPID}"
-    cache="${XDG_RUNTIME_DIR:-/tmp}/jetski-rex-status-${key//[^A-Za-z0-9_.-]/_}"
-    prev=$(cat "$cache" 2>/dev/null || true)
-
-    # A turn that finishes (working -> idle) is reported as "done", so Rex
-    # flags the tab until it is looked at. Stay "done" while idle.
-    if [ "$status" = "idle" ] && { [ "$prev" = "working" ] || [ "$prev" = "done" ]; }; then
-        status="done"
-    fi
-    [ "$status" = "$prev" ] && return 0
-
-    msg=$(printf '%s' "$STATE" | base64 | tr -d '\n')
-    { printf '\e]7501;state=%s:app=jetski:msg=%s\e\\' "$status" "$msg" > /dev/tty; } 2>/dev/null || return 0
-    printf '%s' "$status" > "$cache" 2>/dev/null || true
-}
-
 if [ -z "${TMUX:-}" ] && { [ -n "${REX_BLOCK:-}" ] || [ "${TERM_PROGRAM:-}" = "rex" ]; }; then
-    rex_report_status || true
     # Same compressed path as the zsh tab title, e.g. "(ws:google3)//.../dir".
     REX_DIR="$DIR_LABEL"
     COMPRESS_PATH_SH="$(dirname "${BASH_SOURCE[0]}")/compress_path.sh"

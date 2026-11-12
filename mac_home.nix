@@ -81,6 +81,9 @@ with lib;
         "/Applications/Emacs.app/Contents/MacOS/Emacs"
         "--fg-daemon"
       ];
+      # Emacs reads COLORTERM from the daemon's environment, not the client's, so
+      # emacsclient -nw frames on a TERM without Tc/RGB (e.g. xterm-256color) drop to 256 colors.
+      EnvironmentVariables.COLORTERM = "truecolor";
       RunAtLoad = true;
       KeepAlive = true;
       ThrottleInterval = 30;

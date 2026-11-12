@@ -3,7 +3,9 @@
 --
 -- tmux-style key sequences: press PREFIX (ctrl+b), then the keys of a sequence.
 --   PREFIX o       OmniWM: enter/leave keyboard window mode
---   PREFIX PREFIX  send ctrl+b to the app
+--   PREFIX PREFIX  send ctrl+b to the app, then keep sending one per extra PREFIX pressed
+--                  within PREFIX_REPEAT_WINDOW seconds of the last (3 ctrl+b = 4 presses),
+--                  like Rex (same window as PREFIX_REPEAT_WINDOW in modules/programs/rex/init.lua)
 --   escape         cancel (an unknown key or a 3 s pause also cancels)
 --
 -- The hotkey is switched off in Rex and Emacs, so ctrl+b goes straight to them. Rex uses the
@@ -15,6 +17,7 @@
 local PREFIX_MODS, PREFIX_KEY = { "ctrl" }, "b"
 local OMNIWMCTL = "/Applications/OmniWM.app/Contents/MacOS/omniwmctl"
 local TIMEOUT = 3 -- seconds to wait for the next key
+local PREFIX_REPEAT_WINDOW = 0.35 -- seconds; keep in step with Rex's PREFIX_REPEAT_WINDOW
 -- Apps that get ctrl+b untouched.
 local PASSTHROUGH_APPS = {
   ["com.superlogical.rex"] = true, -- Rex runs its own PREFIX sequences
@@ -45,6 +48,9 @@ local SEQUENCES = {
 local prefixKey -- the PREFIX hotkey
 local tap, timer, alertId
 local node, typed = nil, ""
+-- Repeat window after PREFIX PREFIX: while open, PREFIX sends ctrl+b to the app right away.
+-- Only the PREFIX hotkey looks at it, so every other key reaches the app untouched.
+local repeating, repeatTimer = false, nil
 
 local function hideAlert()
   if alertId then hs.alert.closeSpecific(alertId); alertId = nil end
@@ -53,6 +59,8 @@ end
 local function stop()
   if tap then tap:stop() end
   if timer then timer:stop() end
+  if repeatTimer then repeatTimer:stop() end
+  repeating = false
   hideAlert()
   node, typed = nil, ""
 end
@@ -75,13 +83,19 @@ local function sendPrefixToApp()
   prefixKey:enable()
 end
 
+-- (Re)start the repeat window.
+local function openRepeat()
+  repeating = true
+  repeatTimer:start()
+end
+
 local function onKey(e)
   local key = hs.keycodes.map[e:getKeyCode()]
   local flags = e:getFlags()
 
   if key == "escape" then stop(); return true end
   if typed == "" and key == PREFIX_KEY and flags.ctrl then
-    stop(); sendPrefixToApp(); return true
+    stop(); sendPrefixToApp(); openRepeat(); return true
   end
 
   -- ctrl may still be held from the prefix, so only cmd/alt make a key unknown.
@@ -99,8 +113,13 @@ end
 
 tap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, onKey)
 timer = hs.timer.delayed.new(TIMEOUT, stop)
+repeatTimer = hs.timer.delayed.new(PREFIX_REPEAT_WINDOW, function() repeating = false end)
 
 prefixKey = hs.hotkey.new(PREFIX_MODS, PREFIX_KEY, function()
+  if repeating then -- inside the repeat window: one more ctrl+b to the app
+    sendPrefixToApp(); openRepeat()
+    return
+  end
   node, typed = SEQUENCES, ""
   tap:start(); timer:start(); show()
 end)

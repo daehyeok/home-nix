@@ -14,6 +14,7 @@ with lib;
     ./modules/programs/zsh/emacs-editor.nix
     ./modules/programs/omniwm
     ./modules/programs/hammerspoon
+    ./modules/programs/ghostty
   ];
 
   home = {

@@ -1,0 +1,116 @@
+# Ghostty config, shared by both Macs from home-nix: ~/.config/ghostty/config.ghostty links here
+# (personal Mac: default.nix in this directory; GMac: home-gmac's [ghostty] table).
+#
+# A plain terminal with Rex's look and key encoding (modules/programs/rex/init.lua):
+# cmd acts as Meta, ctrl+m / ctrl+i / ctrl+[ always send classic bytes. Ghostty binds no
+# ctrl+b keys and has no copy mode: ctrl+b goes to Hammerspoon's global prefix handling
+# (modules/programs/hammerspoon/init.lua). Reload after editing with cmd+shift+, .
+
+# Look (Rex: theme "Catppuccin Mocha", font Monaspace Neon NF, fallback Nanum Gothic)
+theme = Catppuccin Mocha
+font-family = "Monaspace Neon NF"
+font-family = "Nanum Gothic"
+copy-on-select = clipboard
+
+# ssh: install xterm-ghostty terminfo on the remote host and pass the terminal environment
+shell-integration-features = ssh-terminfo,ssh-env
+
+# Keys. Start from no bindings at all, so the bound set is exactly what's listed below
+# (Ghostty's defaults bind most cmd keys, some twice: by physical key and by character).
+# The menu bar still has every Ghostty action. Physical key names (key_a, digit_1, comma, ...)
+# keep working with the Korean input source.
+keybind = clear
+keybind = super+v=paste_from_clipboard
+keybind = super+shift+comma=reload_config
+
+# cmd acts as Meta: cmd+<key> sends alt+<key> (ESC <key>), like Rex's cmd -> alt loop.
+# Not cmd+v (paste, above) or cmd+m (Enter, below). cmd+w and cmd+1..9 pass through too.
+keybind = super+key_a=esc:a
+keybind = super+key_b=esc:b
+keybind = super+key_c=esc:c
+keybind = super+key_d=esc:d
+keybind = super+key_e=esc:e
+keybind = super+key_f=esc:f
+keybind = super+key_g=esc:g
+keybind = super+key_h=esc:h
+keybind = super+key_i=esc:i
+keybind = super+key_j=esc:j
+keybind = super+key_k=esc:k
+keybind = super+key_l=esc:l
+keybind = super+key_n=esc:n
+keybind = super+key_o=esc:o
+keybind = super+key_p=esc:p
+keybind = super+key_q=esc:q
+keybind = super+key_r=esc:r
+keybind = super+key_s=esc:s
+keybind = super+key_t=esc:t
+keybind = super+key_u=esc:u
+keybind = super+key_w=esc:w
+keybind = super+key_x=esc:x
+keybind = super+key_y=esc:y
+keybind = super+key_z=esc:z
+keybind = super+digit_0=esc:0
+keybind = super+digit_1=esc:1
+keybind = super+digit_2=esc:2
+keybind = super+digit_3=esc:3
+keybind = super+digit_4=esc:4
+keybind = super+digit_5=esc:5
+keybind = super+digit_6=esc:6
+keybind = super+digit_7=esc:7
+keybind = super+digit_8=esc:8
+keybind = super+digit_9=esc:9
+keybind = super+comma=esc:,
+keybind = super+period=esc:.
+keybind = super+slash=esc:/
+keybind = super+semicolon=esc:;
+keybind = super+quote=esc:'
+keybind = super+bracket_left=esc:[
+keybind = super+bracket_right=esc:]
+keybind = super+minus=esc:-
+keybind = super+equal=esc:=
+keybind = super+backquote=esc:`
+keybind = super+backslash=text:\x1b\\
+
+# shift+cmd+<letter> sends shift+alt+<letter> (ESC <LETTER>), every letter
+keybind = super+shift+key_a=esc:A
+keybind = super+shift+key_b=esc:B
+keybind = super+shift+key_c=esc:C
+keybind = super+shift+key_d=esc:D
+keybind = super+shift+key_e=esc:E
+keybind = super+shift+key_f=esc:F
+keybind = super+shift+key_g=esc:G
+keybind = super+shift+key_h=esc:H
+keybind = super+shift+key_i=esc:I
+keybind = super+shift+key_j=esc:J
+keybind = super+shift+key_k=esc:K
+keybind = super+shift+key_l=esc:L
+keybind = super+shift+key_m=esc:M
+keybind = super+shift+key_n=esc:N
+keybind = super+shift+key_o=esc:O
+keybind = super+shift+key_p=esc:P
+keybind = super+shift+key_q=esc:Q
+keybind = super+shift+key_r=esc:R
+keybind = super+shift+key_s=esc:S
+keybind = super+shift+key_t=esc:T
+keybind = super+shift+key_u=esc:U
+keybind = super+shift+key_v=esc:V
+keybind = super+shift+key_w=esc:W
+keybind = super+shift+key_x=esc:X
+keybind = super+shift+key_y=esc:Y
+keybind = super+shift+key_z=esc:Z
+
+# cmd+m acts as Enter; cmd+backspace sends alt+backspace (ESC DEL)
+keybind = super+key_m=text:\r
+keybind = super+backspace=text:\x1b\x7f
+
+# Always send classic control bytes, even when a program enables kitty/CSI-u
+keybind = ctrl+key_m=text:\r
+keybind = ctrl+key_i=text:\t
+keybind = ctrl+bracket_left=text:\x1b
+
+# Forward delete sends ctrl+d (Rex: delete -> ctrl+d, from the iTerm2 key map)
+keybind = delete=text:\x04
+
+# Per-host layer: ~/.config/ghostty/local.ghostty (relative to the linked config, so not the repo),
+# untracked and optional. Includes load after this whole file, so settings there win.
+config-file = ?local.ghostty

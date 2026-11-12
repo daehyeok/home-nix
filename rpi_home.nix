@@ -18,38 +18,28 @@ with lib;
     username = "daehyeok";
     homeDirectory = "/home/daehyeok";
     stateVersion = "26.05";
-    packages =
-      with pkgs;
-      [
-        bitwarden-cli
-        nodejs
-        devenv
-        pre-commit
-        fontconfig
-        emacs-all-the-icons-fonts
-        gettext
-        cargo-edit
-        pkg-config
-        openssl
-        (python313.withPackages (
-          ps: with ps; [
-            pytest
-            toml
-            python-lsp-server
-            pyls-isort
-            flake8
-            yapf
-          ]
-        ))
-      ]
-      ++ vterm-build-deps;
+    packages = with pkgs; [
+      nodejs
+      devenv
+      pre-commit
+      gettext
+      (python313.withPackages (
+        ps: with ps; [
+          pytest
+          toml
+          python-lsp-server
+          pyls-isort
+          flake8
+          yapf
+        ]
+      ))
+    ];
   };
 
   catppuccin = {
     enable = true;
     autoEnable = false;
     flavor = "mocha";
-    atuin.enable = true;
     bat.enable = true;
     starship.enable = true;
     delta.enable = true;
@@ -69,6 +59,7 @@ with lib;
   xdg.enable = true;
 
   programs = {
+    atuin.useSetupScript = true;
     starship.settings.format = " $directory$git_branch$git_commit$git_state$git_metrics$git_status$character";
     git.settings.user = {
       email = "daehyeok@gmail.com";
@@ -82,14 +73,14 @@ with lib;
     zsh = {
       emacs-editor.enable = true;
       initContent = lib.mkBefore ''
-                source /etc/static/bashrc  2> /dev/null
-                [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ] && source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-                [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-                [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+        source /etc/static/bashrc  2> /dev/null
+        [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ] && source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+        [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+        [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 
-                [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+        [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-                [[ -f ~/.local_env ]] && source ~/.local_env
+        [[ -f ~/.local_env ]] && source ~/.local_env
       '';
     };
   };

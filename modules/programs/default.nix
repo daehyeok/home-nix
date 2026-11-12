@@ -9,6 +9,7 @@ with lib;
 {
   imports = [
     ./antigravity
+    ./atuin
     ./bat
     ./starship
     ./tmux

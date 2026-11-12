@@ -1,6 +1,7 @@
 # Main Home Manager configuration entry point
 {
   config,
+  options,
   pkgs,
   lib,
   ...
@@ -40,6 +41,11 @@ with lib;
     enable = true;
     autoEnable = false;
     flavor = "mocha";
+    sources = options.catppuccin.sources.default.overrideScope (
+      final: prev: {
+        whiskers = pkgs.catppuccin-whiskers;
+      }
+    );
     bat.enable = true;
     starship.enable = true;
     delta.enable = true;

@@ -1,0 +1,5 @@
+{
+  "app_dir": "~/.gemini/jetski",
+  "keymap": "emacs",
+  "pager": ["bat", "--paging=always", "--style=plain"]
+}

@@ -1,12 +1,12 @@
 {
-  "subagent-dashboard": {
+  "rex-agy-subagent": {
     "PostToolUse": [
       {
         "matcher": "invoke_subagent",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/bin/agent-dash-hook",
+            "command": "~/.local/bin/agy-subagent-hook",
             "timeout": 5
           }
         ]

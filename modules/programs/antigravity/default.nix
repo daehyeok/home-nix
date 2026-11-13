@@ -52,6 +52,20 @@ in
     };
     home.file.".gemini/config/skills/notify-user/SKILL.md".source = ./skills/notify-user/SKILL.md;
 
+    # Subagent panel: a PostToolUse hook on invoke_subagent records each subagent start
+    # for the Rex terminal Jetski runs in and opens a read-only Rex floating panel
+    # (agent-dash) in that window; PREFIX j s shows/hides it (GMac Rex config). The hook
+    # never reports agent status; that stays with the built-in OSC 7501 above.
+    home.file.".gemini/config/hooks.json".source = ./hooks.json;
+    home.file.".local/bin/agent-dash-hook" = {
+      source = ./agent-dash-hook;
+      executable = true;
+    };
+    home.file.".local/bin/agent-dash" = {
+      source = ./agent-dash;
+      executable = true;
+    };
+
     # Force the built-in OSC 7501 status only in Rex outside tmux: "on" skips
     # Jetski's support check, so elsewhere it could print escape junk.
     # "brief" leaves the reply / pending command / question text out of the

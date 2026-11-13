@@ -1,0 +1,93 @@
+#!/bin/sh
+# agent-dash-hook: Jetski PostToolUse hook for invoke_subagent (hooks.json "subagent-dashboard").
+# Records each subagent start for the Rex terminal Jetski runs in, then (in the background)
+# opens the read-only subagent panel (agent-dash) in that terminal's window if it isn't open.
+#
+#   agent-dash-hook              hook mode: PostToolUse JSON on stdin, prints {} and exits 0
+#   agent-dash-hook open BLOCK   open the panel for Rex block BLOCK unless one exists
+#
+# Registry: ${XDG_STATE_HOME:-~/.local/state}/agent-dash/<REX_BLOCK>.jsonl, one line per start:
+#   {ts, root, parent, child, role, type, transcript}
+# The panel is a Rex floating layer labelled "subagents:<REX_BLOCK>", created through the Rex
+# server, so it is the server's process: closing it never touches Jetski or its agents, and this
+# hook never waits on it. Never reports agent status (that is Jetski's built-in OSC 7501).
+# Every error is ignored: the hook must never block or fail the agent loop.
+
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}/agent-dash"
+SELF_DIR=$(cd "$(dirname "$0")" 2>/dev/null && pwd)
+DASH="$SELF_DIR/agent-dash"
+# Panel position and size, [x, y, w, h] as fractions of the window: top-right corner.
+BOUNDS='[0.6, 0.04, 0.38, 0.42]'
+
+rex_cmd() {
+    if [ -n "${REX_BIN_DIR:-}" ] && [ -x "$REX_BIN_DIR/rex" ]; then
+        "$REX_BIN_DIR/rex" "$@"
+    else
+        rex "$@"
+    fi
+}
+
+open_panel() {
+    block="$1"
+    [ -n "$block" ] && [ -n "${REX_SESSION:-}" ] || return 0
+    lock="$STATE/$block.lock"
+    # A lock left behind by a killed run stops counting after a minute.
+    if [ -d "$lock" ] && [ -n "$(find "$lock" -maxdepth 0 -mmin +1 2>/dev/null)" ]; then
+        rmdir "$lock" 2>/dev/null
+    fi
+    mkdir "$lock" 2>/dev/null || return 0 # another start is already opening it
+    trap 'rmdir "$lock" 2>/dev/null' EXIT HUP INT TERM
+
+    view=$(rex_cmd session inspect "$REX_SESSION" --json 2>/dev/null) || return 0
+    label="subagents:$block"
+    exists=$(printf '%s' "$view" | jq -r --arg l "$label" \
+        '[.windows[]?.layers[]?.blocks[]? | select(.label == $l)] | length' 2>/dev/null)
+    [ "${exists:-0}" = 0 ] || return 0
+    window=$(printf '%s' "$view" | jq -r --arg b "$block" \
+        'first(.windows[]? | select([.layers[]?.blocks[]?.block_id] | index($b)) | .window_id) // empty' 2>/dev/null)
+    [ -n "$window" ] || return 0
+
+    req=$(jq -n --arg s "$REX_SESSION" --arg w "$window" --arg l "$label" \
+        --arg dash "$DASH" --arg b "$block" --argjson bounds "$BOUNDS" '{
+        session_id: $s, window_id: $w, bounds: $bounds, focus: false,
+        layout: { block: { flavor: "com.superlogical.terminal.shell", label: $l,
+                           options: { command: [$dash, $b] } } } }') || return 0
+    printf '%s' "$req" | rex_cmd api call session.new_layer - >/dev/null 2>&1
+
+    # Housekeeping: forget panes whose last subagent started over a week ago.
+    find "$STATE" -maxdepth 1 -name '*.jsonl' -mtime +7 -exec rm -f {} + 2>/dev/null
+    return 0
+}
+
+if [ "${1:-}" = open ]; then
+    open_panel "${2:-}"
+    exit 0
+fi
+
+# Hook mode. Always answer {} so Jetski leaves the tool result alone.
+input=$(cat 2>/dev/null)
+echo '{}'
+[ -n "${REX_BLOCK:-}" ] || exit 0
+command -v jq >/dev/null 2>&1 || exit 0
+
+rec=$(printf '%s' "$input" | jq -c '
+    select(.toolCall.name == "invoke_subagent" and ((.error // "") == "")) |
+    (.result // "") as $r |
+    ($r | capture("\"conversationId\":\\s*\"(?<id>[^\"]+)\"").id) as $child |
+    {
+      ts: (now | floor),
+      root: (.rootConversationId // ""),
+      parent: (.conversationId // ""),
+      child: $child,
+      role: (.toolCall.args.Role // ""),
+      type: (.toolCall.args.TypeName // ""),
+      transcript: (($r | capture("\"logAbsoluteUri\":\\s*\"file://(?<p>[^\"]+)\"").p) // "")
+    }' 2>/dev/null)
+[ -n "$rec" ] || exit 0
+
+mkdir -p "$STATE" 2>/dev/null || exit 0
+printf '%s\n' "$rec" >> "$STATE/$REX_BLOCK.jsonl" 2>/dev/null || exit 0
+
+# Open the panel off the hook's critical path; the subshell detaches it from this process.
+( "$0" open "$REX_BLOCK" </dev/null >/dev/null 2>&1 & ) 2>/dev/null
+exit 0

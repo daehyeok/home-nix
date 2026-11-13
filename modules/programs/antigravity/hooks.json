@@ -1,0 +1,16 @@
+{
+  "subagent-dashboard": {
+    "PostToolUse": [
+      {
+        "matcher": "invoke_subagent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/agent-dash-hook",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

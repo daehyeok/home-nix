@@ -63,6 +63,7 @@ with lib;
   };
 
   xdg.enable = true;
+  modules.dev.python.enable = true;
 
   programs = {
     atuin.useSetupScript = true;

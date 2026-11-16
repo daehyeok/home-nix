@@ -54,6 +54,7 @@ with lib;
     };
 
     sessionPath = [
+      "$HOME/.loca/bin"
       "$HOME/.config/emacs/bin"
       "$XDG_BIN_HOME" # ~/.local/bin by default (xdg.binHome)
     ];

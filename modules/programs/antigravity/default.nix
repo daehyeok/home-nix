@@ -9,12 +9,6 @@ with lib;
 
 let
   cfg = config.programs.antigravity;
-  # rex-agy-subagent (panel, hook): pinned; bump rev to update.
-  rexAgySubagent = builtins.fetchGit {
-    url = "ssh://git@github.com/daehyeok/rex-agy-subagent";
-    ref = "main";
-    rev = "46f25e23dc0fafa3372b23acacab34073b056140";
-  };
 in
 {
   disabledModules = [ "programs/antigravity.nix" ];
@@ -57,17 +51,6 @@ in
       executable = true;
     };
     home.file.".gemini/config/skills/notify-user/SKILL.md".source = ./skills/notify-user/SKILL.md;
-
-    # Subagent panel (rex-agy-subagent): a PostToolUse hook on invoke_subagent opens a
-    # read-only Rex floating panel listing the session's subagents, rebuilt from the
-    # transcripts; PREFIX j s shows/hides/reopens it (GMac Rex config). The panel config
-    # sets the Jetski data dir and the pager. The hook never reports agent status; that
-    # stays with the built-in OSC 7501 above.
-    # The scripts find their Python modules next to themselves in the pinned checkout.
-    home.file.".gemini/config/hooks.json".source = ./hooks.json;
-    home.file.".config/rex-agy-subagent/config.json".source = ./rex-agy-subagent.json;
-    home.file.".local/bin/agy-subagent".source = "${rexAgySubagent}/bin/agy-subagent";
-    home.file.".local/bin/agy-subagent-hook".source = "${rexAgySubagent}/bin/agy-subagent-hook";
 
     # Force the built-in OSC 7501 status only in Rex outside tmux: "on" skips
     # Jetski's support check, so elsewhere it could print escape junk.
